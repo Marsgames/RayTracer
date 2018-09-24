@@ -25,6 +25,8 @@
 /* Begin PBXFileReference section */
 		AE376F5B2158B2C700044A00 /* Synthese2 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Synthese2; sourceTree = BUILT_PRODUCTS_DIR; };
 		AE376F5E2158B2C700044A00 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		AE376F662158B2EE00044A00 /* glm */ = {isa = PBXFileReference; lastKnownFileType = folder; path = glm; sourceTree = "<group>"; };
+		AEA8E6352158FF1100E89BCC /* main.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = main.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -57,9 +59,19 @@
 		AE376F5D2158B2C700044A00 /* Synthese2 */ = {
 			isa = PBXGroup;
 			children = (
+				AE376F652158B2D100044A00 /* Library */,
 				AE376F5E2158B2C700044A00 /* main.cpp */,
+				AEA8E6352158FF1100E89BCC /* main.hpp */,
 			);
 			path = Synthese2;
+			sourceTree = "<group>";
+		};
+		AE376F652158B2D100044A00 /* Library */ = {
+			isa = PBXGroup;
+			children = (
+				AE376F662158B2EE00044A00 /* glm */,
+			);
+			path = Library;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -241,6 +253,7 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 7RA755DD97;
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -250,6 +263,7 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 7RA755DD97;
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
