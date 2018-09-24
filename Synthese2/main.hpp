@@ -30,4 +30,4 @@ intersection Intersect(Vector3, Vector3, Vector3, float);
 double Dot(Vector3, Vector3);
 double Dist2(Vector3);
 Vector3 Minus(Vector3, Vector3);
-void ImageFromArray(int, int, colorStruct[200][200] = 0);
+void ImageFromArray(int, int, std::vector<std::vector<colorStruct>>);

@@ -21,35 +21,49 @@ int main(int argc, const char * argv[]) {
     // pour chaque pixels de l'ecran on fait partir un rayon
     // on récupère l'intersection et on crée une image à partir du résultat
     
-    vector<vector<Vector3>> ecranTest;
+    vector<vector<Vector3>> ecran(200, vector<Vector3>(200));
     
-    // Initialisation de l'écran !
-    Vector3 ecran[100][100];// = {[0 ... 9][0 ... 9] = Vector3(0, 0, 0)};
-    for (int y = 0; y < 100; y++){
-        for (int z = 0; z < 100; z++){
-            ecran[y][z] = Vector3{-100 , static_cast<float>(y), static_cast<float>(z)};
+    // Initialisation de l'écran
+    for (float y = 0; y < 200; y += 1){
+        for (float z = 0; z < 200; z += 1){
+            ecran[y][z] = Vector3{-200 , y, z};
         }
     }
     
-    colorStruct pixelsArray[200][200] = {[0 ... 199][0 ... 199] = colorStruct{0, 0, 0}};
+    vector<vector<colorStruct>> pixelsArray(200, vector<colorStruct>(200, colorStruct{0, 0, 0}));
+
+    for (int y = 0; y < 200; y++){
+        for (int z = 0; z < 200; z++){
+            intersection res = Intersect(ecran[y][z], Vector3{1, 0, 0}, {0, 100, 100}, 50);
+            if(res.intersect){
+                continue;
+            }
+            pixelsArray[y][z] = colorStruct{0, 255, 0};
+        }
+    }
     
-    for (int y = 0; y < 100; y++){
-        for (int z = 0; z < 100; z++){
-            intersection res = Intersect(ecran[y][z], Vector3{1, 0, 0}, {0, 50, 50}, 50);
+    for (int y = 0; y < 200; y++){
+        for (int z = 0; z < 200; z++){
+            intersection res = Intersect(ecran[y][z], Vector3{1, 0, 0}, {0, 25, 25}, 50);
             if(!res.intersect){
                 continue;
             }
-            
-            pixelsArray[y][z] = colorStruct{0, 255, 0};
-            
+            pixelsArray[y][z] = colorStruct{255, 0, 0};
+        }
+    }
+    
+    
+    for (int y = 0; y < 200; y++){
+        for (int z = 0; z < 200; z++){
+            intersection res = Intersect(ecran[y][z], Vector3{1, 0, 0}, {0, 150, 150}, 50);
+            if(!res.intersect){
+                continue;
+            }
+            pixelsArray[y][z] = colorStruct{0, 0, 255};
         }
     }
     
     ImageFromArray(200, 200, pixelsArray);
-    
-    
-    
-    
     
 //    intersection res = Intersect(Vector3{0, 0, 0}, Vector3{1, 0, 0}, Vector3{0, 0, 0}, 10);
 //
@@ -103,7 +117,7 @@ Vector3 Minus(Vector3 A, Vector3 B){
     return Vector3{A.x - B.x, A.y - B.y, A.z - B.z};
 }
 
-void ImageFromArray(int width, int height, colorStruct pixelsArray[200][200]){
+void ImageFromArray(int width, int height, vector<vector<colorStruct>> pixelsArray){
     bitmap_image img(width, height);
         
         for(int y = 0; y < height; y++){
