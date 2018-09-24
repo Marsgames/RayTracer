@@ -26,6 +26,14 @@ struct colorStruct {
     int r, g, b;
 };
 
+struct sphere{
+    Vector3 position;
+    float rayon;
+    colorStruct couleur;
+    std::string name;
+    float alpha = 1;
+};
+
 intersection Intersect(Vector3, Vector3, Vector3, float);
 double Dot(Vector3, Vector3);
 double Dist2(Vector3);
