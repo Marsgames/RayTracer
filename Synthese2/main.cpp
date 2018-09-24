@@ -9,19 +9,55 @@
 #include <iostream>
 #include "main.hpp"
 #include <math.h>
-//#include "Library/glm/vec3.hpp"
+#include "Library/Bitmap/bitmap_image.hpp"
 
 using namespace std;
 
 int main(int argc, const char * argv[]) {
     
-    intersection res = Intersect(Vector3(0, 0, 0), Vector3(1, 0, 0), Vector3(10, 0, 0), 1);
+    // Ajouter un écran (tableau 2D de pixels) (origine 0, 0->10, 0->-10)
+    // ajouter une sphère (origine 0, rayon 10)
     
-    if(!res.intersect){
-        cout << endl << endl << "Il n'y a pas d'intersection" << endl << endl << endl;
-        return 0;
+    // pour chaque pixels de l'ecran on fait partir un rayon
+    // on récupère l'intersection et on crée une image à partir du résultat
+    
+    vector<vector<Vector3>> ecranTest;
+    
+    // Initialisation de l'écran !
+    Vector3 ecran[100][100];// = {[0 ... 9][0 ... 9] = Vector3(0, 0, 0)};
+    for (int y = 0; y < 100; y++){
+        for (int z = 0; z < 100; z++){
+            ecran[y][z] = Vector3{-100 , static_cast<float>(y), static_cast<float>(z)};
+        }
     }
-    cout << endl << endl << "Il y a intersection : " << res.inter << endl << endl << endl;
+    
+    colorStruct pixelsArray[200][200] = {[0 ... 199][0 ... 199] = colorStruct{0, 0, 0}};
+    
+    for (int y = 0; y < 100; y++){
+        for (int z = 0; z < 100; z++){
+            intersection res = Intersect(ecran[y][z], Vector3{1, 0, 0}, {0, 50, 50}, 50);
+            if(!res.intersect){
+                continue;
+            }
+            
+            pixelsArray[y][z] = colorStruct{0, 255, 0};
+            
+        }
+    }
+    
+    ImageFromArray(200, 200, pixelsArray);
+    
+    
+    
+    
+    
+//    intersection res = Intersect(Vector3{0, 0, 0}, Vector3{1, 0, 0}, Vector3{0, 0, 0}, 10);
+//
+//    if(!res.intersect){
+//        cout << endl << endl << "Il n'y a pas d'intersection" << endl << endl << endl;
+//        return 0;
+//    }
+//    cout << endl << endl << "Il y a intersection : " << res.inter << endl << endl << endl;
     
     return 0;
 }
@@ -35,9 +71,6 @@ intersection Intersect(Vector3 point, Vector3 dirrection, Vector3 origineCercle,
     
     intersection result = intersection(false, 0);
     
-    // if(delta < 0){
-    //     result = new Tuple<bool, double>(false, 0);
-    // }
     
     if (0 == int(delta)){
         result.intersect = true;
@@ -53,9 +86,7 @@ intersection Intersect(Vector3 point, Vector3 dirrection, Vector3 origineCercle,
             res = inter1 < inter2 ? inter1 : inter2;
         }
         
-        result.intersect = true;
-        result.inter = res;
-//        result = intersection(true, res);
+        result = intersection(true, res);
     }
     return result;
 }
@@ -69,6 +100,20 @@ double Dist2(Vector3 pA){
 }
 
 Vector3 Minus(Vector3 A, Vector3 B){
-    return Vector3(A.x - B.x, A.y - B.y, A.z - B.z);
+    return Vector3{A.x - B.x, A.y - B.y, A.z - B.z};
+}
+
+void ImageFromArray(int width, int height, colorStruct pixelsArray[200][200]){
+    bitmap_image img(width, height);
+        
+        for(int y = 0; y < height; y++){
+            for(int x = 0; x < width; x++){
+                img.set_pixel(x, y, pixelsArray[x][y].r, pixelsArray[x][y].g, pixelsArray[x][y].b);
+                cout << "r : " << pixelsArray[x][y].r << " - g : " << pixelsArray[x][y].g << " - b : " << pixelsArray[x][y].b << endl;
+            }
+        }
+    
+    img.save_image("/Users/Raph/Desktop/imageSynthese.bmp");
+    cout << "image sauvegardée sur le bureau !" << endl;
 }
 

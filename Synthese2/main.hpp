@@ -10,14 +10,7 @@
 
 struct Vector3 {
     //const Vector3 One = Vector3(1, 1, 1);
-    float x;
-    float y;
-    float z;
-    Vector3(float xx, float yy, float zz){
-        x = xx;
-        y = yy;
-        z = zz;
-    }
+    float x, y, z;
 };
 
 struct intersection{
@@ -29,7 +22,12 @@ struct intersection{
     }
 };
 
+struct colorStruct {
+    int r, g, b;
+};
+
 intersection Intersect(Vector3, Vector3, Vector3, float);
 double Dot(Vector3, Vector3);
 double Dist2(Vector3);
 Vector3 Minus(Vector3, Vector3);
+void ImageFromArray(int, int, colorStruct[200][200] = 0);
