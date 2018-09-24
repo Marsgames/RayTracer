@@ -8,34 +8,55 @@
 
 #pragma once
 
+#include <iostream>
+
+using namespace std;
+
 struct Vector3 {
     //const Vector3 One = Vector3(1, 1, 1);
     float x, y, z;
 };
 
-struct intersection{
+struct Intersection{
     bool intersect;
     float inter;
-    intersection(bool intersectt, float interr){
+    Intersection(bool intersectt, float interr){
         intersect = intersectt;
         inter = interr;
     }
 };
 
-struct colorStruct {
+struct ColorStruct {
     int r, g, b;
 };
 
-struct sphere{
+struct Sphere{
     Vector3 position;
     float rayon;
-    colorStruct couleur;
-    std::string name;
+    ColorStruct couleur;
+    string nom;
     float alpha = 1;
 };
 
-intersection Intersect(Vector3, Vector3, Vector3, float);
-double Dot(Vector3, Vector3);
-double Dist2(Vector3);
-Vector3 Minus(Vector3, Vector3);
-void ImageFromArray(int, int, std::vector<std::vector<colorStruct>>);
+double Dot(Vector3 pA, Vector3 pB)
+{
+    return pA.x * pB.x + pA.y * pB.y + pA.z * pB.z;
+}
+
+double Dist2(Vector3 pA)
+{
+    return Dot(pA, pA);
+}
+
+Vector3 Minus(Vector3 A, Vector3 B)
+{
+    return Vector3{A.x - B.x, A.y - B.y, A.z - B.z};
+}
+
+typedef vector<vector<Vector3>> V3Tab;
+
+void Intersect(const Vector3& point, const Vector3& direction, const Vector3& origineCercle, const float rayon, Intersection& myRes);
+double Dot(Vector3 vectA, Vector3 vectB);
+double Dist2(Vector3 vecteur);
+Vector3 Minus(Vector3 vectA, Vector3 vectB);
+void ImageFromArray(int height, int width, vector<vector<ColorStruct>> pixelsArray);

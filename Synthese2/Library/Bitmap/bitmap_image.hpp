@@ -235,9 +235,9 @@ public:
 
       for (unsigned int y = 0; y < source_image.height_; ++y)
       {
-         unsigned char* itr1           = row(y + y_offset) + x_offset * bytes_per_pixel_;
-         const unsigned char* itr2     = source_image.row(y);
-         const unsigned char* itr2_end = itr2 + source_image.width_ * bytes_per_pixel_;
+//         unsigned char* itr1           = row(y + y_offset) + x_offset * bytes_per_pixel_;
+//         const unsigned char* itr2     = source_image.row(y);
+//         const unsigned char* itr2_end = itr2 + source_image.width_ * bytes_per_pixel_;
 
          //std::copy(itr2, itr2_end, itr1);
       }
@@ -264,9 +264,9 @@ public:
 
       for (unsigned int r = 0; r < height; ++r)
       {
-         unsigned char* itr1     = row(r + y) + x * bytes_per_pixel_;
-         unsigned char* itr1_end = itr1 + (width * bytes_per_pixel_);
-         unsigned char* itr2     = dest_image.row(r);
+//         unsigned char* itr1     = row(r + y) + x * bytes_per_pixel_;
+//         unsigned char* itr1_end = itr1 + (width * bytes_per_pixel_);
+//         unsigned char* itr2     = dest_image.row(r);
 
          //std::copy(itr1, itr1_end, itr2);
       }
