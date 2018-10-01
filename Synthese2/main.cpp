@@ -25,13 +25,13 @@ int main(int argc, const char * argv[])
     ///////// TEST SPHÈRES ////////
     // Sphere(position, rayon, couleur, nom)
     // Sphere(Vector3(), int, colorStruct, string)
-    spheres.push_back(Sphere{.position = Vector3{.x = 1000, .y = 800, .z = 550}, .rayon = 150, .couleur =  ColorStruct{.r = 255, .g = 0, .b = 0}, .nom = "sp1"});
-    spheres.push_back(Sphere{.position = Vector3{.x = 1100, .y = 200, .z = 900}, .rayon = 100, .couleur =  ColorStruct{.r = 0, .g = 255, .b = 0}, .nom = "sp2"});
-    spheres.push_back(Sphere{.position = Vector3{.x = 1200, .y = 250, .z = 300}, .rayon = 100, .couleur =  ColorStruct{.r = 0, .g = 0, .b = 255}, .nom = "sp3"});
-    spheres.push_back(Sphere{.position = Vector3{.x = 1600, .y = 250, .z = 800}, .rayon = 300, .couleur =  ColorStruct{.r = 44, .g = 117, .b = 255}, .nom = "sp4"});
-    spheres.push_back(Sphere{.position = Vector3{.x = 1700, .y = 750, .z = 250}, .rayon = 200, .couleur =  ColorStruct{.r = 0, .g = 255, .b = 255}, .nom = "sp5"});
-    spheres.push_back(Sphere{.position = Vector3{.x = 1900, .y = 500, .z = 500}, .rayon = 400, .couleur =  ColorStruct{.r = 129, .g = 20, .b = 83}, .nom = "sp6"});
-    
+    spheres.push_back(Sphere{.position = Vector3{.x = 1000, .y = 800, .z = 550}, .rayon = 150, .couleur =  Color{.r = 255, .g = 0, .b = 0}, .nom = "sp1"});
+    spheres.push_back(Sphere{.position = Vector3{.x = 1100, .y = 200, .z = 900}, .rayon = 100, .couleur =  Color{.r = 0, .g = 255, .b = 0}, .nom = "sp2"});
+    spheres.push_back(Sphere{.position = Vector3{.x = 1200, .y = 250, .z = 300}, .rayon = 100, .couleur =  Color{.r = 0, .g = 0, .b = 255}, .nom = "sp3"});
+    spheres.push_back(Sphere{.position = Vector3{.x = 1600, .y = 250, .z = 800}, .rayon = 300, .couleur =  Color{.r = 44, .g = 117, .b = 255}, .nom = "sp4"});
+    spheres.push_back(Sphere{.position = Vector3{.x = 1700, .y = 750, .z = 250}, .rayon = 200, .couleur =  Color{.r = 0, .g = 255, .b = 255}, .nom = "sp5"});
+    spheres.push_back(Sphere{.position = Vector3{.x = 1900, .y = 500, .z = 500}, .rayon = 400, .couleur =  Color{.r = 129, .g = 20, .b = 83}, .nom = "sp6"});
+
     // Initialisation de l'écran
     for (float y = 0; y < tailleMap; y += 1)
     {
@@ -41,7 +41,7 @@ int main(int argc, const char * argv[])
         }
     }
     
-    vector<vector<ColorStruct>> pixelsArray(tailleMap, vector<ColorStruct>(tailleMap, ColorStruct{0, 0, 0}));
+    vector<vector<Color>> pixelsArray(tailleMap, vector<Color>(tailleMap, Color{0, 0, 0}));
     
     
     for (int y = 0; y < tailleMap; y++)
@@ -52,7 +52,7 @@ int main(int argc, const char * argv[])
             Sphere sph;
             for(const Sphere &sp : spheres)
             {
-                Intersection res = Intersection(false, 0);
+                Intersection res = Intersection{false, 0};
                 Intersect(ecran[y][z], Vector3{.x =  1,.y = 0,.z = 0}, sp.position, sp.rayon, res);
                 if(!res.intersect)
                 {
@@ -113,7 +113,7 @@ void Intersect(const Vector3& point, const Vector3& direction, const Vector3& or
     
     const double delta = (B * B) - (4 * A * C);
     
-    myRes = Intersection(false, 0);
+    myRes = Intersection{false, 0};
     
     if (0 == static_cast<int>(delta))
     {
@@ -132,11 +132,11 @@ void Intersect(const Vector3& point, const Vector3& direction, const Vector3& or
             res = inter1 < inter2 ? inter1 : inter2;
         }
         
-        myRes = Intersection(true, res);
+        myRes = Intersection{true, res};
     }
 }
 
-void ImageFromArray(int width, int height, vector<vector<ColorStruct>> pixelsArray)
+void ImageFromArray(int width, int height, vector<vector<Color>> pixelsArray)
 {
     bitmap_image img(width, height);
     

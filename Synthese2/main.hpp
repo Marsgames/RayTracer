@@ -19,21 +19,21 @@ struct Vector3 {
 
 struct Intersection{
     bool intersect;
-    float inter;
-    Intersection(bool intersectt, float interr){
-        intersect = intersectt;
-        inter = interr;
-    }
+    double inter;
+//    Intersection(bool intersectt, float interr){
+//        intersect = intersectt;
+//        inter = interr;
+//    }
 };
 
-struct ColorStruct {
+struct Color {
     int r, g, b;
 };
 
 struct Sphere{
     Vector3 position;
     float rayon;
-    ColorStruct couleur;
+    Color couleur;
     string nom;
     float alpha = 1;
 };
@@ -56,7 +56,4 @@ Vector3 Minus(Vector3 A, Vector3 B)
 typedef vector<vector<Vector3>> V3Tab;
 
 void Intersect(const Vector3& point, const Vector3& direction, const Vector3& origineCercle, const float rayon, Intersection& myRes);
-double Dot(Vector3 vectA, Vector3 vectB);
-double Dist2(Vector3 vecteur);
-Vector3 Minus(Vector3 vectA, Vector3 vectB);
-void ImageFromArray(int height, int width, vector<vector<ColorStruct>> pixelsArray);
+void ImageFromArray(int height, int width, vector<vector<Color>> pixelsArray);
