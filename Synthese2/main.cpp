@@ -6,23 +6,31 @@
 //  Copyright © 2018 Marsgames. All rights reserved.
 //
 
+#include "Library/Bitmap/bitmap_image.hpp"
+#include "Camera.hpp"
+#include "Light.hpp"
 #include "main.hpp"
 #include <math.h>
-#include "Library/Bitmap/bitmap_image.hpp"
+#include "Rayon.hpp"
 #include "Vector3.hpp"
+
+Light lumiere = Light{Vector3{0, 0, 0}, 1250};
+//Light lumiere = Light{Vector3{10, 250, 250}, 1250};
+//    Light lumiere = Light{Vector3{0, 500, 500}, 1250};
 
 int main()
 {
+    const Camera ecran = Camera(Vector3{0, 0, 0}, 1000, 1000);
     
     // Ajouter un écran (tableau 2D de pixels) (origine 0, 0->10, 0->-10)
     // ajouter une sphère (origine 0, rayon 10)
     
     // pour chaque pixels de l'ecran on fait partir un rayon
     // on récupère l'intersection et on crée une image à partir du résultat
-    const int tailleMap = 1000;
-    V3Tab ecran(tailleMap, vector<Vector3>(tailleMap));
-    vector<Sphere> spheres;
-    const Vector3 lumiere = Vector3{0, 0, 0};
+    
+    Scene spheres;
+    
+
     const float facteurLumiere = 0.5;
     
     // Pour le miroir, si je tombe sur un miroir je traverse et pars dans le sens opposé
@@ -34,28 +42,31 @@ int main()
     InitSpheres(spheres);
     
     // Initialisation de l'écran
-    for (float y = 0; y < tailleMap; y++)
+//    for (float y = 0; y < ecran.height; y++)
+//    {
+//        for (float z = 0; z < ecran.width; z++)
+//        {
+////            ecran[y][z] = Vector3{.x = 0 , .y = y, .z = z};
+//            ecran[y][z] = Vector3{.x = 0 , .y = y , .z = z};
+//        }
+//    }
+    
+//    vector<vector<Color>> image(tailleMap, vector<Color>(tailleMap, Color{255, 20, 147}));
+    Image image(ecran.height, vector<Color>(ecran.width, Color{0, 0, 0}));
+
+    
+    for (int y = 0; y < ecran.height; y++)
     {
-        for (float z = 0; z < tailleMap; z++)
+        for (int z = 0; z < ecran.width; z++)
         {
-            ecran[y][z] = Vector3{.x = 0 , .y = y, .z = z};
-        }
-    }
-    
-    vector<vector<Color>> image(tailleMap, vector<Color>(tailleMap, Color{255, 20, 147}));
-    
-    
-    for (int y = 0; y < tailleMap; y++)
-    {
-        for (int z = 0; z < tailleMap; z++)
-        {
-            int dist = INT_MAX;
-            int coordX = 0;
+            double dist = INT_MAX;
+//            int coordX = 0;
             Sphere sphere;
-            for(const Sphere &sphereEnTest : spheres)
+            Intersection result;
+            for(const Sphere& sphereEnTest : spheres)
             {
-                Intersection result;
-                Intersect(ecran[y][z], Vector3{.x =  1,.y = 0,.z = 0}, sphereEnTest, result);
+                
+                Intersect(Rayon(ecran.position + Vector3(static_cast<int>(ecran.position.x), y, z), Vector3(1, 0, 0)), sphereEnTest, result);
                 if(!result.intersect || result.distance >= dist)
                 {
                     continue;
@@ -63,20 +74,23 @@ int main()
                 
                 dist = result.distance;
                 sphere = sphereEnTest;
-                coordX = static_cast<int>(ecran[y][z].x + result.distance);
+//                coordX = static_cast<int>(ecran[y][z].x + result.distance);
             }
             if (INT_MAX != dist)
             {
                 
-                const Vector3 pointOnSphere = Vector3{static_cast<double>(coordX), static_cast<double>(y), static_cast<double>(z)};
+//                const Vector3 pointOnSphere = Vector3{static_cast<double>(coordX), static_cast<double>(y), static_cast<double>(z)};
                 
                 image[y][z] = sphere.couleur;
-                if (!CanSeeLight(pointOnSphere, lumiere, spheres))
+                
+                if (!CanSeeLight(result.point, lumiere, spheres))
                 {
                     image[y][z].r = image[y][z].r * facteurLumiere;
                     image[y][z].g = image[y][z].g * facteurLumiere;
                     image[y][z].b = image[y][z].b * facteurLumiere;
-                    
+                }else
+                {
+                    SetLightning(result.point, lumiere, image);
                 }
                 
             }
@@ -84,20 +98,18 @@ int main()
         }
     }
     
-    ImageFromArray(tailleMap, tailleMap, image);
+    ImageFromArray(ecran.height, ecran.width, image);
     
     return 0;
 }
 
-void Intersect(const Vector3& point, const Vector3& direction, const Sphere& sphere, Intersection& myRes)
+void Intersect(const Rayon& rayon, const Sphere& sphere, Intersection& myRes)
 {
-    Vector3 dirNorm = Normalize(direction);
-
-    const double B = 2 * (Dot(point, direction) - Dot(sphere.origine, direction));
-    const double C = Dist2(sphere.origine - point) - (sphere.rayon * sphere.rayon);
+    const double B = 2 * (Dot(rayon.origine, rayon.direction) - Dot(sphere.origine, rayon.direction));
+    const double C = Dist2(sphere.origine - rayon.origine) - (sphere.rayon * sphere.rayon);
     const double delta = (B * B) - 4 * C;
     
-    myRes.intersect = true;
+    myRes.intersect = false;
     myRes.distance = 0;
     
     if (delta < 0)
@@ -112,20 +124,15 @@ void Intersect(const Vector3& point, const Vector3& direction, const Sphere& sph
     
     if (inter1 > 0)
     {
+        myRes.intersect = true;
         myRes.distance = inter1;
     }else if (inter2 > 0)
     {
-            myRes.distance = inter2;
+        myRes.intersect = true;
+        myRes.distance = inter2;
     }
     
-    //Intersection must be positive to be in the right direction
-    if (myRes.distance <= 0)
-    {
-        myRes.intersect = false;
-        return;
-    }
-
-    myRes.point = point + dirNorm * myRes.distance;
+    myRes.point = rayon.origine + rayon.direction * myRes.distance;
 }
 
 
@@ -135,9 +142,20 @@ void ImageFromArray(const int& width, const int& height, const vector<vector<Col
     
     for(int y = 0; y < height; y++)
     {
-        for(int x = 0; x < width; x++)
+        for(int x = 0; x < width ; x++)
         {
-            img.set_pixel(x, y, pixelsArray[x][y].r, pixelsArray[x][y].g, pixelsArray[x][y].b);
+            double r = pixelsArray[x][y].r > 255 ? 255 : pixelsArray[x][y].r;
+            double g = pixelsArray[x][y].g > 255 ? 255 : pixelsArray[x][y].g;
+            double b = pixelsArray[x][y].b > 255 ? 255 : pixelsArray[x][y].b;
+            
+            if(r < 0 || g < 0 || b < 0)
+            {
+                cout << "color < 0 : (" << r << ", " << g << ", " << b << ")" << endl;
+                exit(2);
+                // EXIT CODE: 2 --> Un pixel avait une couleur < 0
+            }
+            
+            img.set_pixel(x, y, r, g, b);
         }
     }
     
@@ -151,26 +169,27 @@ void InitSpheres(vector<Sphere>& spheres)
     ///////// TEST SPHÈRES ////////
     // Sphere(position, rayon, couleur, nom)
     // Sphere(Vector3(), int, colorStruct, string)
-        spheres.push_back(Sphere{.origine = Vector3{.x = 150, .y = 500, .z = 500}, .rayon = 75, .couleur =  Color{.r = 255, .g = 0, .b = 0}, .nom = "sp1"}); // Rouge
-        spheres.push_back(Sphere{.origine = Vector3{.x = 100, .y = 100, .z = 850}, .rayon = 50, .couleur =  Color{.r = 0, .g = 255, .b = 0}, .nom = "sp2"}); // Verte
-        spheres.push_back(Sphere{.origine = Vector3{.x = 850, .y = 800, .z =  100}, .rayon = 50, .couleur =  Color{.r = 0, .g = 0, .b = 255}, .nom = "sp3"}); // Bleu
-        spheres.push_back(Sphere{.origine = Vector3{.x = 250, .y = 150, .z = 800}, .rayon = 150, .couleur =  Color{.r = 44, .g = 117, .b = 255}, .nom = "sp4"}); // Bleu éléctrique
-        spheres.push_back(Sphere{.origine = Vector3{.x = 400, .y = 600, .z = 600}, .rayon = 100, .couleur =  Color{.r = 0, .g = 255, .b = 255}, .nom = "sp5"}); // Bleu ciel
-        spheres.push_back(Sphere{.origine = Vector3{.x = 950, .y = 500, .z = 500}, .rayon = 200, .couleur =  Color{.r = 255, .g = 255, .b = 0}, .nom = "sp6"}); // Jaune
+    spheres.push_back(Sphere{.origine = Vector3(150, 500, 500), .rayon = 75, .couleur =  Color{.r = 255, .g = 0, .b = 0}, .nom = "sp1"}); // Rouge
+    spheres.push_back(Sphere{.origine = Vector3(100, 100, 850), .rayon = 50, .couleur =  Color{.r = 0, .g = 255, .b = 0}, .nom = "sp2"}); // Verte
+    spheres.push_back(Sphere{.origine = Vector3(850, 800, 100), .rayon = 50, .couleur =  Color{.r = 0, .g = 0, .b = 255}, .nom = "sp3"}); // Bleu
+    spheres.push_back(Sphere{.origine = Vector3(250, 150, 800), .rayon = 150, .couleur =  Color{.r = 44, .g = 117, .b = 255}, .nom = "sp4"}); // Bleu éléctrique
+    spheres.push_back(Sphere{.origine = Vector3(400, 600, 600), .rayon = 100, .couleur =  Color{.r = 0, .g = 255, .b = 255}, .nom = "sp5"}); // Bleu ciel
+    spheres.push_back(Sphere{.origine = Vector3(950, 500, 500), .rayon = 200, .couleur =  Color{.r = 255, .g = 255, .b = 0}, .nom = "sp6"}); // Jaune
     
-//    spheres.push_back(Sphere{.origine = Vector3{.x = 500, .y = 500, .z = 500}, .rayon = 100, .couleur =  Color{.r = 255, .g = 255, .b = 0}, .nom = "Sphère test"}); // Jaune
+    spheres.push_back(Sphere{.origine = Vector3(lumiere.position.x, lumiere.position.y, lumiere.position.z), .rayon = 5, .couleur =  Color{.r = 255, .g = 255, .b = 255}, .nom = "lampe"}); // blanc
+    
+    //    spheres.push_back(Sphere{.origine = Vector3{.x = 500, .y = 500, .z = 500}, .rayon = 100, .couleur =  Color{.r = 255, .g = 255, .b = 0}, .nom = "Sphère test"}); // Jaune
 }
 
-bool CanSeeLight(const Vector3& point, const Vector3& lightPos, const vector<Sphere>& scene)
+bool CanSeeLight(const Vector3& point, const Light& light, const vector<Sphere>& scene)
 {
-    const Vector3 dirLampe = Normalize(lightPos - point);
-    const Vector3 pointToTest = point + (dirLampe * .01);
-    
+    const Vector3 dirLampe = Normalize(light.position - point);
+//    const Vector3 pointToTest = point + (dirLampe * .01);
     
     for (const Sphere& sphere : scene)
     {
         Intersection result;
-        Intersect(pointToTest, dirLampe, sphere, result);
+        Intersect(Rayon((point + (dirLampe * .01)), dirLampe), sphere, result);
         
         if (result.intersect)
         {
@@ -178,7 +197,22 @@ bool CanSeeLight(const Vector3& point, const Vector3& lightPos, const vector<Sph
         }
     }
     
+    // Si l'objet est devant la lumière return false.
+    // Si l'objet est derrière la lumière return true.
     return false;
+}
+
+void SetLightning(const Vector3& point, const Light& light,  vector<vector<Color>>& image)
+{
+    const double puissance = light.puissance * (1 / (abs((light.position.x - point.x) + (light.position.y - point.y) + (light.position.z - point.z))));
+    
+//    double r = image[point.y][point.z].r * puissance;
+//    double g = image[point.y][point.z].g * puissance;
+//    double b = image[point.y][point.z].b * puissance;
+    
+    image[point.y][point.z].r = image[point.y][point.z].r * puissance;
+    image[point.y][point.z].g = image[point.y][point.z].g * puissance;
+    image[point.y][point.z].b = image[point.y][point.z].b * puissance;
 }
 
 

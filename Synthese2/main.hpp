@@ -9,6 +9,7 @@
 #pragma once
 
 #include <iostream>
+#include "Rayon.hpp"
 #include "Vector3.hpp"
 
 
@@ -21,14 +22,10 @@ struct Intersection{
     double distance;
     string nameInterObj;
     Vector3 point;
-//    Intersection(bool intersectt, float interr){
-//        intersect = intersectt;
-//        inter = interr;
-//    }
 };
 
 struct Color {
-    float r, g, b;
+    double r, g, b;
 };
 
 struct Sphere{
@@ -38,10 +35,12 @@ struct Sphere{
     string nom;
 };
 
-typedef vector<vector<Vector3>> V3Tab;
+//typedef vector<vector<Vector3>> V3Tab;
+typedef vector<Sphere> Scene;
+typedef vector<vector<Color>> Image;
 
-//void Intersect(const Vector3& point, const Vector3& direction, const Vector3& origineCercle, const float& rayon, Intersection& myRes);
-void Intersect(const Vector3& point, const Vector3& direction, const Sphere& sphere, Intersection& myRes);
+void Intersect(const Rayon& rayon, const Sphere& sphere, Intersection& myRes);
 void ImageFromArray(const int& height, const int& width, const vector<vector<Color>>& pixelsArray);
 void InitSpheres(vector<Sphere>& spheres);
-bool CanSeeLight(const Vector3& point, const Vector3& lightPos, const vector<Sphere>& scene);
+bool CanSeeLight(const Vector3& point, const Light& lightPos, const vector<Sphere>& scene);
+void SetLightning(const Vector3& point, const Light& light,  vector<vector<Color>>& image);

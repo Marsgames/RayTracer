@@ -27,6 +27,9 @@
 		AE376F5B2158B2C700044A00 /* Synthese2 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Synthese2; sourceTree = BUILT_PRODUCTS_DIR; };
 		AE376F5E2158B2C700044A00 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		AE376F662158B2EE00044A00 /* glm */ = {isa = PBXFileReference; lastKnownFileType = folder; path = glm; sourceTree = "<group>"; };
+		AE82F5CD216B662700E00378 /* Light.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Light.hpp; sourceTree = "<group>"; };
+		AE82F5CE216BA2B000E00378 /* Camera.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Camera.hpp; sourceTree = "<group>"; };
+		AE82F5CF216BA78A00E00378 /* Rayon.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Rayon.hpp; sourceTree = "<group>"; };
 		AEA8E6352158FF1100E89BCC /* main.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = main.hpp; sourceTree = "<group>"; };
 		AEA8E63621590E1900E89BCC /* bitmap_image.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = bitmap_image.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -65,6 +68,9 @@
 				AE376F5E2158B2C700044A00 /* main.cpp */,
 				AEA8E6352158FF1100E89BCC /* main.hpp */,
 				AE01D3A3216257E20092FCB5 /* Vector3.hpp */,
+				AE82F5CD216B662700E00378 /* Light.hpp */,
+				AE82F5CE216BA2B000E00378 /* Camera.hpp */,
+				AE82F5CF216BA78A00E00378 /* Rayon.hpp */,
 			);
 			path = Synthese2;
 			sourceTree = "<group>";
