@@ -13,13 +13,35 @@
 #include <math.h>
 #include "Rayon.hpp"
 #include "Vector3.hpp"
+#include <gtest/gtest.h>
+#include "gtests/UnitsTests.hpp"
+
+//TEST(IntersectFunc, IntersectWork)
+//{
+//    Intersection result;
+//    const Rayon rayon = Rayon(Vector3{0, 0, 0}, Vector3{1, 0, 0});
+//    const Sphere sphere = Sphere{Vector3{20, 0, 0}, 10};
+//    Intersect(rayon, sphere, result);
+//    
+//    EXPECT_EQ(true, result.intersect);
+//    EXPECT_EQ(10, result.distance);
+//    EXPECT_EQ(10, result.point.x);
+//    EXPECT_EQ(0, result.point.y);
+//    EXPECT_EQ(0, result.point.z);
+//}
+
 
 Light lumiere = Light{Vector3{0, 0, 0}, 1250};
 //Light lumiere = Light{Vector3{10, 250, 250}, 1250};
 //    Light lumiere = Light{Vector3{0, 500, 500}, 1250};
 
-int main()
+int main(int argc, char* argv[])
 {
+    testing::InitGoogleTest(&argc, argv);
+    RunTests();
+//    return RUN_ALL_TESTS();
+    
+    
     const Camera ecran = Camera(Vector3{0, 0, 0}, 1000, 1000);
     
     // Ajouter un écran (tableau 2D de pixels) (origine 0, 0->10, 0->-10)
@@ -213,6 +235,11 @@ void SetLightning(const Vector3& point, const Light& light,  vector<vector<Color
     image[point.y][point.z].r = image[point.y][point.z].r * puissance;
     image[point.y][point.z].g = image[point.y][point.z].g * puissance;
     image[point.y][point.z].b = image[point.y][point.z].b * puissance;
+}
+
+int RunTests()
+{
+    return RUN_ALL_TESTS();
 }
 
 

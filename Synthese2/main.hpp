@@ -11,6 +11,7 @@
 #include <iostream>
 #include "Rayon.hpp"
 #include "Vector3.hpp"
+#include "Light.hpp"
 
 
 using namespace std;
@@ -44,3 +45,5 @@ void ImageFromArray(const int& height, const int& width, const vector<vector<Col
 void InitSpheres(vector<Sphere>& spheres);
 bool CanSeeLight(const Vector3& point, const Light& lightPos, const vector<Sphere>& scene);
 void SetLightning(const Vector3& point, const Light& light,  vector<vector<Color>>& image);
+int RunTests();
+

@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		AE376F5F2158B2C700044A00 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AE376F5E2158B2C700044A00 /* main.cpp */; };
+		AE58E43F216FED1900189557 /* libgtest_main.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE58E43D216FED1900189557 /* libgtest_main.a */; };
+		AE58E440216FED1900189557 /* libgtest.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE58E43E216FED1900189557 /* libgtest.a */; };
+		AE58E44C216FEE8E00189557 /* synthese2UT.m in Sources */ = {isa = PBXBuildFile; fileRef = AE58E44B216FEE8E00189557 /* synthese2UT.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -27,6 +30,12 @@
 		AE376F5B2158B2C700044A00 /* Synthese2 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Synthese2; sourceTree = BUILT_PRODUCTS_DIR; };
 		AE376F5E2158B2C700044A00 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		AE376F662158B2EE00044A00 /* glm */ = {isa = PBXFileReference; lastKnownFileType = folder; path = glm; sourceTree = "<group>"; };
+		AE58E43D216FED1900189557 /* libgtest_main.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libgtest_main.a; path = googletest/build/lib/libgtest_main.a; sourceTree = "<group>"; };
+		AE58E43E216FED1900189557 /* libgtest.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libgtest.a; path = googletest/build/lib/libgtest.a; sourceTree = "<group>"; };
+		AE58E443216FED9400189557 /* UnitsTests.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = UnitsTests.hpp; sourceTree = "<group>"; };
+		AE58E449216FEE8E00189557 /* synthese2UT.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = synthese2UT.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		AE58E44B216FEE8E00189557 /* synthese2UT.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = synthese2UT.m; sourceTree = "<group>"; };
+		AE58E44D216FEE8E00189557 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		AE82F5CD216B662700E00378 /* Light.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Light.hpp; sourceTree = "<group>"; };
 		AE82F5CE216BA2B000E00378 /* Camera.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Camera.hpp; sourceTree = "<group>"; };
 		AE82F5CF216BA78A00E00378 /* Rayon.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Rayon.hpp; sourceTree = "<group>"; };
@@ -36,6 +45,15 @@
 
 /* Begin PBXFrameworksBuildPhase section */
 		AE376F582158B2C700044A00 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AE58E43F216FED1900189557 /* libgtest_main.a in Frameworks */,
+				AE58E440216FED1900189557 /* libgtest.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		AE58E446216FEE8E00189557 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -49,7 +67,9 @@
 			isa = PBXGroup;
 			children = (
 				AE376F5D2158B2C700044A00 /* Synthese2 */,
+				AE58E44A216FEE8E00189557 /* synthese2UT */,
 				AE376F5C2158B2C700044A00 /* Products */,
+				AE58E43C216FED1800189557 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -57,6 +77,7 @@
 			isa = PBXGroup;
 			children = (
 				AE376F5B2158B2C700044A00 /* Synthese2 */,
+				AE58E449216FEE8E00189557 /* synthese2UT.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -64,6 +85,7 @@
 		AE376F5D2158B2C700044A00 /* Synthese2 */ = {
 			isa = PBXGroup;
 			children = (
+				AE58E441216FED4E00189557 /* gtests */,
 				AE376F652158B2D100044A00 /* Library */,
 				AE376F5E2158B2C700044A00 /* main.cpp */,
 				AEA8E6352158FF1100E89BCC /* main.hpp */,
@@ -82,6 +104,32 @@
 				AE376F662158B2EE00044A00 /* glm */,
 			);
 			path = Library;
+			sourceTree = "<group>";
+		};
+		AE58E43C216FED1800189557 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				AE58E43D216FED1900189557 /* libgtest_main.a */,
+				AE58E43E216FED1900189557 /* libgtest.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		AE58E441216FED4E00189557 /* gtests */ = {
+			isa = PBXGroup;
+			children = (
+				AE58E443216FED9400189557 /* UnitsTests.hpp */,
+			);
+			path = gtests;
+			sourceTree = "<group>";
+		};
+		AE58E44A216FEE8E00189557 /* synthese2UT */ = {
+			isa = PBXGroup;
+			children = (
+				AE58E44B216FEE8E00189557 /* synthese2UT.m */,
+				AE58E44D216FEE8E00189557 /* Info.plist */,
+			);
+			path = synthese2UT;
 			sourceTree = "<group>";
 		};
 		AEA8E63921590E2200E89BCC /* Bitmap */ = {
@@ -112,6 +160,23 @@
 			productReference = AE376F5B2158B2C700044A00 /* Synthese2 */;
 			productType = "com.apple.product-type.tool";
 		};
+		AE58E448216FEE8E00189557 /* synthese2UT */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = AE58E44E216FEE8E00189557 /* Build configuration list for PBXNativeTarget "synthese2UT" */;
+			buildPhases = (
+				AE58E445216FEE8E00189557 /* Sources */,
+				AE58E446216FEE8E00189557 /* Frameworks */,
+				AE58E447216FEE8E00189557 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = synthese2UT;
+			productName = synthese2UT;
+			productReference = AE58E449216FEE8E00189557 /* synthese2UT.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -122,6 +187,9 @@
 				ORGANIZATIONNAME = Marsgames;
 				TargetAttributes = {
 					AE376F5A2158B2C700044A00 = {
+						CreatedOnToolsVersion = 10.0;
+					};
+					AE58E448216FEE8E00189557 = {
 						CreatedOnToolsVersion = 10.0;
 					};
 				};
@@ -139,9 +207,20 @@
 			projectRoot = "";
 			targets = (
 				AE376F5A2158B2C700044A00 /* Synthese2 */,
+				AE58E448216FEE8E00189557 /* synthese2UT */,
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		AE58E447216FEE8E00189557 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		AE376F572158B2C700044A00 /* Sources */ = {
@@ -149,6 +228,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				AE376F5F2158B2C700044A00 /* main.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		AE58E445216FEE8E00189557 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AE58E44C216FEE8E00189557 /* synthese2UT.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -271,6 +358,11 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 7RA755DD97;
+				HEADER_SEARCH_PATHS = /Users/Raph/Documents/Gamagora/Synthese/Synthese2/googletest/googletest/include;
+				LIBRARY_SEARCH_PATHS = (
+					/Users/Raph/Documents/Gamagora/Synthese/Synthese2/googletest/build/lib,
+					"$(PROJECT_DIR)/googletest/build/lib",
+				);
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -281,7 +373,46 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 7RA755DD97;
+				HEADER_SEARCH_PATHS = /Users/Raph/Documents/Gamagora/Synthese/Synthese2/googletest/googletest/include;
+				LIBRARY_SEARCH_PATHS = (
+					/Users/Raph/Documents/Gamagora/Synthese/Synthese2/googletest/build/lib,
+					"$(PROJECT_DIR)/googletest/build/lib",
+				);
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		AE58E44F216FEE8E00189557 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = 7RA755DD97;
+				INFOPLIST_FILE = synthese2UT/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = Marsgames.synthese2UT;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		AE58E450216FEE8E00189557 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = 7RA755DD97;
+				INFOPLIST_FILE = synthese2UT/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = Marsgames.synthese2UT;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
@@ -303,6 +434,15 @@
 			buildConfigurations = (
 				AE376F632158B2C700044A00 /* Debug */,
 				AE376F642158B2C700044A00 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		AE58E44E216FEE8E00189557 /* Build configuration list for PBXNativeTarget "synthese2UT" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AE58E44F216FEE8E00189557 /* Debug */,
+				AE58E450216FEE8E00189557 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
