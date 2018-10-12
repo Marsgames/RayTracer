@@ -10,7 +10,6 @@
 		AE376F5F2158B2C700044A00 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AE376F5E2158B2C700044A00 /* main.cpp */; };
 		AE58E43F216FED1900189557 /* libgtest_main.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE58E43D216FED1900189557 /* libgtest_main.a */; };
 		AE58E440216FED1900189557 /* libgtest.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE58E43E216FED1900189557 /* libgtest.a */; };
-		AE58E44C216FEE8E00189557 /* synthese2UT.m in Sources */ = {isa = PBXBuildFile; fileRef = AE58E44B216FEE8E00189557 /* synthese2UT.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -34,8 +33,6 @@
 		AE58E43E216FED1900189557 /* libgtest.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libgtest.a; path = googletest/build/lib/libgtest.a; sourceTree = "<group>"; };
 		AE58E443216FED9400189557 /* UnitsTests.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = UnitsTests.hpp; sourceTree = "<group>"; };
 		AE58E449216FEE8E00189557 /* synthese2UT.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = synthese2UT.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		AE58E44B216FEE8E00189557 /* synthese2UT.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = synthese2UT.m; sourceTree = "<group>"; };
-		AE58E44D216FEE8E00189557 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		AE82F5CD216B662700E00378 /* Light.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Light.hpp; sourceTree = "<group>"; };
 		AE82F5CE216BA2B000E00378 /* Camera.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Camera.hpp; sourceTree = "<group>"; };
 		AE82F5CF216BA78A00E00378 /* Rayon.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Rayon.hpp; sourceTree = "<group>"; };
@@ -67,7 +64,6 @@
 			isa = PBXGroup;
 			children = (
 				AE376F5D2158B2C700044A00 /* Synthese2 */,
-				AE58E44A216FEE8E00189557 /* synthese2UT */,
 				AE376F5C2158B2C700044A00 /* Products */,
 				AE58E43C216FED1800189557 /* Frameworks */,
 			);
@@ -121,15 +117,6 @@
 				AE58E443216FED9400189557 /* UnitsTests.hpp */,
 			);
 			path = gtests;
-			sourceTree = "<group>";
-		};
-		AE58E44A216FEE8E00189557 /* synthese2UT */ = {
-			isa = PBXGroup;
-			children = (
-				AE58E44B216FEE8E00189557 /* synthese2UT.m */,
-				AE58E44D216FEE8E00189557 /* Info.plist */,
-			);
-			path = synthese2UT;
 			sourceTree = "<group>";
 		};
 		AEA8E63921590E2200E89BCC /* Bitmap */ = {
@@ -235,7 +222,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AE58E44C216FEE8E00189557 /* synthese2UT.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -363,7 +349,7 @@
 					/Users/Raph/Documents/Gamagora/Synthese/Synthese2/googletest/build/lib,
 					"$(PROJECT_DIR)/googletest/build/lib",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.13;
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -378,7 +364,7 @@
 					/Users/Raph/Documents/Gamagora/Synthese/Synthese2/googletest/build/lib,
 					"$(PROJECT_DIR)/googletest/build/lib",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.13;
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;

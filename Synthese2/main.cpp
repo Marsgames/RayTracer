@@ -82,7 +82,6 @@ int main(int argc, char* argv[])
         for (int z = 0; z < ecran.width; z++)
         {
             double dist = INT_MAX;
-//            int coordX = 0;
             Sphere sphere;
             Intersection result;
             for(const Sphere& sphereEnTest : spheres)
@@ -96,23 +95,20 @@ int main(int argc, char* argv[])
                 
                 dist = result.distance;
                 sphere = sphereEnTest;
-//                coordX = static_cast<int>(ecran[y][z].x + result.distance);
             }
             if (INT_MAX != dist)
             {
                 
-//                const Vector3 pointOnSphere = Vector3{static_cast<double>(coordX), static_cast<double>(y), static_cast<double>(z)};
-                
                 image[y][z] = sphere.couleur;
                 
-                if (!CanSeeLight(result.point, lumiere, spheres))
+                if (CanSeeLight(result.point, lumiere, spheres))
+                {
+                    SetLightning(result.point, lumiere, image);
+                }else
                 {
                     image[y][z].r = image[y][z].r * facteurLumiere;
                     image[y][z].g = image[y][z].g * facteurLumiere;
                     image[y][z].b = image[y][z].b * facteurLumiere;
-                }else
-                {
-                    SetLightning(result.point, lumiere, image);
                 }
                 
             }
@@ -203,13 +199,16 @@ void InitSpheres(vector<Sphere>& spheres)
     //    spheres.push_back(Sphere{.origine = Vector3{.x = 500, .y = 500, .z = 500}, .rayon = 100, .couleur =  Color{.r = 255, .g = 255, .b = 0}, .nom = "Sphère test"}); // Jaune
 }
 
-bool CanSeeLight(const Vector3& point, const Light& light, const vector<Sphere>& scene)
+bool CanSeeLight(const Vector3& point, const Light& light, const Scene& scene)
 {
     const Vector3 dirLampe = Normalize(light.position - point);
 //    const Vector3 pointToTest = point + (dirLampe * .01);
     
     for (const Sphere& sphere : scene)
     {
+//        cout << "--------------" << endl;
+//        cout << "avant : (" << point.x << ", " << point.y << ", " << point.z << ")" << endl;
+//        cout << "après : (" << (point + (dirLampe * .01)).x << ", " << (point + (dirLampe * .01)).y << ", " << (point + (dirLampe * .01)).z << ")" << endl;
         Intersection result;
         Intersect(Rayon((point + (dirLampe * .01)), dirLampe), sphere, result);
         
