@@ -39,6 +39,7 @@ int main(int argc, char* argv[])
 {
     testing::InitGoogleTest(&argc, argv);
     RunTests();
+//    return 0;
 //    return RUN_ALL_TESTS();
     
     
@@ -178,7 +179,7 @@ void ImageFromArray(const int& width, const int& height, const vector<vector<Col
     }
     
     img.save_image("/Users/Raph/Desktop/imageSynthese.bmp");
-    //    img.save_image("imageSynthese.bmp");
+//        img.save_image("imageSynthese.bmp");
     cout << "image sauvegardée sur le bureau !" << endl;
 }
 
@@ -202,6 +203,7 @@ void InitSpheres(vector<Sphere>& spheres)
 bool CanSeeLight(const Vector3& point, const Light& light, const Scene& scene)
 {
     const Vector3 dirLampe = Normalize(light.position - point);
+     const double distPL = abs((point.x - light.position.x) + (point.y - light.position.y) + (point.z - light.position.z));
 //    const Vector3 pointToTest = point + (dirLampe * .01);
     
     for (const Sphere& sphere : scene)
@@ -214,13 +216,22 @@ bool CanSeeLight(const Vector3& point, const Light& light, const Scene& scene)
         
         if (result.intersect)
         {
-            return true;
+            const double distPI = abs((point.x - result.point.x) + (point.y - result.point.y) + (point.z - result.point.z));
+            
+//                    cout << "lum pos : (" << light.position.x << ", " << light.position.y << ", " << light.position.z << ")" << endl;
+//            cout << "distPL : " << distPL << endl;
+//            cout << "distPI : " << distPI << endl;
+            
+            // Si l'objet est devant la lumière return false.
+            if (distPI < distPL)
+            {
+                return false;
+            }
         }
     }
     
-    // Si l'objet est devant la lumière return false.
     // Si l'objet est derrière la lumière return true.
-    return false;
+    return true;
 }
 
 void SetLightning(const Vector3& point, const Light& light,  vector<vector<Color>>& image)
