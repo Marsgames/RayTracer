@@ -62,13 +62,13 @@ void DebugIntersect(const Intersection res)
 
 //typedef vector<vector<Vector3>> V3Tab;
 typedef vector<Sphere> Scene;
-typedef vector<vector<Color>> Image;
+typedef vector<Color> Image;
 
 void Intersect(const Rayon& rayon, const Sphere& sphere, Intersection& myRes);
-void ImageFromArray(const int& height, const int& width, const vector<vector<Color>>& pixelsArray);
-void InitSpheres(vector<Sphere>& spheres);
-bool CanSeeLight(const Vector3& point, const Light& lightPos, const vector<Sphere>& scene);
-void SetLightning(const Vector3& point, const Light& light,  vector<vector<Color>>& image);
+void ImageFromArray(const int& height, const int& width, const Image& pixelsArray);
+void InitSpheres(Scene& spheres);
+bool CanSeeLight(const Vector3& point, const Light& lightPos, const Scene& scene);
+void SetLightning(const Vector3& point, const Light& light,  Image& image);
 int RunTests();
 double GetDistance(const Vector3& pointA, const Vector3& pointB);
 

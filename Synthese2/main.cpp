@@ -31,11 +31,11 @@
 //}
 
 
-//Light lumiere = Light{Vector3{0, 0, 0}, 1250};
+Light lumiere = Light{Vector3{0, 0, 0}, 1250};
 //Light lumiere = Light{Vector3{0, 250, 250}, 1250};
 
 // Lampe pour la scène avec les murs
-    Light lumiere = Light{Vector3{-1000, 500, 500}, 1250};
+//    Light lumiere = Light{Vector3{-1000, 500, 500}, 1250};
 
 int main(int argc, char* argv[])
 {
@@ -77,7 +77,7 @@ int main(int argc, char* argv[])
 //    }
     
 //    vector<vector<Color>> image(tailleMap, vector<Color>(tailleMap, Color{255, 20, 147}));
-    Image image(ecran.height, vector<Color>(ecran.width, Color{0, 0, 0}));
+    Image image(ecran.height * ecran.width, Color{0, 0, 0});
 
     
     for (int y = 0; y < ecran.height; y++)
@@ -102,16 +102,16 @@ int main(int argc, char* argv[])
             if (INT_MAX != dist)
             {
                 
-                image[y][z] = sphere.couleur;
+                image[y * ecran.height + z] = sphere.couleur;
                 
                 if (CanSeeLight(result.point, lumiere, spheres))
                 {
                     SetLightning(result.point, lumiere, image);
                 }else
                 {
-                    image[y][z].r = image[y][z].r * facteurLumiere;
-                    image[y][z].g = image[y][z].g * facteurLumiere;
-                    image[y][z].b = image[y][z].b * facteurLumiere;
+                    image[y * ecran.height + z].r = image[y * ecran.height + z].r * facteurLumiere;
+                    image[y * ecran.height + z].g = image[y * ecran.height + z].g * facteurLumiere;
+                    image[y * ecran.height + z].b = image[y * ecran.height + z].b * facteurLumiere;
                 }
                 
             }
@@ -157,7 +157,7 @@ void Intersect(const Rayon& rayon, const Sphere& sphere, Intersection& myRes)
 }
 
 
-void ImageFromArray(const int& width, const int& height, const vector<vector<Color>>& pixelsArray)
+void ImageFromArray(const int& width, const int& height, const Image& pixelsArray)
 {
     bitmap_image img(width, height);
     
@@ -165,9 +165,9 @@ void ImageFromArray(const int& width, const int& height, const vector<vector<Col
     {
         for(int x = 0; x < width ; x++)
         {
-            double r = pixelsArray[x][y].r > 255 ? 255 : pixelsArray[x][y].r;
-            double g = pixelsArray[x][y].g > 255 ? 255 : pixelsArray[x][y].g;
-            double b = pixelsArray[x][y].b > 255 ? 255 : pixelsArray[x][y].b;
+            double r = pixelsArray[x * width + y].r > 255 ? 255 : pixelsArray[x * width + y].r;
+            double g = pixelsArray[x * width + y].g > 255 ? 255 : pixelsArray[x * width + y].g;
+            double b = pixelsArray[x * width + y].b > 255 ? 255 : pixelsArray[x * width + y].b;
             
             if(r < 0 || g < 0 || b < 0)
             {
@@ -185,7 +185,7 @@ void ImageFromArray(const int& width, const int& height, const vector<vector<Col
     cout << "image sauvegardée sur le bureau !" << endl;
 }
 
-void InitSpheres(vector<Sphere>& spheres)
+void InitSpheres(Scene& spheres)
 {
 //    ///////// TEST SPHÈRES ////////
     // Sphere(position, rayon, couleur, nom)
@@ -249,7 +249,7 @@ bool CanSeeLight(const Vector3& point, const Light& light, const Scene& scene)
     return true;
 }
 
-void SetLightning(const Vector3& point, const Light& light,  vector<vector<Color>>& image)
+void SetLightning(const Vector3& point, const Light& light,  Image& image)
 {
     const double puissance = light.puissance * (1 / (abs((light.position.x - point.x) + (light.position.y - point.y) + (light.position.z - point.z))));
     
@@ -257,9 +257,9 @@ void SetLightning(const Vector3& point, const Light& light,  vector<vector<Color
 //    double g = image[point.y][point.z].g * puissance;
 //    double b = image[point.y][point.z].b * puissance;
     
-    image[point.y][point.z].r = image[point.y][point.z].r * puissance;
-    image[point.y][point.z].g = image[point.y][point.z].g * puissance;
-    image[point.y][point.z].b = image[point.y][point.z].b * puissance;
+    image[point.y * 1000 + point.z].r = image[point.y * 1000 + point.z].r * puissance;
+    image[point.y * 1000 + point.z].g = image[point.y * 1000 + point.z].g * puissance;
+    image[point.y * 1000 + point.z].b = image[point.y * 1000 + point.z].b * puissance;
 }
 
 int RunTests()
