@@ -31,9 +31,11 @@
 //}
 
 
-Light lumiere = Light{Vector3{0, 0, 0}, 1250};
-//Light lumiere = Light{Vector3{10, 250, 250}, 1250};
-//    Light lumiere = Light{Vector3{0, 500, 500}, 1250};
+//Light lumiere = Light{Vector3{0, 0, 0}, 1250};
+//Light lumiere = Light{Vector3{0, 250, 250}, 1250};
+
+// Lampe pour la scène avec les murs
+    Light lumiere = Light{Vector3{-1000, 500, 500}, 1250};
 
 int main(int argc, char* argv[])
 {
@@ -87,8 +89,8 @@ int main(int argc, char* argv[])
             Intersection result;
             for(const Sphere& sphereEnTest : spheres)
             {
-                
-                Intersect(Rayon(ecran.position + Vector3(static_cast<int>(ecran.position.x), y, z), Vector3(1, 0, 0)), sphereEnTest, result);
+                const Rayon rayon = Rayon(ecran.position + Vector3(static_cast<int>(ecran.position.x), y, z), Vector3(1, 0, 0));
+                Intersect(rayon, sphereEnTest, result);
                 if(!result.intersect || result.distance >= dist)
                 {
                     continue;
@@ -185,7 +187,7 @@ void ImageFromArray(const int& width, const int& height, const vector<vector<Col
 
 void InitSpheres(vector<Sphere>& spheres)
 {
-    ///////// TEST SPHÈRES ////////
+//    ///////// TEST SPHÈRES ////////
     // Sphere(position, rayon, couleur, nom)
     // Sphere(Vector3(), int, colorStruct, string)
     spheres.push_back(Sphere{.origine = Vector3(150, 500, 500), .rayon = 75, .couleur =  Color{.r = 255, .g = 0, .b = 0}, .nom = "sp1"}); // Rouge
@@ -194,29 +196,42 @@ void InitSpheres(vector<Sphere>& spheres)
     spheres.push_back(Sphere{.origine = Vector3(250, 150, 800), .rayon = 150, .couleur =  Color{.r = 44, .g = 117, .b = 255}, .nom = "sp4"}); // Bleu éléctrique
     spheres.push_back(Sphere{.origine = Vector3(400, 600, 600), .rayon = 100, .couleur =  Color{.r = 0, .g = 255, .b = 255}, .nom = "sp5"}); // Bleu ciel
     spheres.push_back(Sphere{.origine = Vector3(950, 500, 500), .rayon = 200, .couleur =  Color{.r = 255, .g = 255, .b = 0}, .nom = "sp6"}); // Jaune
+
+    spheres.push_back(Sphere{.origine = Vector3(lumiere.position.x, lumiere.position.y, lumiere.position.z), .rayon = 5, .couleur =  Color{.r = 255, .g = 255, .b = 255}, .nom = "lampe", .debugSphere = true}); // blanc
     
-    spheres.push_back(Sphere{.origine = Vector3(lumiere.position.x, lumiere.position.y, lumiere.position.z), .rayon = 5, .couleur =  Color{.r = 255, .g = 255, .b = 255}, .nom = "lampe"}); // blanc
     
-    //    spheres.push_back(Sphere{.origine = Vector3{.x = 500, .y = 500, .z = 500}, .rayon = 100, .couleur =  Color{.r = 255, .g = 255, .b = 0}, .nom = "Sphère test"}); // Jaune
+    
+//    spheres.push_back(Sphere{.origine = Vector3(lumiere.position.x, lumiere.position.y, lumiere.position.z), .rayon = 5, .couleur =  Color{.r = 255, .g = 255, .b = 255}, .nom = "lampe"}); // blanc
+//    spheres.push_back(Sphere{Vector3{0, -9900, 500}, 10000, Color{255, 0, 0}, "Rouge"});
+//    spheres.push_back(Sphere{Vector3{0, 10900, 500}, 10000, Color{0, 255, 0}, "Vert"});
+//    spheres.push_back(Sphere{Vector3{0, 500, -9900}, 10000, Color{0, 0, 255}, "Bleu"});
+//        spheres.push_back(Sphere{Vector3{0, 500, 10900}, 10000, Color{44, 117, 255}, "Bleu éléctrique"});
+//    spheres.push_back(Sphere{Vector3{10900, 500, 500}, 10000, Color{125, 125, 125}, "Blanc"});
+
+
 }
 
 bool CanSeeLight(const Vector3& point, const Light& light, const Scene& scene)
 {
     const Vector3 dirLampe = Normalize(light.position - point);
-     const double distPL = abs((point.x - light.position.x) + (point.y - light.position.y) + (point.z - light.position.z));
-//    const Vector3 pointToTest = point + (dirLampe * .01);
+    const double distPL = GetDistance(point, light.position);
     
     for (const Sphere& sphere : scene)
     {
+        if (sphere.debugSphere)
+        {
+            continue;
+        }
 //        cout << "--------------" << endl;
 //        cout << "avant : (" << point.x << ", " << point.y << ", " << point.z << ")" << endl;
 //        cout << "après : (" << (point + (dirLampe * .01)).x << ", " << (point + (dirLampe * .01)).y << ", " << (point + (dirLampe * .01)).z << ")" << endl;
         Intersection result;
-        Intersect(Rayon((point + (dirLampe * .01)), dirLampe), sphere, result);
+        const Rayon rayon = Rayon((point + (dirLampe * .01)), dirLampe);
+        Intersect(rayon, sphere, result);
         
         if (result.intersect)
         {
-            const double distPI = abs((point.x - result.point.x) + (point.y - result.point.y) + (point.z - result.point.z));
+            const double distPI = GetDistance(point, result.point);
             
 //                    cout << "lum pos : (" << light.position.x << ", " << light.position.y << ", " << light.position.z << ")" << endl;
 //            cout << "distPL : " << distPL << endl;
@@ -250,6 +265,11 @@ void SetLightning(const Vector3& point, const Light& light,  vector<vector<Color
 int RunTests()
 {
     return RUN_ALL_TESTS();
+}
+
+double GetDistance(const Vector3& pointA, const Vector3& pointB)
+{
+    return sqrt(((pointA.x - pointB.x) * (pointA.x - pointB.x)) + ((pointA.y - pointB.y) * (pointA.y - pointB.y)) + ((pointA.z - pointB.z) * (pointA.z - pointB.z)));
 }
 
 
