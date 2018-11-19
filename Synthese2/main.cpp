@@ -15,6 +15,9 @@
 #include "Vector3.hpp"
 #include <gtest/gtest.h>
 #include "gtests/UnitsTests.hpp"
+#include "Sphere.hpp"
+#include "Color.hpp"
+#include "Box.hpp"
 
 //TEST(IntersectFunc, IntersectWork)
 //{
@@ -54,6 +57,7 @@ int main(int argc, char* argv[])
     // on récupère l'intersection et on crée une image à partir du résultat
     
     Scene spheres;
+    Boxes boxes;
     
 
     const float facteurLumiere = 0.5;
@@ -119,7 +123,29 @@ int main(int argc, char* argv[])
         }
     }
     
-    ImageFromArray(ecran.height, ecran.width, image);
+    
+    CreateSpheresBoxes(boxes, spheres);
+    Image a(ecran.height * ecran.width, Color{0, 0, 0});
+
+    for (int y = 0; y < ecran.height; y++)
+    {
+        for (int z = 0; z < ecran.width; z++)
+        {
+            for (const Box& b : boxes)
+            {
+                const Rayon rayon = Rayon(ecran.position + Vector3(static_cast<int>(ecran.position.x), y, z), Vector3(1, 0, 0));
+                if (IntersectBox(rayon, b))
+                {
+//                    cout << "Intersection avec une box" << endl;
+                    
+                    image[y * ecran.height + z] = Color{255, 255, 255};
+                }
+            }
+        }
+    }
+
+    
+    ImageFromArray(ecran.height, ecran.width, a);
     
     return 0;
 }
@@ -190,14 +216,24 @@ void InitSpheres(Scene& spheres)
 //    ///////// TEST SPHÈRES ////////
     // Sphere(position, rayon, couleur, nom)
     // Sphere(Vector3(), int, colorStruct, string)
-    spheres.push_back(Sphere{.origine = Vector3(150, 500, 500), .rayon = 75, .couleur =  Color{.r = 255, .g = 0, .b = 0}, .nom = "sp1"}); // Rouge
-    spheres.push_back(Sphere{.origine = Vector3(100, 100, 850), .rayon = 50, .couleur =  Color{.r = 0, .g = 255, .b = 0}, .nom = "sp2"}); // Verte
-    spheres.push_back(Sphere{.origine = Vector3(850, 800, 100), .rayon = 50, .couleur =  Color{.r = 0, .g = 0, .b = 255}, .nom = "sp3"}); // Bleu
-    spheres.push_back(Sphere{.origine = Vector3(250, 150, 800), .rayon = 150, .couleur =  Color{.r = 44, .g = 117, .b = 255}, .nom = "sp4"}); // Bleu éléctrique
-    spheres.push_back(Sphere{.origine = Vector3(400, 600, 600), .rayon = 100, .couleur =  Color{.r = 0, .g = 255, .b = 255}, .nom = "sp5"}); // Bleu ciel
-    spheres.push_back(Sphere{.origine = Vector3(950, 500, 500), .rayon = 200, .couleur =  Color{.r = 255, .g = 255, .b = 0}, .nom = "sp6"}); // Jaune
+    spheres.push_back(Sphere(Vector3(150, 500, 500), 75, Color{255, 0, 0}, "sp1")); // Rouge
+    spheres.push_back(Sphere(Vector3(100, 100, 850), 50, Color{0, 255, 0}, "sp2")); // Verte
+    spheres.push_back(Sphere(Vector3(850, 800, 100), 50, Color{0, 0, 255}, "sp3")); // Bleu
+    spheres.push_back(Sphere(Vector3(250, 150, 800), 150, Color{44, 117, 255}, "sp4")); // Bleu éléctrique
+    spheres.push_back(Sphere(Vector3(400, 600, 600), 100, Color{0, 255, 255}, "sp5")); // Bleu ciel
+    spheres.push_back(Sphere(Vector3(950, 500, 500), 200, Color{255, 255, 0}, "sp6")); // Jaune
 
-    spheres.push_back(Sphere{.origine = Vector3(lumiere.position.x, lumiere.position.y, lumiere.position.z), .rayon = 5, .couleur =  Color{.r = 255, .g = 255, .b = 255}, .nom = "lampe", .debugSphere = true}); // blanc
+    spheres.push_back(Sphere(Vector3(lumiere.position.x, lumiere.position.y, lumiere.position.z), 5, Color{255, 255, 255}, "lampe", 0)); // blanc
+    
+    
+//    spheres.push_back(Sphere{.origine = Vector3(150, 500, 500), .rayon = 75, .couleur =  Color{.r = 255, .g = 0, .b = 0}, .nom = "sp1"}); // Rouge
+//    spheres.push_back(Sphere{.origine = Vector3(100, 100, 850), .rayon = 50, .couleur =  Color{.r = 0, .g = 255, .b = 0}, .nom = "sp2"}); // Verte
+//    spheres.push_back(Sphere{.origine = Vector3(850, 800, 100), .rayon = 50, .couleur =  Color{.r = 0, .g = 0, .b = 255}, .nom = "sp3"}); // Bleu
+//    spheres.push_back(Sphere{.origine = Vector3(250, 150, 800), .rayon = 150, .couleur =  Color{.r = 44, .g = 117, .b = 255}, .nom = "sp4"}); // Bleu éléctrique
+//    spheres.push_back(Sphere{.origine = Vector3(400, 600, 600), .rayon = 100, .couleur =  Color{.r = 0, .g = 255, .b = 255}, .nom = "sp5"}); // Bleu ciel
+//    spheres.push_back(Sphere{.origine = Vector3(950, 500, 500), .rayon = 200, .couleur =  Color{.r = 255, .g = 255, .b = 0}, .nom = "sp6"}); // Jaune
+//
+//    spheres.push_back(Sphere{.origine = Vector3(lumiere.position.x, lumiere.position.y, lumiere.position.z), .rayon = 5, .couleur =  Color{.r = 255, .g = 255, .b = 255}, .nom = "lampe", .debugSphere = true}); // blanc
     
     
     
@@ -218,7 +254,7 @@ bool CanSeeLight(const Vector3& point, const Light& light, const Scene& scene)
     
     for (const Sphere& sphere : scene)
     {
-        if (sphere.debugSphere)
+        if (sphere.IsLight())
         {
             continue;
         }
@@ -272,7 +308,62 @@ double GetDistance(const Vector3& pointA, const Vector3& pointB)
     return sqrt(((pointA.x - pointB.x) * (pointA.x - pointB.x)) + ((pointA.y - pointB.y) * (pointA.y - pointB.y)) + ((pointA.z - pointB.z) * (pointA.z - pointB.z)));
 }
 
+void CreateSpheresBoxes(Boxes& boxesScene, const Scene& scene)
+{
+    int i = 1;
+    for (const Sphere& sphere : scene)
+    {
+        Box b = Box(sphere);
+        boxesScene.push_back(b);
+        cout << "Box" << i << " crée. bMin = ";
+        Print(b.pMin);
+        cout << " - bMax = ";
+        Print(b.pMax);
+        cout << endl;
+        
+    }
+}
 
+bool IntersectBox(const Rayon& ray, const Box& box)
+{
+    // Division pour éviter une multiplication plus tard
+    const float rinvx = 1 / ray.direction.x;
+    const float rinvy = 1 / ray.direction.y;
+    const float rinvz = 1 / ray.direction.z;
+    
+    // X slab Max box size
+    const float tx1 = (box.pMin.x - ray.origine.x) * rinvx;
+    const float tx2 = (box.pMax.x - ray.origine.x) * rinvx;
+    
+   const float tminX = tx1 < tx2 ? tx1 : tx2;
+   const float tmaxX = tx1 > tx2 ? tx1 : tx2;
+    
+    // Y slab
+    const float ty1 = (box.pMin.y - ray.origine.y) * rinvy;
+    const float ty2 = (box.pMax.y - ray.origine.y) * rinvy;
+    
+    const float tminY = tminX > (ty1 < ty2 ? ty1 : ty2) ? tminX : (ty1 < ty2 ? ty1 : ty2);
+//   const float tminY = max(tminX, (min(ty1, ty2)));
+   const float tmaxY = min(tmaxX, (max(ty1, ty2)));
+    
+    // Z slab
+   const float tz1 = (box.pMin.z - ray.origine.z) * rinvz;
+   const float tz2 = (box.pMax.z - ray.origine.z) * rinvz;
+    
+   const float tminZ = max(tminY, (min(tz1, tz2)));
+   const float tmaxZ = min(tmaxY, (max(tz1, tz2)));
+    
+    if (tmaxZ >= tminZ)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+
+    
+}
 
 
 // radiance(rayon, scene) -> couleur

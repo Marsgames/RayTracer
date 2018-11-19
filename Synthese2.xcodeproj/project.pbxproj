@@ -29,6 +29,7 @@
 		AE376F5B2158B2C700044A00 /* Synthese2 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Synthese2; sourceTree = BUILT_PRODUCTS_DIR; };
 		AE376F5E2158B2C700044A00 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		AE376F662158B2EE00044A00 /* glm */ = {isa = PBXFileReference; lastKnownFileType = folder; path = glm; sourceTree = "<group>"; };
+		AE38D1EF21A2B11600E89C5D /* Box.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Box.hpp; sourceTree = "<group>"; };
 		AE58E43D216FED1900189557 /* libgtest_main.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libgtest_main.a; path = googletest/build/lib/libgtest_main.a; sourceTree = "<group>"; };
 		AE58E43E216FED1900189557 /* libgtest.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libgtest.a; path = googletest/build/lib/libgtest.a; sourceTree = "<group>"; };
 		AE58E443216FED9400189557 /* UnitsTests.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = UnitsTests.hpp; sourceTree = "<group>"; };
@@ -37,6 +38,8 @@
 		AE82F5CF216BA78A00E00378 /* Rayon.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Rayon.hpp; sourceTree = "<group>"; };
 		AEA8E6352158FF1100E89BCC /* main.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = main.hpp; sourceTree = "<group>"; };
 		AEA8E63621590E1900E89BCC /* bitmap_image.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = bitmap_image.hpp; sourceTree = "<group>"; };
+		AEB11833217DAF8700925ED7 /* Sphere.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Sphere.hpp; sourceTree = "<group>"; };
+		AEB11834217DB03600925ED7 /* Color.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Color.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -80,6 +83,9 @@
 				AE82F5CD216B662700E00378 /* Light.hpp */,
 				AE82F5CE216BA2B000E00378 /* Camera.hpp */,
 				AE82F5CF216BA78A00E00378 /* Rayon.hpp */,
+				AEB11833217DAF8700925ED7 /* Sphere.hpp */,
+				AEB11834217DB03600925ED7 /* Color.hpp */,
+				AE38D1EF21A2B11600E89C5D /* Box.hpp */,
 			);
 			path = Synthese2;
 			sourceTree = "<group>";
@@ -298,10 +304,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 7RA755DD97;
 				HEADER_SEARCH_PATHS = /Users/Raph/Documents/Gamagora/Synthese/Synthese2/googletest/googletest/include;
-				LIBRARY_SEARCH_PATHS = (
-					/Users/Raph/Documents/Gamagora/Synthese/Synthese2/googletest/build/lib,
-					"$(PROJECT_DIR)/googletest/build/lib",
-				);
+				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)/googletest/build/lib";
 				MACOSX_DEPLOYMENT_TARGET = 10.14;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -313,10 +316,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 7RA755DD97;
 				HEADER_SEARCH_PATHS = /Users/Raph/Documents/Gamagora/Synthese/Synthese2/googletest/googletest/include;
-				LIBRARY_SEARCH_PATHS = (
-					/Users/Raph/Documents/Gamagora/Synthese/Synthese2/googletest/build/lib,
-					"$(PROJECT_DIR)/googletest/build/lib",
-				);
+				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)/googletest/build/lib";
 				MACOSX_DEPLOYMENT_TARGET = 10.14;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};

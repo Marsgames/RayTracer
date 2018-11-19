@@ -15,5 +15,4 @@ class Light
 public:
     Vector3 position;
     int puissance;
-    
 };

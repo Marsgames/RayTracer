@@ -11,12 +11,14 @@
 #include <gtest/gtest.h>
 #include "../main.hpp"
 #include "../Rayon.hpp"
+#include "../Sphere.hpp"
+#include "../Box.hpp"
 
 TEST(IntersectFunc, SimpleIntersect)
 {
     Intersection result;
     const Rayon rayon = Rayon(Vector3{0, 0, 0}, Vector3{1, 0, 0});
-    const Sphere sphere = Sphere{Vector3{20, 0, 0}, 10};
+    const Sphere sphere = Sphere(Vector3{20, 0, 0}, 10);
     
     // Intersection avec un rayon partant de devant la sphère
     Intersect(rayon, sphere, result);
@@ -83,6 +85,19 @@ TEST(IntersectFunc, TestsEva)
     Intersect(rayon, sphere, result);
     EXPECT_EQ(result.intersect, true);
     EXPECT_GE(result.distance, 0);
+}
+
+TEST(IntersectFunc, BoxSimple)
+{
+    const Sphere sp = Sphere(Vector3(5, 5, 5), 5);
+    const Box b = Box(sp);
+    const Rayon r = Rayon(Vector3(-5., 2.5, 0.), Vector3(1, 0, 0));
+    const Rayon r1 = Rayon(Vector3(-1, 1, 0), Vector3(1, -1, 0));
+    const Rayon r2 = Rayon(Vector3(-5., 2.5, 0.), Vector3(-1, 0, 0));
+    
+    EXPECT_EQ(IntersectBox(r, b), true);
+    EXPECT_EQ(IntersectBox(r1, b), true);
+    EXPECT_EQ(IntersectBox(r2, b), true);
 }
 
 //TEST(IntersectFunc, RandomTest)

@@ -12,41 +12,16 @@
 #include "Rayon.hpp"
 #include "Vector3.hpp"
 #include "Light.hpp"
-
+#include "Sphere.hpp"
+#include "Box.hpp"
 
 using namespace std;
-
-
 
 struct Intersection{
     bool intersect;
     double distance;
     string nameInterObj;
     Vector3 point;
-};
-
-struct Color {
-    double r, g, b;
-};
-
-struct Sphere{
-    Vector3 origine;
-    double rayon;
-    Color couleur;
-    string nom;
-    bool debugSphere;
-    
-//    Sphere(){};
-//    Sphere(const Vector3& origine, const double& rayon ){
-//        this->origine = origine;
-//        this->rayon = rayon;
-//    };
-//    Sphere(const Vector3& origine, const double& rayon, const Color& couleur, const string& nom ){
-//        this->origine = origine;
-//        this->rayon = rayon;
-//        this->couleur = couleur;
-//        this->nom = nom;
-//    };
 };
 
 void DebugIntersect(const Intersection res)
@@ -62,6 +37,7 @@ void DebugIntersect(const Intersection res)
 
 //typedef vector<vector<Vector3>> V3Tab;
 typedef vector<Sphere> Scene;
+typedef vector<Box> Boxes;
 typedef vector<Color> Image;
 
 void Intersect(const Rayon& rayon, const Sphere& sphere, Intersection& myRes);
@@ -71,4 +47,5 @@ bool CanSeeLight(const Vector3& point, const Light& lightPos, const Scene& scene
 void SetLightning(const Vector3& point, const Light& light,  Image& image);
 int RunTests();
 double GetDistance(const Vector3& pointA, const Vector3& pointB);
-
+void CreateSpheresBoxes(Boxes& boxesScene, const Scene& scene);
+bool IntersectBox(const Rayon& ray, const Box& box);
