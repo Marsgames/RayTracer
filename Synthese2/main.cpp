@@ -18,6 +18,9 @@
 #include "Sphere.hpp"
 #include "Color.hpp"
 #include "Box.hpp"
+#include "BoundingBox.hpp"
+#include <iostream>
+
 
 //TEST(IntersectFunc, IntersectWork)
 //{
@@ -83,7 +86,7 @@ int main(int argc, char* argv[])
 //    vector<vector<Color>> image(tailleMap, vector<Color>(tailleMap, Color{255, 20, 147}));
     Image image(ecran.height * ecran.width, Color{0, 0, 0});
 
-    
+
     for (int y = 0; y < ecran.height; y++)
     {
         for (int z = 0; z < ecran.width; z++)
@@ -99,15 +102,15 @@ int main(int argc, char* argv[])
                 {
                     continue;
                 }
-                
+
                 dist = result.distance;
                 sphere = sphereEnTest;
             }
             if (INT_MAX != dist)
             {
-                
+
                 image[y * ecran.height + z] = sphere.couleur;
-                
+
                 if (CanSeeLight(result.point, lumiere, spheres))
                 {
                     SetLightning(result.point, lumiere, image);
@@ -117,15 +120,17 @@ int main(int argc, char* argv[])
                     image[y * ecran.height + z].g = image[y * ecran.height + z].g * facteurLumiere;
                     image[y * ecran.height + z].b = image[y * ecran.height + z].b * facteurLumiere;
                 }
-                
+
             }
-            
+
         }
     }
     
     
     CreateSpheresBoxes(boxes, spheres);
-    Image a(ecran.height * ecran.width, Color{0, 0, 0});
+    BoundingBox bBox = BoundingBox(boxes);
+    bBox.source = superBBType;
+    bBox.Print();
 
     for (int y = 0; y < ecran.height; y++)
     {
@@ -136,52 +141,33 @@ int main(int argc, char* argv[])
                 const Rayon rayon = Rayon(ecran.position + Vector3(static_cast<int>(ecran.position.x), y, z), Vector3(1, 0, 0));
                 if (IntersectBox(rayon, b))
                 {
-//                    cout << "Intersection avec une box" << endl;
-                    
-                    image[y * ecran.height + z] = Color{255, 255, 255};
+                    if (sphereType == b.source)
+                    {
+                        // vert == chaques boxes
+                        image[y * ecran.height + z] = Color{0, 255, 0};
+                    }else if (boundingBoxType == b.source)
+                    {
+                        // rouge == bounding box
+                        image[y * ecran.height + z] = Color{255, 0, 0};
+                    }else if (superBBType == b.source)
+                    {
+                        // bleu == la boite unique
+                        image[y * ecran.height + z] = Color{0, 0, 255};
+                    }
                 }
             }
         }
     }
+    
+    
+    
+    
 
     
-    ImageFromArray(ecran.height, ecran.width, a);
+    ImageFromArray(ecran.height, ecran.width, image);
     
     return 0;
 }
-
-void Intersect(const Rayon& rayon, const Sphere& sphere, Intersection& myRes)
-{
-    const double B = 2 * (Dot(rayon.origine, rayon.direction) - Dot(sphere.origine, rayon.direction));
-    const double C = Dist2(sphere.origine - rayon.origine) - (sphere.rayon * sphere.rayon);
-    const double delta = (B * B) - 4 * C;
-    
-    myRes.intersect = false;
-    myRes.distance = 0;
-    
-    if (delta < 0)
-    {
-        myRes.intersect = false;
-        return;
-    }
-    
-    const double sqrtDelta = sqrt(delta);
-    const double inter1 = (-B - sqrtDelta) / 2;
-    const double inter2 = (-B + sqrtDelta) / 2;
-    
-    if (inter1 > 0)
-    {
-        myRes.intersect = true;
-        myRes.distance = inter1;
-    }else if (inter2 > 0)
-    {
-        myRes.intersect = true;
-        myRes.distance = inter2;
-    }
-    
-    myRes.point = rayon.origine + rayon.direction * myRes.distance;
-}
-
 
 void ImageFromArray(const int& width, const int& height, const Image& pixelsArray)
 {
@@ -216,12 +202,12 @@ void InitSpheres(Scene& spheres)
 //    ///////// TEST SPHÈRES ////////
     // Sphere(position, rayon, couleur, nom)
     // Sphere(Vector3(), int, colorStruct, string)
-    spheres.push_back(Sphere(Vector3(150, 500, 500), 75, Color{255, 0, 0}, "sp1")); // Rouge
-    spheres.push_back(Sphere(Vector3(100, 100, 850), 50, Color{0, 255, 0}, "sp2")); // Verte
-    spheres.push_back(Sphere(Vector3(850, 800, 100), 50, Color{0, 0, 255}, "sp3")); // Bleu
-    spheres.push_back(Sphere(Vector3(250, 150, 800), 150, Color{44, 117, 255}, "sp4")); // Bleu éléctrique
-    spheres.push_back(Sphere(Vector3(400, 600, 600), 100, Color{0, 255, 255}, "sp5")); // Bleu ciel
-    spheres.push_back(Sphere(Vector3(950, 500, 500), 200, Color{255, 255, 0}, "sp6")); // Jaune
+    spheres.push_back(Sphere(Vector3(150, 500, 500), 75, Color{255, 0, 0}, "rouge")); // Rouge
+    spheres.push_back(Sphere(Vector3(100, 100, 850), 50, Color{0, 255, 0}, "verte")); // Verte
+    spheres.push_back(Sphere(Vector3(850, 800, 100), 50, Color{0, 0, 255}, "bleu")); // Bleu
+    spheres.push_back(Sphere(Vector3(250, 150, 800), 150, Color{255, 0, 255}, "rose")); // Bleu éléctrique
+    spheres.push_back(Sphere(Vector3(400, 600, 600), 100, Color{0, 255, 255}, "bleuCiel")); // Bleu ciel
+    spheres.push_back(Sphere(Vector3(950, 500, 500), 200, Color{255, 255, 0}, "jaune")); // Jaune
 
     spheres.push_back(Sphere(Vector3(lumiere.position.x, lumiere.position.y, lumiere.position.z), 5, Color{255, 255, 255}, "lampe", 0)); // blanc
     
@@ -303,67 +289,11 @@ int RunTests()
     return RUN_ALL_TESTS();
 }
 
-double GetDistance(const Vector3& pointA, const Vector3& pointB)
-{
-    return sqrt(((pointA.x - pointB.x) * (pointA.x - pointB.x)) + ((pointA.y - pointB.y) * (pointA.y - pointB.y)) + ((pointA.z - pointB.z) * (pointA.z - pointB.z)));
-}
 
-void CreateSpheresBoxes(Boxes& boxesScene, const Scene& scene)
-{
-    int i = 1;
-    for (const Sphere& sphere : scene)
-    {
-        Box b = Box(sphere);
-        boxesScene.push_back(b);
-        cout << "Box" << i << " crée. bMin = ";
-        Print(b.pMin);
-        cout << " - bMax = ";
-        Print(b.pMax);
-        cout << endl;
-        
-    }
-}
 
-bool IntersectBox(const Rayon& ray, const Box& box)
-{
-    // Division pour éviter une multiplication plus tard
-    const float rinvx = 1 / ray.direction.x;
-    const float rinvy = 1 / ray.direction.y;
-    const float rinvz = 1 / ray.direction.z;
-    
-    // X slab Max box size
-    const float tx1 = (box.pMin.x - ray.origine.x) * rinvx;
-    const float tx2 = (box.pMax.x - ray.origine.x) * rinvx;
-    
-   const float tminX = tx1 < tx2 ? tx1 : tx2;
-   const float tmaxX = tx1 > tx2 ? tx1 : tx2;
-    
-    // Y slab
-    const float ty1 = (box.pMin.y - ray.origine.y) * rinvy;
-    const float ty2 = (box.pMax.y - ray.origine.y) * rinvy;
-    
-    const float tminY = tminX > (ty1 < ty2 ? ty1 : ty2) ? tminX : (ty1 < ty2 ? ty1 : ty2);
-//   const float tminY = max(tminX, (min(ty1, ty2)));
-   const float tmaxY = min(tmaxX, (max(ty1, ty2)));
-    
-    // Z slab
-   const float tz1 = (box.pMin.z - ray.origine.z) * rinvz;
-   const float tz2 = (box.pMax.z - ray.origine.z) * rinvz;
-    
-   const float tminZ = max(tminY, (min(tz1, tz2)));
-   const float tmaxZ = min(tmaxY, (max(tz1, tz2)));
-    
-    if (tmaxZ >= tminZ)
-    {
-        return true;
-    }
-    else
-    {
-        return false;
-    }
 
-    
-}
+
+
 
 
 // radiance(rayon, scene) -> couleur

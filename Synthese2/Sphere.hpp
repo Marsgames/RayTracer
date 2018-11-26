@@ -11,8 +11,18 @@
 #include "main.hpp"
 #include "Color.hpp"
 #include <iostream>
+#include "Rayon.hpp"
+#include <math.h>
+#include "Vector3.hpp"
 
 using namespace std;
+
+struct Intersection{
+    bool intersect;
+    double distance;
+    string nameInterObj;
+    Vector3 point;
+};
 
 class Sphere{
 public:
@@ -52,3 +62,35 @@ public:
         return 1 == this->debugSphere;
     };
 };
+
+void Intersect(const Rayon& rayon, const Sphere& sphere, Intersection& myRes)
+{
+    const double B = 2 * (Dot(rayon.origine, rayon.direction) - Dot(sphere.origine, rayon.direction));
+    const double C = Dist2(sphere.origine - rayon.origine) - (sphere.rayon * sphere.rayon);
+    const double delta = (B * B) - 4 * C;
+    
+    myRes.intersect = false;
+    myRes.distance = 0;
+    
+    if (delta < 0)
+    {
+        myRes.intersect = false;
+        return;
+    }
+    
+    const double sqrtDelta = sqrt(delta);
+    const double inter1 = (-B - sqrtDelta) / 2;
+    const double inter2 = (-B + sqrtDelta) / 2;
+    
+    if (inter1 > 0)
+    {
+        myRes.intersect = true;
+        myRes.distance = inter1;
+    }else if (inter2 > 0)
+    {
+        myRes.intersect = true;
+        myRes.distance = inter2;
+    }
+    
+    myRes.point = rayon.origine + rayon.direction * myRes.distance;
+}

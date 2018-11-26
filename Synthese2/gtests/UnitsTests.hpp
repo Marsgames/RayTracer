@@ -92,12 +92,16 @@ TEST(IntersectFunc, BoxSimple)
     const Sphere sp = Sphere(Vector3(5, 5, 5), 5);
     const Box b = Box(sp);
     const Rayon r = Rayon(Vector3(-5., 2.5, 0.), Vector3(1, 0, 0));
-    const Rayon r1 = Rayon(Vector3(-1, 1, 0), Vector3(1, -1, 0));
+    const Rayon r1 = Rayon(Vector3(-1, 1, 0), Vector3(.5, -.5, 0.));
     const Rayon r2 = Rayon(Vector3(-5., 2.5, 0.), Vector3(-1, 0, 0));
-    
+    const Rayon r3 = Rayon(Vector3(5., 30., 5.), Vector3(0, -1, 0));
+    const Rayon r4 = Rayon(Vector3(-5., 25., 0.), Vector3(-1, 0, 0));
+
     EXPECT_EQ(IntersectBox(r, b), true);
     EXPECT_EQ(IntersectBox(r1, b), true);
     EXPECT_EQ(IntersectBox(r2, b), true);
+    EXPECT_EQ(IntersectBox(r3, b), true);
+    EXPECT_EQ(IntersectBox(r4, b), false);
 }
 
 //TEST(IntersectFunc, RandomTest)

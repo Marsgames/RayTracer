@@ -17,13 +17,6 @@
 
 using namespace std;
 
-struct Intersection{
-    bool intersect;
-    double distance;
-    string nameInterObj;
-    Vector3 point;
-};
-
 void DebugIntersect(const Intersection res)
 {
     cout << "--------------------" << endl;
@@ -48,4 +41,3 @@ void SetLightning(const Vector3& point, const Light& light,  Image& image);
 int RunTests();
 double GetDistance(const Vector3& pointA, const Vector3& pointB);
 void CreateSpheresBoxes(Boxes& boxesScene, const Scene& scene);
-bool IntersectBox(const Rayon& ray, const Box& box);

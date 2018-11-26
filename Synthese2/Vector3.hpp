@@ -13,7 +13,7 @@
 class Vector3 {
 public:
     double x, y, z;
-    
+        
     Vector3(){};
     Vector3(double x, double y, double z)
     {
@@ -26,6 +26,11 @@ public:
         this->x = x;
         this->y = y;
         this->z = z;
+    };
+    
+    void Print() const
+    {
+        std::cout << "vector : (" << x << ", " << y << ", " << z << ")" << std::endl;
     };
 };
 
@@ -69,9 +74,24 @@ Vector3 operator-(const Vector3 leftV, const Vector3 rightV)
     return Vector3{leftV.x - rightV.x, leftV.y - rightV.y, leftV.z - rightV.z};
 }
 
+bool operator<(const Vector3 leftV, const Vector3 rightV)
+{
+    return (leftV.x + leftV.y + leftV.z) < (rightV.x + rightV.y + rightV.z);
+}
+
+bool operator>(const Vector3 leftV, const Vector3 rightV)
+{
+    return (leftV.x + leftV.y + leftV.z) > (rightV.x + rightV.y + rightV.z);
+}
+
 Vector3 Negate(const Vector3& v)
 {
     return Vector3{v.x * -1, v.y * -1, v.z * -1};
+}
+
+double GetDistance(const Vector3& pointA, const Vector3& pointB)
+{
+    return sqrt(((pointA.x - pointB.x) * (pointA.x - pointB.x)) + ((pointA.y - pointB.y) * (pointA.y - pointB.y)) + ((pointA.z - pointB.z) * (pointA.z - pointB.z)));
 }
 
 
@@ -79,4 +99,5 @@ Vector3 Negate(const Vector3& v)
 void Print(const Vector3& v)
 {
     std::cout << "vector : (" << v.x << ", " << v.y << ", " << v.z << ")" << std::endl;
+
 }
