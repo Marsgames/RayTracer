@@ -37,11 +37,9 @@ public:
     {
         pMin = boxes[0].pMin;
         pMax = boxes[0].pMax;
-        cout << boxes.size() << endl;
         if (1 == boxes.size())
         {
             bA = BoundingBox(boxes[0]);
-            cout << "on a une feuille" << endl;
             return;
         }
         
@@ -96,9 +94,24 @@ public:
 //        bB = BoundingBox(list2ndPart[0], list2ndPart[list2ndPart.size() - 1], list2ndPart);
         bB = BoundingBox(list2ndPart);
         bB.source = boundingBoxType;
-        cout << "subdivision !" << endl;
     };
 };
+
+bool IntersectBBox(const Rayon& ray, const BoundingBox& bBox)
+{
+    if (bBox.isLeave)
+    {
+        cout << bBox.mySphere.nom << endl;
+        Intersection inter;
+        Intersect(ray, bBox.mySphere, inter);
+        return inter.intersect;
+    }
+    
+    bool iA = IntersectBBox(ray, bBox.bA);
+    bool iB = IntersectBBox(ray, bBox.bB);
+    
+    return true == iA ? iA : iB;
+}
 
 //BoundingBox CreateTree(vector<Box> boxes)
 //{

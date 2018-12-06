@@ -24,13 +24,19 @@ struct Intersection{
     Vector3 point;
 };
 
+enum SphereType
+{
+    difusType, miroirType, verreType, lumiereType
+};
+
 class Sphere{
 public:
     Vector3 origine;
     double rayon;
     Color couleur;
     string nom;
-    int debugSphere;
+//    int debugSphere;
+    SphereType type;
     
     Sphere(){};
     Sphere(const Vector3& origine, const double& rayon){
@@ -49,17 +55,7 @@ public:
         this->rayon = rayon;
         this->couleur = couleur;
         this->nom = nom;
-        this->debugSphere = isLight;
-    };
-    
-    bool IsLight() const
-    {
-        return 0 == this->debugSphere;
-    };
-    
-    bool IsMirror() const
-    {
-        return 1 == this->debugSphere;
+        this->type = 0 == isLight ? lumiereType : miroirType;
     };
 };
 

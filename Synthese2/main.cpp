@@ -37,7 +37,8 @@
 //}
 
 
-Light lumiere = Light{Vector3{0, 0, 0}, 1250};
+//Light lumiere = Light{Vector3{0, 0, 0}, 1250};
+Light lumiere = Light{Vector3{0, 0, 0}, 1050};
 //Light lumiere = Light{Vector3{0, 250, 250}, 1250};
 
 // Lampe pour la scène avec les murs
@@ -63,7 +64,7 @@ int main(int argc, char* argv[])
     Boxes boxes;
     
 
-    const float facteurLumiere = 0.5;
+    const float facteurLumiere = 0.2;
     
     // Pour le miroir, si je tombe sur un miroir je traverse et pars dans le sens opposé
     // Pour la lumière, lui donner une intensité, diviser l'intensité par la distance
@@ -136,26 +137,30 @@ int main(int argc, char* argv[])
     {
         for (int z = 0; z < ecran.width; z++)
         {
-            for (const Box& b : boxes)
-            {
+//            for (const Box& b : boxes)
+//            {
                 const Rayon rayon = Rayon(ecran.position + Vector3(static_cast<int>(ecran.position.x), y, z), Vector3(1, 0, 0));
-                if (IntersectBox(rayon, b))
+            if (IntersectBBox(rayon, bBox))
                 {
-                    if (sphereType == b.source)
+                    if (sphereType == bBox.source)
                     {
                         // vert == chaques boxes
                         image[y * ecran.height + z] = Color{0, 255, 0};
-                    }else if (boundingBoxType == b.source)
+                    }else if (boundingBoxType == bBox.source)
                     {
                         // rouge == bounding box
                         image[y * ecran.height + z] = Color{255, 0, 0};
-                    }else if (superBBType == b.source)
+                    }else if (superBBType == bBox.source)
                     {
                         // bleu == la boite unique
                         image[y * ecran.height + z] = Color{0, 0, 255};
+                    }else
+                    {
+                        // jaune == on ne sait pas
+                        image[y * ecran.height + z] = Color{0, 255, 255};
                     }
                 }
-            }
+//            }
         }
     }
     
@@ -210,27 +215,6 @@ void InitSpheres(Scene& spheres)
     spheres.push_back(Sphere(Vector3(950, 500, 500), 200, Color{255, 255, 0}, "jaune")); // Jaune
 
     spheres.push_back(Sphere(Vector3(lumiere.position.x, lumiere.position.y, lumiere.position.z), 5, Color{255, 255, 255}, "lampe", 0)); // blanc
-    
-    
-//    spheres.push_back(Sphere{.origine = Vector3(150, 500, 500), .rayon = 75, .couleur =  Color{.r = 255, .g = 0, .b = 0}, .nom = "sp1"}); // Rouge
-//    spheres.push_back(Sphere{.origine = Vector3(100, 100, 850), .rayon = 50, .couleur =  Color{.r = 0, .g = 255, .b = 0}, .nom = "sp2"}); // Verte
-//    spheres.push_back(Sphere{.origine = Vector3(850, 800, 100), .rayon = 50, .couleur =  Color{.r = 0, .g = 0, .b = 255}, .nom = "sp3"}); // Bleu
-//    spheres.push_back(Sphere{.origine = Vector3(250, 150, 800), .rayon = 150, .couleur =  Color{.r = 44, .g = 117, .b = 255}, .nom = "sp4"}); // Bleu éléctrique
-//    spheres.push_back(Sphere{.origine = Vector3(400, 600, 600), .rayon = 100, .couleur =  Color{.r = 0, .g = 255, .b = 255}, .nom = "sp5"}); // Bleu ciel
-//    spheres.push_back(Sphere{.origine = Vector3(950, 500, 500), .rayon = 200, .couleur =  Color{.r = 255, .g = 255, .b = 0}, .nom = "sp6"}); // Jaune
-//
-//    spheres.push_back(Sphere{.origine = Vector3(lumiere.position.x, lumiere.position.y, lumiere.position.z), .rayon = 5, .couleur =  Color{.r = 255, .g = 255, .b = 255}, .nom = "lampe", .debugSphere = true}); // blanc
-    
-    
-    
-//    spheres.push_back(Sphere{.origine = Vector3(lumiere.position.x, lumiere.position.y, lumiere.position.z), .rayon = 5, .couleur =  Color{.r = 255, .g = 255, .b = 255}, .nom = "lampe"}); // blanc
-//    spheres.push_back(Sphere{Vector3{0, -9900, 500}, 10000, Color{255, 0, 0}, "Rouge"});
-//    spheres.push_back(Sphere{Vector3{0, 10900, 500}, 10000, Color{0, 255, 0}, "Vert"});
-//    spheres.push_back(Sphere{Vector3{0, 500, -9900}, 10000, Color{0, 0, 255}, "Bleu"});
-//        spheres.push_back(Sphere{Vector3{0, 500, 10900}, 10000, Color{44, 117, 255}, "Bleu éléctrique"});
-//    spheres.push_back(Sphere{Vector3{10900, 500, 500}, 10000, Color{125, 125, 125}, "Blanc"});
-
-
 }
 
 bool CanSeeLight(const Vector3& point, const Light& light, const Scene& scene)
@@ -240,7 +224,7 @@ bool CanSeeLight(const Vector3& point, const Light& light, const Scene& scene)
     
     for (const Sphere& sphere : scene)
     {
-        if (sphere.IsLight())
+        if (lumiereType == sphere.type)
         {
             continue;
         }
