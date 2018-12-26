@@ -12,6 +12,8 @@ Programme développé en C++
 
 **Étape n°5 :** Ajout d'une sphère blanche représentant la lumière. Les parties des sphères n'étant pas visibles directement par la lumières sont plus sombre.
 
+**Étape n°X :** Ajout d'un système de boites englobantes permettant de réduire le temps de calcul quand il y a un grand nombre d'objets dans la scène
+
 
 ## Authors
 
