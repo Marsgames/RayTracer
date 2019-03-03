@@ -20,6 +20,8 @@
 #include "Box.hpp"
 #include "BoundingBox.hpp"
 #include <iostream>
+#include <thread>
+#include "Material.hpp"
 
 
 //TEST(IntersectFunc, IntersectWork)
@@ -38,8 +40,11 @@
 
 
 //Light lumiere = Light{Vector3{0, 0, 0}, 1250};
-Light lumiere = Light{Vector3{0, 0, 0}, 1050};
+Light lumiere = Light{Vector3{0, 0, 0}, 10500};
 //Light lumiere = Light{Vector3{0, 250, 250}, 1250};
+
+// Lumière scene guillaume
+//Light lumiere = Light{Vector3(200, 600, 150)};
 
 // Lampe pour la scène avec les murs
 //    Light lumiere = Light{Vector3{-1000, 500, 500}, 1250};
@@ -52,8 +57,9 @@ int main(int argc, char* argv[])
 //    return RUN_ALL_TESTS();
     
     
+//    const Camera ecran = Camera(Vector3{0, 0, 0}, 1000, 1000);
     const Camera ecran = Camera(Vector3{0, 0, 0}, 1000, 1000);
-    
+
     // Ajouter un écran (tableau 2D de pixels) (origine 0, 0->10, 0->-10)
     // ajouter une sphère (origine 0, rayon 10)
     
@@ -63,118 +69,84 @@ int main(int argc, char* argv[])
     Scene spheres;
     Boxes boxes;
     
-
     const float facteurLumiere = 0.2;
+    
+    InitSpheres(spheres);
+    
+    // Ajouter struct Material { Difuse (renvoie la couleur du materiaux), Mirror (rebondi et renvoi le prochain point touché), light (éclaire), glass (passe au travers (rajouter un effet "fumé" pour différentier avec "rien")}
     
     // Pour le miroir, si je tombe sur un miroir je traverse et pars dans le sens opposé
     // Pour la lumière, lui donner une intensité, diviser l'intensité par la distance
     // Désactiver le facteurLumière quand on fait l'éclairage indirect
     
-    
-    
-    InitSpheres(spheres);
-    
-    // Initialisation de l'écran
-//    for (float y = 0; y < ecran.height; y++)
-//    {
-//        for (float z = 0; z < ecran.width; z++)
-//        {
-////            ecran[y][z] = Vector3{.x = 0 , .y = y, .z = z};
-//            ecran[y][z] = Vector3{.x = 0 , .y = y , .z = z};
-//        }
-//    }
-    
-//    vector<vector<Color>> image(tailleMap, vector<Color>(tailleMap, Color{255, 20, 147}));
-    Image image(ecran.height * ecran.width, Color{0, 0, 0});
-
-
-    for (int y = 0; y < ecran.height; y++)
-    {
-        for (int z = 0; z < ecran.width; z++)
-        {
-            double dist = INT_MAX;
-            Sphere sphere;
-            Intersection result;
-            for(const Sphere& sphereEnTest : spheres)
-            {
-                const Rayon rayon = Rayon(ecran.position + Vector3(static_cast<int>(ecran.position.x), y, z), Vector3(1, 0, 0));
-                Intersect(rayon, sphereEnTest, result);
-                if(!result.intersect || result.distance >= dist)
-                {
-                    continue;
-                }
-
-                dist = result.distance;
-                sphere = sphereEnTest;
-            }
-            if (INT_MAX != dist)
-            {
-
-                image[y * ecran.height + z] = sphere.couleur;
-
-                if (CanSeeLight(result.point, lumiere, spheres))
-                {
-                    SetLightning(result.point, lumiere, image);
-                }else
-                {
-                    image[y * ecran.height + z].r = image[y * ecran.height + z].r * facteurLumiere;
-                    image[y * ecran.height + z].g = image[y * ecran.height + z].g * facteurLumiere;
-                    image[y * ecran.height + z].b = image[y * ecran.height + z].b * facteurLumiere;
-                }
-
-            }
-
-        }
-    }
-    
-    
-    CreateSpheresBoxes(boxes, spheres);
-    BoundingBox bBox = BoundingBox(boxes);
-    bBox.source = superBBType;
-    bBox.Print();
-
-    for (int y = 0; y < ecran.height; y++)
-    {
-        for (int z = 0; z < ecran.width; z++)
-        {
-//            for (const Box& b : boxes)
-//            {
-                const Rayon rayon = Rayon(ecran.position + Vector3(static_cast<int>(ecran.position.x), y, z), Vector3(1, 0, 0));
-            if (IntersectBBox(rayon, bBox))
-                {
-                    if (sphereType == bBox.source)
-                    {
-                        // vert == chaques boxes
-                        image[y * ecran.height + z] = Color{0, 255, 0};
-                    }else if (boundingBoxType == bBox.source)
-                    {
-                        // rouge == bounding box
-                        image[y * ecran.height + z] = Color{255, 0, 0};
-                    }else if (superBBType == bBox.source)
-                    {
-                        // bleu == la boite unique
-                        image[y * ecran.height + z] = Color{0, 0, 255};
-                    }else
-                    {
-                        // jaune == on ne sait pas
-                        image[y * ecran.height + z] = Color{0, 255, 255};
-                    }
-                }
-//            }
-        }
-    }
-    
-    
-    
-    
+//    GenerateImages(0, 25, spheres, ecran, facteurLumiere);
+//    cout << "Images jusqu'à 25 ok" << endl;
+//    GenerateImages(25, 50, spheres, ecran, facteurLumiere);
+//    cout << "Images jusqu'à 50 ok" << endl;
+//    GenerateImages(50, 75, spheres, ecran, facteurLumiere);
+//    cout << "Images jusqu'à 75 ok" << endl;
+//    GenerateImages(75, 100, spheres, ecran, facteurLumiere);
+//    cout << "Images jusqu'à 100 ok" << endl;
+//
+//    GenerateImages(100, 125, spheres, ecran, facteurLumiere);
+//    cout << "Images jusqu'à 125 ok" << endl;
+//    GenerateImages(125, 150, spheres, ecran, facteurLumiere);
+//    cout << "Images jusqu'à 150 ok" << endl;
+//GenerateImages(150, 175, spheres, ecran, facteurLumiere);
+//    cout << "Images jusqu'à 175 ok" << endl;
+//GenerateImages(175, 200, spheres, ecran, facteurLumiere);
+//    cout << "Images jusqu'à 200 ok" << endl;
 
     
-    ImageFromArray(ecran.height, ecran.width, image);
+//    std::thread t1(GenerateImages, 0, 25, std::ref(spheres), std::ref(ecran), facteurLumiere);
+//    std::thread t2(GenerateImages, 25, 50, std::ref(spheres), std::ref(ecran), facteurLumiere);
+//    std::thread t3(GenerateImages, 50, 75, std::ref(spheres), std::ref(ecran), facteurLumiere);
+//    std::thread t4(GenerateImages, 75, 100, std::ref(spheres), std::ref(ecran), facteurLumiere);
+//
+//    t1.join();
+//    t2.join();
+//    t3.join();
+//    t4.join();
+//
+//    std::thread t5(GenerateImages, 100, 125, std::ref(spheres), std::ref(ecran), facteurLumiere);
+//    std::thread t6(GenerateImages, 125, 150, std::ref(spheres), std::ref(ecran), facteurLumiere);
+//    std::thread t7(GenerateImages, 150, 175, std::ref(spheres), std::ref(ecran), facteurLumiere);
+//    std::thread t8(GenerateImages, 175, 200, std::ref(spheres), std::ref(ecran), facteurLumiere);
+//
+//    t5.join();
+//    t6.join();
+//    t7.join();
+//    t8.join();
+//
+//    std::thread t9(GenerateImages, 200, 225, std::ref(spheres), std::ref(ecran), facteurLumiere);
+//    std::thread t10(GenerateImages, 225, 250, std::ref(spheres), std::ref(ecran), facteurLumiere);
+//    std::thread t11(GenerateImages, 250, 275, std::ref(spheres), std::ref(ecran), facteurLumiere);
+//    std::thread t12(GenerateImages, 275, 300, std::ref(spheres), std::ref(ecran), facteurLumiere);
+//
+//    t9.join();
+//    t10.join();
+//    t11.join();
+//    t12.join();
+//
+//    std::thread t13(GenerateImages, 300, 325, std::ref(spheres), std::ref(ecran), facteurLumiere);
+//    std::thread t14(GenerateImages, 325, 350, std::ref(spheres), std::ref(ecran), facteurLumiere);
+//    std::thread t15(GenerateImages, 350, 375, std::ref(spheres), std::ref(ecran), facteurLumiere);
+//    std::thread t16(GenerateImages, 375, 400, std::ref(spheres), std::ref(ecran), facteurLumiere);
+//
+//    t13.join();
+//    t14.join();
+//    t15.join();
+//    t16.join();
+    
+//    GenerateImages(0, 1, spheres, ecran, facteurLumiere);
+    
+    LaunchThreads(100, spheres, ecran, facteurLumiere);
     
     return 0;
 }
 
-void ImageFromArray(const int& width, const int& height, const Image& pixelsArray)
+//void ImageFromArray(const int& width, const int& height, const Image& pixelsArray, string& source = "/Users/Raph/Desktop/", string& nomImage = "imageSynthese.bmp")
+void ImageFromArray(const int width, const int height, const Image& pixelsArray, const string source, const string nomImage)
 {
     bitmap_image img(width, height);
     
@@ -197,24 +169,41 @@ void ImageFromArray(const int& width, const int& height, const Image& pixelsArra
         }
     }
     
-    img.save_image("/Users/Raph/Desktop/imageSynthese.bmp");
+    img.save_image(source + nomImage);
 //        img.save_image("imageSynthese.bmp");
-    cout << "image sauvegardée sur le bureau !" << endl;
+    cout << "image sauvegardée dans " << source + nomImage << " !" << endl;
 }
 
 void InitSpheres(Scene& spheres)
 {
+//    Sphere leftWall = Sphere(Vector3(-1e5 - 100.0, 360.0, 500.0), 1e5, Material(EMaterials::DifuseType, Color{255, 255, 0}), "Jaune");
+//    Sphere rightWall = Sphere(Vector3(-1e5 + 1380, 360.0, 500.0), 1e5, Material(EMaterials::DifuseType, Color{0, 0, 255}), "Bleu");
+//    Sphere topWall = Sphere(Vector3(640.0, -1e5 - 100, 500.0), 1e5, Material(EMaterials::DifuseType, Color{255, 20, 147}), "Rose");
+//    Sphere bottomWall = Sphere(Vector3(640.0, 1e5 + 820, 500.0), 1e5, Material(EMaterials::DifuseType, Color{255, 0, 0}), "Rouge");
+//    Sphere backWall = Sphere(Vector3(640.0, 360.0, 1e5 + 1100), 1e5, Material(EMaterials::DifuseType, Color{255, 255, 255}), "Blanc");
+//    Sphere frontWall = Sphere(Vector3(640.0, 360.0, -1e5 - 1), 1e5, Material(EMaterials::DifuseType, Color{255, 255, 255}), "Blanc");
+    
 //    ///////// TEST SPHÈRES ////////
     // Sphere(position, rayon, couleur, nom)
     // Sphere(Vector3(), int, colorStruct, string)
-    spheres.push_back(Sphere(Vector3(150, 500, 500), 75, Color{255, 0, 0}, "rouge")); // Rouge
-    spheres.push_back(Sphere(Vector3(100, 100, 850), 50, Color{0, 255, 0}, "verte")); // Verte
-    spheres.push_back(Sphere(Vector3(850, 800, 100), 50, Color{0, 0, 255}, "bleu")); // Bleu
-    spheres.push_back(Sphere(Vector3(250, 150, 800), 150, Color{255, 0, 255}, "rose")); // Bleu éléctrique
-    spheres.push_back(Sphere(Vector3(400, 600, 600), 100, Color{0, 255, 255}, "bleuCiel")); // Bleu ciel
-    spheres.push_back(Sphere(Vector3(950, 500, 500), 200, Color{255, 255, 0}, "jaune")); // Jaune
+    spheres.push_back(Sphere(Vector3(150, 500, 500), 75, Material(EMaterials::DifuseType, Color{255, 0, 0}), "rouge")); // Rouge
+    spheres.push_back(Sphere(Vector3(100, 100, 850), 50, Material(EMaterials::DifuseType, Color{0, 255, 0}), "verte")); // Verte
+    spheres.push_back(Sphere(Vector3(850, 800, 100), 50, Material(EMaterials::DifuseType, Color{0, 0, 255}), "bleu")); // Bleu
+    spheres.push_back(Sphere(Vector3(250, 150, 800), 150, Material(EMaterials::DifuseType, Color{255, 0, 255}), "rose")); // Bleu éléctrique
+    spheres.push_back(Sphere(Vector3(400, 600, 600), 100, Material(EMaterials::DifuseType, Color{0, 255, 255}), "bleuCiel")); // Bleu ciel
+    spheres.push_back(Sphere(Vector3(950, 500, 500), 200, Material(EMaterials::DifuseType, Color{255, 255, 0}), "jaune")); // Jaune
+    
+//    spheres.push_back(leftWall);
+//    spheres.push_back(rightWall);
+//    spheres.push_back(topWall);
+//    spheres.push_back(bottomWall);
+//    spheres.push_back(backWall);
+//    spheres.push_back(frontWall);
 
-    spheres.push_back(Sphere(Vector3(lumiere.position.x, lumiere.position.y, lumiere.position.z), 5, Color{255, 255, 255}, "lampe", 0)); // blanc
+    spheres.push_back(Sphere(Vector3(lumiere.position.x, lumiere.position.y, lumiere.position.z), 5, Material(EMaterials::DifuseType, Color{255, 255, 255}), "lampe")); // blanc
+
+
+//    spheres.push_back(Sphere(Vector3(lumiere.position.x, lumiere.position.y, lumiere.position.z), 5, Color{255, 255, 255}, "lampe", 0)); // blanc
 }
 
 bool CanSeeLight(const Vector3& point, const Light& light, const Scene& scene)
@@ -224,10 +213,10 @@ bool CanSeeLight(const Vector3& point, const Light& light, const Scene& scene)
     
     for (const Sphere& sphere : scene)
     {
-        if (lumiereType == sphere.type)
-        {
-            continue;
-        }
+//        if (lumiereType == sphere.type)
+//        {
+//            continue;
+//        }
 //        cout << "--------------" << endl;
 //        cout << "avant : (" << point.x << ", " << point.y << ", " << point.z << ")" << endl;
 //        cout << "après : (" << (point + (dirLampe * .01)).x << ", " << (point + (dirLampe * .01)).y << ", " << (point + (dirLampe * .01)).z << ")" << endl;
@@ -273,8 +262,170 @@ int RunTests()
     return RUN_ALL_TESTS();
 }
 
+void MoveLight (class Light& lumiere)
+{
+    lumiere.position.y += 5;
+}
+
+void ClearImage (Image& imageArray, const Camera& ecran)
+{
+    for (int i = 0; i < ecran.height; i++)
+    {
+        for (int j = 0; j < ecran.width; j++)
+        {
+            imageArray[i * j].r = 0;
+            imageArray[i * j].g = 0;
+            imageArray[i * j].b = 0;
+        }
+    }
+}
 
 
+
+void GenerateImages(const int firstImage, const int lastImage, Scene spheres, const Camera& ecran, const float facteurLumiere)
+{
+//    for (int i = 0; i < firstImage; i++)
+//    {
+//        MoveLight(lumiere);
+//    }
+    Light theLight = lumiere;
+    theLight.position.y += 5 * firstImage;
+//    lumiere.position.y += 5 * firstImage;
+    
+    for (int i = firstImage; i < lastImage; i++)
+    {
+        cout << "nbSpheres : " << spheres.size() << endl;
+
+        // Initialisation de l'écran
+        //    for (float y = 0; y < ecran.height; y++)
+        //    {
+        //        for (float z = 0; z < ecran.width; z++)
+        //        {
+        ////            ecran[y][z] = Vector3{.x = 0 , .y = y, .z = z};
+        //            ecran[y][z] = Vector3{.x = 0 , .y = y , .z = z};
+        //        }
+        //    }
+        
+        //    vector<vector<Color>> image(tailleMap, vector<Color>(tailleMap, Color{255, 20, 147}));
+        Image image(ecran.height * ecran.width, Color{0, 0, 0});
+        
+        
+        for (int y = 0; y < ecran.height; y++)
+        {
+            for (int z = 0; z < ecran.width; z++)
+            {
+                double dist = INT_MAX;
+                Sphere sphere;
+                Intersection result;
+                for(const Sphere& sphereEnTest : spheres)
+                {
+                    const Rayon rayon = Rayon(ecran.position + Vector3(static_cast<int>(ecran.position.x), y, z), Vector3(1, 0, 0));
+                    Intersect(rayon, sphereEnTest, result);
+                    if(!result.intersect || result.distance >= dist)
+                    {
+                        continue;
+                    }
+                    
+                    dist = result.distance;
+                    sphere = sphereEnTest;
+                }
+                if (INT_MAX != dist)
+                {
+//                    cout << "GetColor r : " << sphere.m_material.GetColor().ToString() << endl;
+
+                    image[y * ecran.height + z] = sphere.m_material.GetColor();
+                    
+                    if (CanSeeLight(result.point, theLight, spheres))
+                    {
+                        SetLightning(result.point, theLight, image);
+                    }else
+                    {
+                        image[y * ecran.height + z].r = image[y * ecran.height + z].r * facteurLumiere;
+                        image[y * ecran.height + z].g = image[y * ecran.height + z].g * facteurLumiere;
+                        image[y * ecran.height + z].b = image[y * ecran.height + z].b * facteurLumiere;
+                    }
+                    
+                }
+                
+            }
+        }
+        
+        
+        //        CreateSpheresBoxes(boxes, spheres);
+        //        BoundingBox bBox = BoundingBox(boxes);
+        //        bBox.source = superBBType;
+        //        bBox.Print();
+        //
+        //        for (int y = 0; y < ecran.height; y++)
+        //        {
+        //            for (int z = 0; z < ecran.width; z++)
+        //            {
+        //                //            for (const Box& b : boxes)
+        //                //            {
+        //                const Rayon rayon = Rayon(ecran.position + Vector3(static_cast<int>(ecran.position.x), y, z), Vector3(1, 0, 0));
+        //                if (IntersectBBox(rayon, bBox))
+        //                {
+        //                    if (sphereType == bBox.source)
+        //                    {
+        //                        // vert == chaques boxes
+        //                        image[y * ecran.height + z] = Color{0, 255, 0};
+        //                    }else if (boundingBoxType == bBox.source)
+        //                    {
+        //                        // rouge == bounding box
+        //                        image[y * ecran.height + z] = Color{255, 0, 0};
+        //                    }else if (superBBType == bBox.source)
+        //                    {
+        //                        // bleu == la boite unique
+        //                        image[y * ecran.height + z] = Color{0, 0, 255};
+        //                    }else
+        //                    {
+        //                        // jaune == on ne sait pas
+        //                        image[y * ecran.height + z] = Color{0, 255, 255};
+        //                    }
+        //                }
+        //                //            }
+        //            }
+        //        }
+        
+        
+        
+        
+        
+        const string nomImage = "image" + to_string(i) + ".bmp";
+        const string source = "/Users/Raph/Desktop/TestSynthese/";
+        ImageFromArray(ecran.width, ecran.height, image, source, nomImage);
+        //        ImageFromArray(ecran.height, ecran.width, image, source, nomImage);
+        
+//        cout << "position light : " << theLight.position.y << endl;
+        
+        MoveLight(theLight);
+        spheres[6].origine = theLight.position;
+        ClearImage(image, ecran);
+    }
+}
+
+void LaunchThreads(const int nbImages, Scene& spheres, const Camera& ecran, const float facteurLumiere)
+{
+    int _nbImages = nbImages;
+    while (0 != _nbImages % 100)
+    {
+        _nbImages++;
+    }
+
+    for (int i = 0; i < (_nbImages / 25 / 4); i++)
+    {
+        std::thread t1(GenerateImages, i * 100 + 0, i * 100 + 25, std::ref(spheres), std::ref(ecran), facteurLumiere);
+        std::thread t2(GenerateImages, i * 100 + 25, i * 100 + 50, std::ref(spheres), std::ref(ecran), facteurLumiere);
+        std::thread t3(GenerateImages, i * 100 + 50, i * 100 + 75, std::ref(spheres), std::ref(ecran), facteurLumiere);
+        std::thread t4(GenerateImages, i * 100 + 75, i * 100 + 100, std::ref(spheres), std::ref(ecran), facteurLumiere);
+        
+        t1.join();
+        t2.join();
+        t3.join();
+        t4.join();
+    }
+    
+}
 
 
 

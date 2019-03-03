@@ -14,6 +14,7 @@
 #include "Rayon.hpp"
 #include <math.h>
 #include "Vector3.hpp"
+#include "Material.hpp"
 
 using namespace std;
 
@@ -24,38 +25,46 @@ struct Intersection{
     Vector3 point;
 };
 
-enum SphereType
-{
-    difusType, miroirType, verreType, lumiereType
-};
+//enum SphereType
+//{
+//    difusType, miroirType, verreType, lumiereType
+//};
 
 class Sphere{
 public:
     Vector3 origine;
     double rayon;
-    Color couleur;
+    Material m_material;
+//    Color couleur;
     string nom;
 //    int debugSphere;
-    SphereType type;
+//    SphereType type;
     
     Sphere(){};
     Sphere(const Vector3& origine, const double& rayon){
         this->origine = origine;
         this->rayon = rayon;
     };
-    Sphere(const Vector3& origine, const double& rayon, const Color& couleur, const string& nom){
+    Sphere(const Vector3& origine, const double rayon, const Material& material, const string nom){
         this->origine = origine;
         this->rayon = rayon;
-        this->couleur = couleur;
+        m_material = material;
         this->nom = nom;
     };
+//    Sphere(const Vector3& origine, const double rayon, const Material& material, const string nom){
+//        this->origine = origine;
+//        this->rayon = rayon;
+//        m_material = material;
+////        this->couleur = couleur;
+//        this->nom = nom;
+//    };
     
-    Sphere(const Vector3& origine, const double& rayon, const Color& couleur, const string& nom, int isLight){
+    Sphere(const Vector3& origine, const double rayon, const Material& material, const string nom, int isLight){
         this->origine = origine;
         this->rayon = rayon;
-        this->couleur = couleur;
+        m_material = material;
         this->nom = nom;
-        this->type = 0 == isLight ? lumiereType : miroirType;
+//        this->type = 0 == isLight ? lumiereType : miroirType;
     };
 };
 

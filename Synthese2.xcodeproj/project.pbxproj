@@ -26,6 +26,7 @@
 
 /* Begin PBXFileReference section */
 		AE01D3A3216257E20092FCB5 /* Vector3.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Vector3.hpp; sourceTree = "<group>"; };
+		AE0D03AB222BAA220062CFBE /* Material.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Material.hpp; sourceTree = "<group>"; };
 		AE376F5B2158B2C700044A00 /* Synthese2 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Synthese2; sourceTree = BUILT_PRODUCTS_DIR; };
 		AE376F5E2158B2C700044A00 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		AE376F662158B2EE00044A00 /* glm */ = {isa = PBXFileReference; lastKnownFileType = folder; path = glm; sourceTree = "<group>"; };
@@ -88,6 +89,7 @@
 				AEB11834217DB03600925ED7 /* Color.hpp */,
 				AE38D1EF21A2B11600E89C5D /* Box.hpp */,
 				AE38D1F021A30A2D00E89C5D /* BoundingBox.hpp */,
+				AE0D03AB222BAA220062CFBE /* Material.hpp */,
 			);
 			path = Synthese2;
 			sourceTree = "<group>";
@@ -305,6 +307,7 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 7RA755DD97;
+				GCC_VERSION = "";
 				HEADER_SEARCH_PATHS = /Users/Raph/Documents/Gamagora/Synthese/Synthese2/googletest/googletest/include;
 				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)/googletest/build/lib";
 				MACOSX_DEPLOYMENT_TARGET = 10.14;
@@ -317,6 +320,7 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 7RA755DD97;
+				GCC_VERSION = "";
 				HEADER_SEARCH_PATHS = /Users/Raph/Documents/Gamagora/Synthese/Synthese2/googletest/googletest/include;
 				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)/googletest/build/lib";
 				MACOSX_DEPLOYMENT_TARGET = 10.14;
