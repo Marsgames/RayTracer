@@ -63,6 +63,9 @@ TEST(IntersectFunc, SimpleIntersect)
     // Intersection à droite
     Intersect(Rayon(Vector3(20, 40, 0), Vector3(0, -1, 0)), sphere, result);
     EXPECT_EQ(true, result.intersect);
+    
+    Intersect(Rayon(Vector3(500, 500, 0), Vector3(0, 0, -1)), Sphere(Vector3(500, 500, -100), 10), result);
+    EXPECT_EQ(true, result.intersect);
 }
 
 TEST(IntersectFunc, TestsEva)
