@@ -14,37 +14,64 @@
 using std::to_string;
 
 class Vector3 {
+private:
+    double m_x, m_y, m_z;
 public:
-    double x, y, z;
-        
     Vector3(){};
     Vector3(double x, double y, double z)
     {
-        this->x = x;
-        this->y = y;
-        this->z = z;
+        m_x = x;
+        m_y = y;
+        m_z = z;
     };
     Vector3(int x, int y, int z)
     {
-        this->x = x;
-        this->y = y;
-        this->z = z;
+        m_x = x;
+        m_y = y;
+        m_z = z;
     };
     
     void Print() const
     {
-        std::cout << "vector : (" << x << ", " << y << ", " << z << ")" << std::endl;
+        std::cout << "vector : (" << m_x << ", " << m_y << ", " << m_z << ")" << std::endl;
     };
     
     std::string ToString()
     {
-        return "(" + to_string(int(x)) + ", " + to_string(int(y)) + ", " + to_string(int(z)) + ")";
+        return "(" + to_string(int(m_x)) + ", " + to_string(int(m_y)) + ", " + to_string(int(m_z)) + ")";
+    }
+    
+    double GetX() const
+    {
+        return m_x;
+    }
+    void SetX(double x)
+    {
+        m_x = x;
+    }
+    
+    double GetY() const
+    {
+        return m_y;
+    }
+    void SetY(double y)
+    {
+        m_y = y;
+    }
+    
+    double GetZ() const
+    {
+        return m_z;
+    }
+    void SetZ(double z)
+    {
+        m_z = z;
     }
 };
 
 double Dot(const Vector3& pA, const Vector3& pB)
 {
-    return pA.x * pB.x + pA.y * pB.y + pA.z * pB.z;
+    return pA.GetX() * pB.GetX() + pA.GetY() * pB.GetY() + pA.GetZ() * pB.GetZ();
 }
 
 double Dist2(const Vector3& pA)
@@ -55,57 +82,57 @@ double Dist2(const Vector3& pA)
 Vector3 Normalize(const Vector3& v){
     double norme = sqrt(Dot(v, v));
     
-    return Vector3(v.x / norme, v.y / norme, v.z / norme);
+    return Vector3(v.GetX() / norme, v.GetY() / norme, v.GetZ() / norme);
 }
 
 Vector3 operator*=(const Vector3 leftV, const Vector3 rightV)
 {
-    return Vector3{leftV.x * rightV.x, leftV.y * rightV.y, leftV.z * rightV.z};
+    return Vector3{leftV.GetX() * rightV.GetX(), leftV.GetY() * rightV.GetY(), leftV.GetZ() * rightV.GetZ()};
 }
 
 Vector3 operator+(const Vector3 leftV, const Vector3 rightV)
 {
-    return Vector3{leftV.x + rightV.x, leftV.y + rightV.y, leftV.z + rightV.z};
+    return Vector3{leftV.GetX() + rightV.GetX(), leftV.GetY() + rightV.GetY(), leftV.GetZ() + rightV.GetZ()};
 }
 
 Vector3 operator*(const Vector3 leftV, const Vector3 rightV)
 {
-    return Vector3{leftV.x * rightV.x, leftV.y * rightV.y, leftV.z * rightV.z};
+    return Vector3{leftV.GetX() * rightV.GetX(), leftV.GetY() * rightV.GetY(), leftV.GetZ() * rightV.GetZ()};
 }
 Vector3 operator*(const Vector3 leftV, const double rightV)
 {
-    return Vector3{leftV.x * rightV, leftV.y * rightV, leftV.z * rightV};
+    return Vector3{leftV.GetX() * rightV, leftV.GetY() * rightV, leftV.GetZ() * rightV};
 }
 
 Vector3 operator-(const Vector3 leftV, const Vector3 rightV)
 {
-    return Vector3{leftV.x - rightV.x, leftV.y - rightV.y, leftV.z - rightV.z};
+    return Vector3{leftV.GetX() - rightV.GetX(), leftV.GetY() - rightV.GetY(), leftV.GetZ() - rightV.GetZ()};
 }
 
 bool operator<(const Vector3 leftV, const Vector3 rightV)
 {
-    return (leftV.x + leftV.y + leftV.z) < (rightV.x + rightV.y + rightV.z);
+    return (leftV.GetX() + leftV.GetY() + leftV.GetZ()) < (rightV.GetX() + rightV.GetY() + rightV.GetZ());
 }
 
 bool operator>(const Vector3 leftV, const Vector3 rightV)
 {
-    return (leftV.x + leftV.y + leftV.z) > (rightV.x + rightV.y + rightV.z);
+    return (leftV.GetX() + leftV.GetY() + leftV.GetZ()) > (rightV.GetX() + rightV.GetY() + rightV.GetZ());
 }
 
 Vector3 Negate(const Vector3& v)
 {
-    return Vector3{v.x * -1, v.y * -1, v.z * -1};
+    return Vector3{v.GetX() * -1, v.GetY() * -1, v.GetZ() * -1};
 }
 
 double GetDistance(const Vector3& pointA, const Vector3& pointB)
 {
-    return sqrt(((pointA.x - pointB.x) * (pointA.x - pointB.x)) + ((pointA.y - pointB.y) * (pointA.y - pointB.y)) + ((pointA.z - pointB.z) * (pointA.z - pointB.z)));
+    return sqrt(((pointA.GetX() - pointB.GetX()) * (pointA.GetX() - pointB.GetX())) + ((pointA.GetY() - pointB.GetY()) * (pointA.GetY() - pointB.GetY())) + ((pointA.GetZ() - pointB.GetZ()) * (pointA.GetZ() - pointB.GetZ())));
 }
 
 
 
 void Print(const Vector3& v)
 {
-    std::cout << "vector : (" << v.x << ", " << v.y << ", " << v.z << ")" << std::endl;
+    std::cout << "vector : (" << v.GetX() << ", " << v.GetY() << ", " << v.GetZ() << ")" << std::endl;
 
 }

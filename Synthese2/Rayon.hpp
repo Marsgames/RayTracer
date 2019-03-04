@@ -12,13 +12,22 @@
 
 class Rayon
 {
+private:
+    Vector3 m_origine, m_direction;
 public:
-    Vector3 origine;
-    Vector3 direction;
-    
     Rayon(Vector3 origine, Vector3 direction)
     {
-        this->origine = origine;
-        this->direction = Normalize(direction);
+        m_origine = origine;
+        m_direction = Normalize(direction);
     };
+    
+    Vector3 GetOrigine() const
+    {
+        return m_origine;
+    }
+    
+    Vector3 GetDirection() const
+    {
+        return m_direction;
+    }
 };

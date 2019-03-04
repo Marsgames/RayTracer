@@ -22,26 +22,25 @@ enum BoxType{
 
 class Box
 {
-public:
-    Vector3 pMin;
-    Vector3 pMax;
-    BoxType source;
-    Sphere mySphere;
-//    vector<Box> boxesList;
+protected:
+    Vector3 m_pMin, m_pMax;
+    BoxType m_source;
+    Sphere m_mySphere;
     
+public:
     Box(){};
     Box(const Sphere& sphere){
-        pMin = Vector3(sphere.origine.x - sphere.rayon, sphere.origine.y - sphere.rayon, sphere.origine.z - sphere.rayon);
-        pMax = Vector3(sphere.origine.x + sphere.rayon, sphere.origine.y + sphere.rayon, sphere.origine.z + sphere.rayon);
-        source = sphereType;
-        mySphere = sphere;
+        m_pMin = Vector3(sphere.GetOrigine().GetX() - sphere.GetRayon(), sphere.GetOrigine().GetY() - sphere.GetRayon(), sphere.GetOrigine().GetZ() - sphere.GetRayon());
+        m_pMax = Vector3(sphere.GetOrigine().GetX() + sphere.GetRayon(), sphere.GetOrigine().GetY() + sphere.GetRayon(), sphere.GetOrigine().GetZ() + sphere.GetRayon());
+        m_source = sphereType;
+        m_mySphere = sphere;
     };
     
     Box(const Box& b1, const Box& b2)
     {
-        pMin = b1.pMin < b2.pMin ? b1.pMin : b2.pMin;
-        pMax = b1.pMax > b2.pMax ? b1.pMax : b2.pMax;
-        source = boundingBoxType;
+        m_pMin = b1.m_pMin < b2.m_pMin ? b1.m_pMin : b2.m_pMin;
+        m_pMax = b1.m_pMax > b2.m_pMax ? b1.m_pMax : b2.m_pMax;
+        m_source = boundingBoxType;
     };
     
 //    Box(const Box& b1, const Box& b2, const vector<Box>& boxes)
@@ -55,16 +54,51 @@ public:
     void Print() const
     {
         cout << "Box : " << endl;
-        cout << "\tCenter : " << ((pMax.x - pMin.x) + (pMax.y - pMin.y) + (pMax.z - pMin.z)) / 2 << endl;
+        cout << "\tCenter : " << ((m_pMax.GetX() - m_pMin.GetX()) + (m_pMax.GetY() - m_pMin.GetY()) + (m_pMax.GetZ() - m_pMin.GetZ())) / 2 << endl;
         cout << "\tpMin : ";
-        pMin.Print();
+        m_pMin.Print();
         cout << endl;
         cout << "\tpMax : ";
-        pMax.Print();
+        m_pMax.Print();
         cout << endl;
     }
     
     // (pMax - pMin) / 2 --> centre
+    Vector3 GetPMin() const
+    {
+        return m_pMin;
+    }
+    void SetPMin(Vector3 pMin)
+    {
+        m_pMin = pMin;
+    }
+    
+    Vector3 GetPMax() const
+    {
+        return m_pMax;
+    }
+    void SetPMax(Vector3 pMax)
+    {
+        m_pMax = pMax;
+    }
+    
+    BoxType GetSource() const
+    {
+        return m_source;
+    }
+    void SetSource(BoxType source)
+    {
+        m_source = source;
+    }
+    
+    Sphere GetMySphere() const
+    {
+        return m_mySphere;
+    }
+    void SetMySphere(Sphere mySphere)
+    {
+        m_mySphere = mySphere;
+    }
     
 };
 
@@ -73,26 +107,26 @@ bool operator<(const Box& bA, const Box& bB)
     // Pas bon car se base sur le centre de la sphère
 //    return (((bA.pMax.x - bA.pMin.x) + (bA.pMax.y - bA.pMin.y) + (bA.pMax.z - bA.pMin.z)) / 2) < (((bB.pMax.x - bB.pMin.x) + (bB.pMax.y - bB.pMin.y) + (bB.pMax.z - bB.pMin.z)) / 2);
     
-    return bA.pMin < bB.pMin;
+    return bA.GetPMin() < bB.GetPMin();
 }
 
 bool IntersectBox(const Rayon& ray, const Box& box)
 {
     // Division pour éviter une multiplication plus tard
-    const float rinvx = 1 / ray.direction.x;
-    const float rinvy = 1 / ray.direction.y;
-    const float rinvz = 1 / ray.direction.z;
+    const float rinvx = 1 / ray.GetDirection().GetX();
+    const float rinvy = 1 / ray.GetDirection().GetY();
+    const float rinvz = 1 / ray.GetDirection().GetZ();
     
     // X slab Max box size
-    const float tx1 = (box.pMin.x - ray.origine.x) * rinvx;
-    const float tx2 = (box.pMax.x - ray.origine.x) * rinvx;
+    const float tx1 = (box.GetPMin().GetX() - ray.GetOrigine().GetX()) * rinvx;
+    const float tx2 = (box.GetPMax().GetX() - ray.GetOrigine().GetX()) * rinvx;
     
     const float tminX = tx1 < tx2 ? tx1 : tx2;
     const float tmaxX = tx1 > tx2 ? tx1 : tx2;
     
     // Y slab
-    const float ty1 = (box.pMin.y - ray.origine.y) * rinvy;
-    const float ty2 = (box.pMax.y - ray.origine.y) * rinvy;
+    const float ty1 = (box.GetPMin().GetY() - ray.GetOrigine().GetY()) * rinvy;
+    const float ty2 = (box.GetPMax().GetY() - ray.GetOrigine().GetY()) * rinvy;
     
     const float tminY = max(tminX, (min(ty1, ty2)));
     const float tmaxY = min(tmaxX, (max(ty1, ty2)));
@@ -100,8 +134,8 @@ bool IntersectBox(const Rayon& ray, const Box& box)
 //    const float tmaxY = tmaxX < (ty1 > ty2 ? ty1 : ty2) ? tmaxX : (ty1 > ty2 ? ty1 : ty2);
     
     // Z slab
-    const float tz1 = (box.pMin.z - ray.origine.z) * rinvz;
-    const float tz2 = (box.pMax.z - ray.origine.z) * rinvz;
+    const float tz1 = (box.GetPMin().GetZ() - ray.GetOrigine().GetZ()) * rinvz;
+    const float tz2 = (box.GetPMax().GetZ() - ray.GetOrigine().GetZ()) * rinvz;
     
     const float tminZ = max(tminY, (min(tz1, tz2)));
     const float tmaxZ = min(tmaxY, (max(tz1, tz2)));
@@ -123,7 +157,7 @@ void CreateSpheresBoxes(vector<Box>& boxesScene, const vector<Sphere>& scene)
 //    int i = 1;
     for (const Sphere& sphere : scene)
     {
-        if (sphere.nom == "lampe")
+        if (sphere.GetName() == "lampe")
         {
             break;
         }

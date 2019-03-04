@@ -24,17 +24,17 @@ TEST(IntersectFunc, SimpleIntersect)
     Intersect(rayon, sphere, result);
     EXPECT_EQ(true, result.intersect);
     EXPECT_EQ(10, result.distance);
-    EXPECT_EQ(10, result.point.x);
-    EXPECT_EQ(0, result.point.y);
-    EXPECT_EQ(0, result.point.z);
+    EXPECT_EQ(10, result.point.GetX());
+    EXPECT_EQ(0, result.point.GetY());
+    EXPECT_EQ(0, result.point.GetZ());
     
     // Intersection si le rayon part de l'interieur de la sphère
     Intersect(rayon, Sphere{Vector3{0, 0, 0}, 10}, result);
     EXPECT_EQ(true, result.intersect);
     EXPECT_EQ(10, result.distance);
-    EXPECT_EQ(10, result.point.x);
-    EXPECT_EQ(0, result.point.y);
-    EXPECT_EQ(0, result.point.z);
+    EXPECT_EQ(10, result.point.GetX());
+    EXPECT_EQ(0, result.point.GetY());
+    EXPECT_EQ(0, result.point.GetZ());
     
     // Pas d'intersection, le rayon est dans le mauvais sens
     Intersect(Rayon(Vector3{0, 0, 0}, Vector3{-1, 0, 0}), sphere, result);
@@ -44,9 +44,9 @@ TEST(IntersectFunc, SimpleIntersect)
     Intersect(Rayon(Vector3{0, 10, 0}, Vector3{1, 0, 0}), sphere, result);
     EXPECT_EQ(true, result.intersect);
     EXPECT_EQ(20, result.distance);
-    EXPECT_EQ(20, result.point.x);
-    EXPECT_EQ(10, result.point.y);
-    EXPECT_EQ(0, result.point.z);
+    EXPECT_EQ(20, result.point.GetX());
+    EXPECT_EQ(10, result.point.GetY());
+    EXPECT_EQ(0, result.point.GetZ());
     
     // Intersection derrière
     Intersect(Rayon(Vector3{40, 0, 0}, Vector3{-1, 0, 0}), sphere, result);
@@ -78,13 +78,13 @@ TEST(IntersectFunc, TestsEva)
     
     EXPECT_EQ(result.intersect, true);
     EXPECT_GE(result.distance, 0);
-    EXPECT_EQ(result.distance, sphere.rayon);
+    EXPECT_EQ(result.distance, sphere.GetRayon());
     
-    sphere.origine = Vector3(-200, -200, -200);
+    sphere.SetOrigine(Vector3(-200, -200, -200));
     Intersect(rayon, sphere, result);
     EXPECT_EQ(result.intersect, false);
     
-    sphere.origine = Vector3(200, 200, 200);
+    sphere.SetOrigine(Vector3(200, 200, 200));
     Intersect(rayon, sphere, result);
     EXPECT_EQ(result.intersect, true);
     EXPECT_GE(result.distance, 0);

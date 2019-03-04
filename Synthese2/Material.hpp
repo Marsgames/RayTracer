@@ -11,7 +11,7 @@
 #include "Vector3.hpp"
 #include "Color.hpp"
 
-enum EMaterials
+enum EMaterialType
 {
     DifuseType,
     MirrorType,
@@ -22,22 +22,22 @@ enum EMaterials
 class Material
 {
 private:
-    EMaterials m_material;
+    EMaterialType m_materialType;
     Color m_color;
     float m_albedo;
     
 public:
     Material(){}
-    Material(const EMaterials material, const Color color)
+    Material(const EMaterialType material, const Color color)
     {
-        m_material = material;
+        m_materialType = material;
         m_color = color;
         SetAlbedo();
     }
     
-    EMaterials GetMaterial() const
+    EMaterialType GetMaterialType() const
     {
-        return m_material;
+        return m_materialType;
     }
     
     Color GetColor() const
@@ -53,7 +53,7 @@ public:
 private:
     void SetAlbedo()
     {
-        switch (m_material)
+        switch (m_materialType)
         {
             case DifuseType:
                 m_albedo = 0;

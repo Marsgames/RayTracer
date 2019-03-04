@@ -8,16 +8,71 @@
 
 #pragma once
 
+#include <algorithm>
 #include <iostream>
 
 using std::to_string;
+using std::string;
+using std::tolower;
 
 class Color {
-public:
-    double r, g, b;
+private:
+    double m_r, m_g, m_b;
     
-    std::string ToString()
+public:
+    Color() {}
+    
+    Color(double r, double g, double b)
     {
-        return "(" + to_string(int(r)) + ", " + to_string(int(g)) + ", " + to_string(int(b)) + ")";
+        m_r = r;
+        m_g = g;
+        m_b = b;
+    }
+    
+//    Color(string color)
+//    {
+//        std::transform(color.begin(), color.end(), color.begin(), tolower);
+//
+//        switch (color)
+//        {
+//            case "red", "rouge":
+//                m_r = 255;
+//                m_g = 0;
+//                m_b = 0;
+//                break;
+//
+//        }
+//    }
+    
+    double GetR() const
+    {
+        return m_r;
+    }
+    double GetG() const
+    {
+        return m_g;
+    }
+    double GetB() const
+    {
+        return m_b;
+    }
+    
+    void SetR(double r)
+    {
+        m_r = r;
+    }
+    void SetG(double g)
+    {
+        m_g = g;
+    }
+    void SetB(double b)
+    {
+        m_b = b;
+    }
+    
+    
+    string ToString()
+    {
+        return "(" + to_string(int(m_r)) + ", " + to_string(int(m_g)) + ", " + to_string(int(m_b)) + ")";
     }
 };

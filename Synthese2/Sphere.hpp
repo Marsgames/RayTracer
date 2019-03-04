@@ -31,25 +31,31 @@ struct Intersection{
 //};
 
 class Sphere{
-public:
-    Vector3 origine;
-    double rayon;
+private:
+    Vector3 m_origine;
+    double m_rayon;
     Material m_material;
-//    Color couleur;
-    string nom;
-//    int debugSphere;
-//    SphereType type;
+    string m_nom;
+public:
+//    Vector3 origine;
+//    double rayon;
+//    Material m_material;
+////    Color couleur;
+//    string nom;
+////    int debugSphere;
+////    SphereType type;
     
     Sphere(){};
     Sphere(const Vector3& origine, const double& rayon){
-        this->origine = origine;
-        this->rayon = rayon;
+        m_origine = origine;
+        m_rayon = rayon;
     };
+    
     Sphere(const Vector3& origine, const double rayon, const Material& material, const string nom){
-        this->origine = origine;
-        this->rayon = rayon;
+        m_origine = origine;
+        m_rayon = rayon;
         m_material = material;
-        this->nom = nom;
+        m_nom = nom;
     };
 //    Sphere(const Vector3& origine, const double rayon, const Material& material, const string nom){
 //        this->origine = origine;
@@ -60,18 +66,42 @@ public:
 //    };
     
     Sphere(const Vector3& origine, const double rayon, const Material& material, const string nom, int isLight){
-        this->origine = origine;
-        this->rayon = rayon;
+        m_origine = origine;
+        m_rayon = rayon;
         m_material = material;
-        this->nom = nom;
+        m_nom = nom;
 //        this->type = 0 == isLight ? lumiereType : miroirType;
     };
+    
+    Vector3 GetOrigine() const
+    {
+        return m_origine;
+    }
+    void SetOrigine(Vector3 origine)
+    {
+        m_origine = origine;
+    }
+    
+    double GetRayon() const
+    {
+        return m_rayon;
+    }
+    
+    Material GetMaterial() const
+    {
+        return m_material;
+    }
+    
+    string GetName() const
+    {
+        return m_nom;
+    }
 };
 
 void Intersect(const Rayon& rayon, const Sphere& sphere, Intersection& myRes)
 {
-    const double B = 2 * (Dot(rayon.origine, rayon.direction) - Dot(sphere.origine, rayon.direction));
-    const double C = Dist2(sphere.origine - rayon.origine) - (sphere.rayon * sphere.rayon);
+    const double B = 2 * (Dot(rayon.GetOrigine(), rayon.GetDirection()) - Dot(sphere.GetOrigine(), rayon.GetDirection()));
+    const double C = Dist2(sphere.GetOrigine() - rayon.GetOrigine()) - (sphere.GetRayon() * sphere.GetRayon());
     const double delta = (B * B) - 4 * C;
     
     myRes.intersect = false;
@@ -97,5 +127,5 @@ void Intersect(const Rayon& rayon, const Sphere& sphere, Intersection& myRes)
         myRes.distance = inter2;
     }
     
-    myRes.point = rayon.origine + rayon.direction * myRes.distance;
+    myRes.point = rayon.GetOrigine() + rayon.GetDirection() * myRes.distance;
 }

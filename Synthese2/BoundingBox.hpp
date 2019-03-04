@@ -18,25 +18,28 @@ public:
     Box bB;
     bool isLeave = false;
     
-    BoundingBox(){};
+    BoundingBox(){}
+    
     BoundingBox(const Box& leave)
     {
         isLeave = true;
-    };
+    }
+    
     BoundingBox(vector<Box>& boxes)
     {
        CreateTree(boxes);
-    };
+    }
+    
     BoundingBox(const Box& firstBox, const Box& secondBox)
     {
         bA = firstBox;
         bB = secondBox;
-    };
+    }
     
     void CreateTree(vector<Box>& boxes)
     {
-        pMin = boxes[0].pMin;
-        pMax = boxes[0].pMax;
+        m_pMin = boxes[0].GetPMin();
+        m_pMax = boxes[0].GetPMax();
         if (1 == boxes.size())
         {
             bA = BoundingBox(boxes[0]);
@@ -45,36 +48,36 @@ public:
         
         for (const Box& b : boxes)
         {
-            if (pMin.x > b.pMin.x)
+            if (m_pMin.GetX() > b.GetPMin().GetX())
             {
-                pMin.x = b.pMin.x;
+                m_pMin.SetX(b.GetPMin().GetX());
             }
-            if (pMin.y > b.pMin.y)
+            if (m_pMin.GetY() > b.GetPMin().GetY())
             {
-                pMin.y = b.pMin.y;
+                m_pMin.SetY(b.GetPMin().GetY());
             }
-            if (pMin.z > b.pMin.z)
+            if (m_pMin.GetZ() > b.GetPMin().GetZ())
             {
-                pMin.z = b.pMin.z;
+                m_pMin.SetZ(b.GetPMin().GetZ());
             }
             
-            if (pMax.x < b.pMax.x)
+            if (m_pMax.GetX() < b.GetPMax().GetX())
             {
-                pMax.x = b.pMax.x;
+                m_pMax.SetX(b.GetPMax().GetX());
             }
-            if (pMax.y < b.pMax.y)
+            if (m_pMax.GetY() < b.GetPMax().GetY())
             {
-                pMax.y = b.pMax.y;
+                m_pMax.SetY(b.GetPMax().GetY());
             }
-            if (pMax.z < b.pMax.z)
+            if (m_pMax.GetZ() < b.GetPMax().GetZ())
             {
-                pMax.z = b.pMax.z;
+                m_pMax.SetZ(b.GetPMax().GetZ());
             }
         }
         
         sort(boxes.begin(), boxes.end());
         
-        source = boundingBoxType;
+        m_source = boundingBoxType;
         
         vector<Box> list1stPart;
         for (int i = 0; i < boxes.size() / 2; i++)
@@ -90,10 +93,10 @@ public:
         
 //        bA = BoundingBox(list1stPart[0], list1stPart[list1stPart.size() - 1], list1stPart);
         bA = BoundingBox(list1stPart);
-        bA.source = boundingBoxType;
+        bA.SetSource(boundingBoxType);
 //        bB = BoundingBox(list2ndPart[0], list2ndPart[list2ndPart.size() - 1], list2ndPart);
         bB = BoundingBox(list2ndPart);
-        bB.source = boundingBoxType;
+        bB.SetSource(boundingBoxType);
     };
 };
 
@@ -101,9 +104,9 @@ bool IntersectBBox(const Rayon& ray, const BoundingBox& bBox)
 {
     if (bBox.isLeave)
     {
-        cout << bBox.mySphere.nom << endl;
+        cout << bBox.GetMySphere().GetName() << endl;
         Intersection inter;
-        Intersect(ray, bBox.mySphere, inter);
+        Intersect(ray, bBox.GetMySphere(), inter);
         return inter.intersect;
     }
     

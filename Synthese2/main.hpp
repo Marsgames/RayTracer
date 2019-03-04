@@ -22,9 +22,9 @@ void DebugIntersect(const Intersection res)
     cout << "--------------------" << endl;
     cout << "intersect : " << res.intersect << endl;
     cout << "distance : " << res.distance << endl;
-    cout << "x : " << res.point.x << endl;
-    cout << "y : " << res.point.y << endl;
-    cout << "z : " << res.point.z << endl;
+    cout << "x : " << res.point.GetX() << endl;
+    cout << "y : " << res.point.GetY() << endl;
+    cout << "z : " << res.point.GetZ() << endl;
 }
 
 //typedef vector<vector<Vector3>> V3Tab;
