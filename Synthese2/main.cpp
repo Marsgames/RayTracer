@@ -39,12 +39,16 @@
 //}
 
 
-//Light lumiere = Light{Vector3{0, 0, 0}, 1250};
-Light lumiere = Light{Vector3{0, 0, 0}, 10500};
+Light lumiere = Light{Vector3{0, 0, 0}, 1250};
+//Light lumiere = Light{Vector3{-230, -230, 0}, 1050};
 //Light lumiere = Light{Vector3{0, 250, 250}, 1250};
+//Light lumiere = Light{Vector3{0, -730, -730}, 1250};
+
 
 // Lumière scene guillaume
 //Light lumiere = Light{Vector3(200, 600, 150)};
+
+Camera ecran = Camera(Vector3{0, 500, 500}, 1000, 1000, Vector3(1., 0., 0.));
 
 // Lampe pour la scène avec les murs
 //    Light lumiere = Light{Vector3{-1000, 500, 500}, 1250};
@@ -58,7 +62,6 @@ int main(int argc, char* argv[])
     
     
 //    const Camera ecran = Camera(Vector3{0, 0, 0}, 1000, 1000);
-    const Camera ecran = Camera(Vector3{0, 0, 0}, 1000, 1000);
 
     // Ajouter un écran (tableau 2D de pixels) (origine 0, 0->10, 0->-10)
     // ajouter une sphère (origine 0, rayon 10)
@@ -138,25 +141,30 @@ int main(int argc, char* argv[])
 //    t15.join();
 //    t16.join();
     
-//    GenerateImages(0, 1, spheres, ecran, facteurLumiere);
+    GenerateImages(0, 1, spheres, ecran, facteurLumiere);
     
-    LaunchThreads(100, spheres, ecran, facteurLumiere);
+//    LaunchThreads(100, spheres, ecran, facteurLumiere);
     
     return 0;
 }
 
 //void ImageFromArray(const int& width, const int& height, const Image& pixelsArray, string& source = "/Users/Raph/Desktop/", string& nomImage = "imageSynthese.bmp")
-void ImageFromArray(const int width, const int height, const Image& pixelsArray, const string source, const string nomImage)
+void ImageFromArray(const Image& pixelsArray, const string source, const string nomImage)
 {
-    bitmap_image img(width, height);
+    bitmap_image img(ecran.GetWidth(), ecran.GetHeight());
     
-    for(int y = 0; y < height; y++)
+    for(int y = 0; y < ecran.GetHeight(); y++)
     {
-        for(int x = 0; x < width ; x++)
+        for(int x = 0; x < ecran.GetWidth() ; x++)
         {
-            double r = pixelsArray[x * width + y].r > 255 ? 255 : pixelsArray[x * width + y].r;
-            double g = pixelsArray[x * width + y].g > 255 ? 255 : pixelsArray[x * width + y].g;
-            double b = pixelsArray[x * width + y].b > 255 ? 255 : pixelsArray[x * width + y].b;
+            if (!((x * ecran.GetWidth() + y) < (ecran.GetWidth() * ecran.GetHeight())))
+            {
+                continue;
+            }
+//            cout << "index < indexMax - 1 : " << ((x * ecran.GetWidth() + y) < (ecran.GetWidth() * ecran.GetHeight())) ? "true" : "false" << endl;
+            double r = pixelsArray[x * ecran.GetWidth() + y].r > 255 ? 255 : pixelsArray[x * ecran.GetWidth() + y].r;
+            double g = pixelsArray[x * ecran.GetWidth() + y].g > 255 ? 255 : pixelsArray[x * ecran.GetWidth() + y].g;
+            double b = pixelsArray[x * ecran.GetWidth() + y].b > 255 ? 255 : pixelsArray[x * ecran.GetWidth() + y].b;
             
             if(r < 0 || g < 0 || b < 0)
             {
@@ -171,17 +179,20 @@ void ImageFromArray(const int width, const int height, const Image& pixelsArray,
     
     img.save_image(source + nomImage);
 //        img.save_image("imageSynthese.bmp");
-    cout << "image sauvegardée dans " << source + nomImage << " !" << endl;
+//    if (nomImage.find('0') != std::string::npos)
+//    {
+//        cout << "image sauvegardée dans " << source + nomImage << " !" << endl;
+//    }
 }
 
 void InitSpheres(Scene& spheres)
 {
-//    Sphere leftWall = Sphere(Vector3(-1e5 - 100.0, 360.0, 500.0), 1e5, Material(EMaterials::DifuseType, Color{255, 255, 0}), "Jaune");
-//    Sphere rightWall = Sphere(Vector3(-1e5 + 1380, 360.0, 500.0), 1e5, Material(EMaterials::DifuseType, Color{0, 0, 255}), "Bleu");
-//    Sphere topWall = Sphere(Vector3(640.0, -1e5 - 100, 500.0), 1e5, Material(EMaterials::DifuseType, Color{255, 20, 147}), "Rose");
-//    Sphere bottomWall = Sphere(Vector3(640.0, 1e5 + 820, 500.0), 1e5, Material(EMaterials::DifuseType, Color{255, 0, 0}), "Rouge");
-//    Sphere backWall = Sphere(Vector3(640.0, 360.0, 1e5 + 1100), 1e5, Material(EMaterials::DifuseType, Color{255, 255, 255}), "Blanc");
-//    Sphere frontWall = Sphere(Vector3(640.0, 360.0, -1e5 - 1), 1e5, Material(EMaterials::DifuseType, Color{255, 255, 255}), "Blanc");
+    Sphere leftWall = Sphere(Vector3(-1e5 - 100.0, 360.0, 500.0), 1e5, Material(EMaterials::DifuseType, Color{255, 255, 0}), "Jaune");
+    Sphere rightWall = Sphere(Vector3(-1e5 + 1380, 360.0, 500.0), 1e5, Material(EMaterials::DifuseType, Color{0, 0, 255}), "Bleu");
+    Sphere topWall = Sphere(Vector3(640.0, -1e5 - 100, 500.0), 1e5, Material(EMaterials::DifuseType, Color{255, 20, 147}), "Rose");
+    Sphere bottomWall = Sphere(Vector3(640.0, 1e5 + 820, 500.0), 1e5, Material(EMaterials::DifuseType, Color{255, 0, 0}), "Rouge");
+    Sphere backWall = Sphere(Vector3(640.0, 360.0, 1e5 + 1100), 1e5, Material(EMaterials::DifuseType, Color{255, 255, 255}), "Blanc");
+    Sphere frontWall = Sphere(Vector3(640.0, 360.0, -1e5 - 1), 1e5, Material(EMaterials::DifuseType, Color{255, 255, 255}), "Blanc");
     
 //    ///////// TEST SPHÈRES ////////
     // Sphere(position, rayon, couleur, nom)
@@ -200,7 +211,7 @@ void InitSpheres(Scene& spheres)
 //    spheres.push_back(backWall);
 //    spheres.push_back(frontWall);
 
-    spheres.push_back(Sphere(Vector3(lumiere.position.x, lumiere.position.y, lumiere.position.z), 5, Material(EMaterials::DifuseType, Color{255, 255, 255}), "lampe")); // blanc
+    spheres.push_back(Sphere(Vector3(lumiere.position.x, lumiere.position.y, lumiere.position.z), 5, Material(EMaterials::LightType, Color{255, 255, 255}), "lampe")); // blanc
 
 
 //    spheres.push_back(Sphere(Vector3(lumiere.position.x, lumiere.position.y, lumiere.position.z), 5, Color{255, 255, 255}, "lampe", 0)); // blanc
@@ -213,10 +224,13 @@ bool CanSeeLight(const Vector3& point, const Light& light, const Scene& scene)
     
     for (const Sphere& sphere : scene)
     {
-//        if (lumiereType == sphere.type)
-//        {
-//            continue;
-//        }
+        
+//        cout << "Le type de " << sphere.nom << " est : " << sphere.m_material.GetMaterial() << endl;
+        
+        if (EMaterials::LightType == sphere.m_material.GetMaterial())
+        {
+            continue;
+        }
 //        cout << "--------------" << endl;
 //        cout << "avant : (" << point.x << ", " << point.y << ", " << point.z << ")" << endl;
 //        cout << "après : (" << (point + (dirLampe * .01)).x << ", " << (point + (dirLampe * .01)).y << ", " << (point + (dirLampe * .01)).z << ")" << endl;
@@ -252,9 +266,9 @@ void SetLightning(const Vector3& point, const Light& light,  Image& image)
 //    double g = image[point.y][point.z].g * puissance;
 //    double b = image[point.y][point.z].b * puissance;
     
-    image[point.y * 1000 + point.z].r = image[point.y * 1000 + point.z].r * puissance;
-    image[point.y * 1000 + point.z].g = image[point.y * 1000 + point.z].g * puissance;
-    image[point.y * 1000 + point.z].b = image[point.y * 1000 + point.z].b * puissance;
+    image[point.y * ecran.GetHeight()  + point.z].r = image[point.y * ecran.GetHeight() + point.z].r * puissance;
+    image[point.y * ecran.GetHeight() + point.z].g = image[point.y * ecran.GetHeight() + point.z].g * puissance;
+    image[point.y * ecran.GetHeight() + point.z].b = image[point.y * ecran.GetHeight() + point.z].b * puissance;
 }
 
 int RunTests()
@@ -262,16 +276,18 @@ int RunTests()
     return RUN_ALL_TESTS();
 }
 
-void MoveLight (class Light& lumiere)
+void MoveLight (Light& lumiere, const Vector3 direction)
 {
-    lumiere.position.y += 5;
+    lumiere.position.x += direction.x;
+    lumiere.position.y += direction.y;
+    lumiere.position.z += direction.z;
 }
 
 void ClearImage (Image& imageArray, const Camera& ecran)
 {
-    for (int i = 0; i < ecran.height; i++)
+    for (int i = 0; i < ecran.GetHeight(); i++)
     {
-        for (int j = 0; j < ecran.width; j++)
+        for (int j = 0; j < ecran.GetWidth(); j++)
         {
             imageArray[i * j].r = 0;
             imageArray[i * j].g = 0;
@@ -294,8 +310,6 @@ void GenerateImages(const int firstImage, const int lastImage, Scene spheres, co
     
     for (int i = firstImage; i < lastImage; i++)
     {
-        cout << "nbSpheres : " << spheres.size() << endl;
-
         // Initialisation de l'écran
         //    for (float y = 0; y < ecran.height; y++)
         //    {
@@ -307,42 +321,68 @@ void GenerateImages(const int firstImage, const int lastImage, Scene spheres, co
         //    }
         
         //    vector<vector<Color>> image(tailleMap, vector<Color>(tailleMap, Color{255, 20, 147}));
-        Image image(ecran.height * ecran.width, Color{0, 0, 0});
+        Image image(ecran.GetHeight() * ecran.GetWidth(), Color{0, 0, 0});
         
         
-        for (int y = 0; y < ecran.height; y++)
+        for (int y = -ecran.GetHeight() / 2; y < ecran.GetHeight() / 2; y++)
         {
-            for (int z = 0; z < ecran.width; z++)
+            for (int z = -ecran.GetWidth() / 2; z < ecran.GetWidth() / 2; z++)
             {
                 double dist = INT_MAX;
                 Sphere sphere;
                 Intersection result;
                 for(const Sphere& sphereEnTest : spheres)
                 {
-                    const Rayon rayon = Rayon(ecran.position + Vector3(static_cast<int>(ecran.position.x), y, z), Vector3(1, 0, 0));
+                    const Rayon rayon = Rayon(ecran.GetPosition() + Vector3(static_cast<int>(ecran.GetPosition().x), y, z), ecran.GetDirection());
                     Intersect(rayon, sphereEnTest, result);
                     if(!result.intersect || result.distance >= dist)
                     {
                         continue;
                     }
                     
-                    dist = result.distance;
-                    sphere = sphereEnTest;
+//                    if(result.intersect && result.distance < dist)
+//                    {
+                        dist = result.distance;
+                        sphere = sphereEnTest;
+                        
+//                    }
+                    
+                    
                 }
                 if (INT_MAX != dist)
                 {
 //                    cout << "GetColor r : " << sphere.m_material.GetColor().ToString() << endl;
 
-                    image[y * ecran.height + z] = sphere.m_material.GetColor();
+//                    image[y * ecran.GetHeight() + z] = sphere.m_material.GetColor();
+                    
+                    int indexY = y + ecran.GetHeight() / 2;
+                    int indexZ = z + ecran.GetWidth() / 2;
+//                    cout << "-ecran.GetHeight() / 2 : " << -ecran.GetHeight() / 2 << endl;
+//                    cout << "y : "  << y << " | z : " << z << endl;
+//                    cout << "indexY : " << indexY << " | indexZ : " << indexZ << endl;
+//                    cout << "index : " << (indexY * ecran.GetHeight() + indexZ) << endl;
+//                    cout << "indexMax : " << ecran.GetHeight() * ecran.GetWidth() << endl;
+//                    cout << "index <= indexMax : " << ((indexY * ecran.GetHeight() + indexZ) <= ecran.GetHeight() * ecran.GetWidth()) << endl << endl;
+                    
+                    
+//                    cout << "1 : " << indexY * ecran.GetHeight() + indexZ << endl;
+//                    cout << "2 : " << y * ecran.GetHeight() + z << endl << endl;
+                    
+                    image[indexY * ecran.GetHeight() + indexZ] = sphere.m_material.GetColor();
                     
                     if (CanSeeLight(result.point, theLight, spheres))
                     {
                         SetLightning(result.point, theLight, image);
                     }else
                     {
-                        image[y * ecran.height + z].r = image[y * ecran.height + z].r * facteurLumiere;
-                        image[y * ecran.height + z].g = image[y * ecran.height + z].g * facteurLumiere;
-                        image[y * ecran.height + z].b = image[y * ecran.height + z].b * facteurLumiere;
+//                        cout << "result.point : " << result.point.ToString() << " | theLight : " << theLight.position.ToString() << endl;
+//                        image[y * ecran.GetHeight() + z].r = image[y * ecran.GetHeight() + z].r * facteurLumiere;
+//                        image[y * ecran.GetHeight() + z].g = image[y * ecran.GetHeight() + z].g * facteurLumiere;
+//                        image[y * ecran.GetHeight() + z].b = image[y * ecran.GetHeight() + z].b * facteurLumiere;
+                        
+                        image[indexY * ecran.GetHeight() + indexZ].r = image[indexY * ecran.GetHeight() + indexZ].r * facteurLumiere;
+                        image[indexY * ecran.GetHeight() + indexZ].g = image[indexY * ecran.GetHeight() + indexZ].g * facteurLumiere;
+                        image[indexY * ecran.GetHeight() + indexZ].b = image[indexY * ecran.GetHeight() + indexZ].b * facteurLumiere;
                     }
                     
                 }
@@ -393,12 +433,12 @@ void GenerateImages(const int firstImage, const int lastImage, Scene spheres, co
         
         const string nomImage = "image" + to_string(i) + ".bmp";
         const string source = "/Users/Raph/Desktop/TestSynthese/";
-        ImageFromArray(ecran.width, ecran.height, image, source, nomImage);
+        ImageFromArray(image, source, nomImage);
         //        ImageFromArray(ecran.height, ecran.width, image, source, nomImage);
         
 //        cout << "position light : " << theLight.position.y << endl;
         
-        MoveLight(theLight);
+        MoveLight(theLight, Vector3(0, 1, 0));
         spheres[6].origine = theLight.position;
         ClearImage(image, ecran);
     }
@@ -420,9 +460,15 @@ void LaunchThreads(const int nbImages, Scene& spheres, const Camera& ecran, cons
         std::thread t4(GenerateImages, i * 100 + 75, i * 100 + 100, std::ref(spheres), std::ref(ecran), facteurLumiere);
         
         t1.join();
+        cout << "t1 fini" << endl;
         t2.join();
+        cout << "t2 fini" << endl;
         t3.join();
+        cout << "t3 fini" << endl;
         t4.join();
+        cout << "t4 fini" << endl;
+        
+        cout << "Série " << i << " terminée" << endl;
     }
     
 }

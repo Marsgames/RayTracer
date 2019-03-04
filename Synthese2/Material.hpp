@@ -13,16 +13,16 @@
 
 enum EMaterials
 {
-    DifuseType = 0,
-    MirrorType = 100,
-    LightType = 0,
-    GlassType = 90
+    DifuseType,
+    MirrorType,
+    LightType,
+    GlassType
 };
 
 class Material
 {
 private:
-    EMaterials m_mataterial;
+    EMaterials m_material;
     Color m_color;
     float m_albedo;
     
@@ -30,24 +30,46 @@ public:
     Material(){}
     Material(const EMaterials material, const Color color)
     {
-        m_mataterial = material;
+        m_material = material;
         m_color = color;
-        m_albedo = material / 100;
+        SetAlbedo();
     }
     
-    EMaterials GetMaterial()
+    EMaterials GetMaterial() const
     {
-        return m_mataterial;
+        return m_material;
     }
     
-    Color GetColor()
+    Color GetColor() const
     {
         return m_color;
     }
     
-    float GetAlbedo()
+    float GetAlbedo() const
     {
         return m_albedo;
     }
     
+private:
+    void SetAlbedo()
+    {
+        switch (m_material)
+        {
+            case DifuseType:
+                m_albedo = 0;
+                break;
+                
+            case MirrorType:
+                m_albedo = 1;
+                break;
+                
+            case LightType:
+                m_albedo = 0;
+                break;
+                
+            case GlassType:
+                m_albedo = 9;
+                break;
+        }
+    }
 };

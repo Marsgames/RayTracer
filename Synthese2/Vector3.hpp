@@ -9,6 +9,9 @@
 #pragma once
 
 #include <math.h>
+#include <iostream>
+
+using std::to_string;
 
 class Vector3 {
 public:
@@ -32,6 +35,11 @@ public:
     {
         std::cout << "vector : (" << x << ", " << y << ", " << z << ")" << std::endl;
     };
+    
+    std::string ToString()
+    {
+        return "(" + to_string(int(x)) + ", " + to_string(int(y)) + ", " + to_string(int(z)) + ")";
+    }
 };
 
 double Dot(const Vector3& pA, const Vector3& pB)

@@ -12,14 +12,37 @@
 
 class Camera
 {
-public:
-    int height, width;
-    Vector3 position;
+private:
+    int m_height, m_width;
+    Vector3 m_position, m_direction;
     
-    Camera(const Vector3 position, const int height, const int width)
+public:
+    Camera(const Vector3 position, const int width, const int height, const Vector3 direction)
     {
-        this->position = position;
-        this->height = height;
-        this->width = width;
+        m_position = position;
+        m_height = height;
+        m_width = width;
+        m_direction = direction;
     };
+    
+    int GetHeight() const
+    {
+        return m_height;
+    }
+    
+    int GetWidth() const
+    {
+        return m_width;
+    }
+    
+    Vector3 GetPosition() const
+    {
+        return m_position;
+    }
+    
+    Vector3 GetDirection() const
+    {
+        return m_direction;
+    }
+    
 };
