@@ -100,7 +100,7 @@ public:
 
 void Intersect(const Rayon& rayon, const Sphere& sphere, Intersection& myRes)
 {
-    const double B = 2 * (Dot(rayon.GetOrigine(), rayon.GetDirection()) - Dot(sphere.GetOrigine(), rayon.GetDirection()));
+    const double B = 2 * (Vector3::Dot(rayon.GetOrigine(), rayon.GetDirection()) - Vector3::Dot(sphere.GetOrigine(), rayon.GetDirection()));
     const double C = Dist2(sphere.GetOrigine() - rayon.GetOrigine()) - (sphere.GetRayon() * sphere.GetRayon());
     const double delta = (B * B) - 4 * C;
     

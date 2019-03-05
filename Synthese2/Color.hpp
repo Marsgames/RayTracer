@@ -19,7 +19,7 @@ class Color {
 private:
     double m_r, m_g, m_b;
     
-public:
+public:    
     Color() {}
     
     Color(double r, double g, double b)
@@ -27,6 +27,13 @@ public:
         m_r = r;
         m_g = g;
         m_b = b;
+    }
+    
+    Color(Vector3 color)
+    {
+        m_r = color.GetX() * 255;
+        m_g = color.GetY() * 255;
+        m_b = color.GetZ() * 255;
     }
     
 //    Color(string color)

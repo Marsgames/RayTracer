@@ -18,7 +18,8 @@ public:
     Rayon(Vector3 origine, Vector3 direction)
     {
         m_origine = origine;
-        m_direction = Normalize(direction);
+//        m_direction = Normalize(direction);
+        m_direction = direction.Normalize();
     };
     
     Vector3 GetOrigine() const

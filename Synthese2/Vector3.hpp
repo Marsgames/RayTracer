@@ -14,6 +14,9 @@
 using std::to_string;
 
 class Vector3 {
+    
+//    double Dot(const Vector3& pA, const Vector3& pB);
+    
 private:
     double m_x, m_y, m_z;
 public:
@@ -45,7 +48,7 @@ public:
         std::cout << "vector : (" << m_x << ", " << m_y << ", " << m_z << ")" << std::endl;
     };
     
-    std::string ToString()
+    std::string ToString() const
     {
         return "(" + to_string(int(m_x)) + ", " + to_string(int(m_y)) + ", " + to_string(int(m_z)) + ")";
     }
@@ -76,23 +79,35 @@ public:
     {
         m_z = z;
     }
+    
+    Vector3 Normalize() const
+    {
+        double norme = sqrt(Vector3::Dot(*this, *this));
+        
+        return Vector3(this->m_x / norme, this->m_y / norme, this->m_z / norme);
+    }
+    
+    static double Dot(const Vector3& pA, const Vector3& pB)
+    {
+        return pA.GetX() * pB.GetX() + pA.GetY() * pB.GetY() + pA.GetZ() * pB.GetZ();
+    }
 };
 
-double Dot(const Vector3& pA, const Vector3& pB)
-{
-    return pA.GetX() * pB.GetX() + pA.GetY() * pB.GetY() + pA.GetZ() * pB.GetZ();
-}
+//double Dot(const Vector3& pA, const Vector3& pB)
+//{
+//    return pA.GetX() * pB.GetX() + pA.GetY() * pB.GetY() + pA.GetZ() * pB.GetZ();
+//}
 
 double Dist2(const Vector3& pA)
 {
-    return Dot(pA, pA);
+    return Vector3::Dot(pA, pA);
 }
 
-Vector3 Normalize(const Vector3& v){
-    double norme = sqrt(Dot(v, v));
-    
-    return Vector3(v.GetX() / norme, v.GetY() / norme, v.GetZ() / norme);
-}
+//Vector3 Normalize(const Vector3& v){
+//    double norme = sqrt(Dot(v, v));
+//    
+//    return Vector3(v.GetX() / norme, v.GetY() / norme, v.GetZ() / norme);
+//}
 
 Vector3 operator*=(const Vector3 leftV, const Vector3 rightV)
 {
