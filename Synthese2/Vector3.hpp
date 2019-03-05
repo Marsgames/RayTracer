@@ -18,18 +18,27 @@ private:
     double m_x, m_y, m_z;
 public:
     Vector3(){};
+    
     Vector3(double x, double y, double z)
     {
         m_x = x;
         m_y = y;
         m_z = z;
     };
+    
     Vector3(int x, int y, int z)
     {
         m_x = x;
         m_y = y;
         m_z = z;
     };
+    
+    Vector3(int x, int y)
+    {
+        m_x = x;
+        m_y = y;
+        m_z = 0;
+    }
     
     void Print() const
     {
@@ -88,6 +97,11 @@ Vector3 Normalize(const Vector3& v){
 Vector3 operator*=(const Vector3 leftV, const Vector3 rightV)
 {
     return Vector3{leftV.GetX() * rightV.GetX(), leftV.GetY() * rightV.GetY(), leftV.GetZ() * rightV.GetZ()};
+}
+
+Vector3 operator+=(const Vector3 leftV, const Vector3 rightV)
+{
+    return Vector3{leftV.GetX() + rightV.GetX(), leftV.GetY() + rightV.GetY(), leftV.GetZ() + rightV.GetZ()};
 }
 
 Vector3 operator+(const Vector3 leftV, const Vector3 rightV)

@@ -24,31 +24,22 @@
 #include "Material.hpp"
 
 
-//TEST(IntersectFunc, IntersectWork)
-//{
-//    Intersection result;
-//    const Rayon rayon = Rayon(Vector3{0, 0, 0}, Vector3{1, 0, 0});
-//    const Sphere sphere = Sphere{Vector3{20, 0, 0}, 10};
-//    Intersect(rayon, sphere, result);
-//    
-//    EXPECT_EQ(true, result.intersect);
-//    EXPECT_EQ(10, result.distance);
-//    EXPECT_EQ(10, result.point.x);
-//    EXPECT_EQ(0, result.point.y);
-//    EXPECT_EQ(0, result.point.z);
-//}
 
-
-//Light lumiere = Light{Vector3{0, 0, 0}, 1250};
-Light lumiere = Light{Vector3{-230, -230, 0}, 1050};
+//Light lumiere = Light{Vector3{10, 10, -10}, 1250};
+Light lumiere = Light{Vector3{0, 0, 0}, 1250};
+//Light lumiere = Light{Vector3{-230, -230, 0}, 1050};
 //Light lumiere = Light{Vector3{0, 250, 250}, 1250};
 //Light lumiere = Light{Vector3{0, -730, -730}, 1250};
 
 
 // Lumière scene guillaume
-//Light lumiere = Light{Vector3(200, 600, 150)};
+//Light lumiere = Light{Vector3(0, -450, 10), 1250};
+Camera ecran = Camera(Vector3{0, 0, 0}, 1000, 1000, Vector3(0, 0, -1), 1000);
 
-Camera ecran = Camera(Vector3{0, 0, 0}, 800, 400, Vector3(0, 0, -1));
+
+//Camera ecran = Camera(Vector3{500, 500, 0}, 1000, 1000, Vector3(0, 0, -1));
+const float facteurLumiere = .2;
+
 
 // Lampe pour la scène avec les murs
 //    Light lumiere = Light{Vector3{-1000, 500, 500}, 1250};
@@ -72,8 +63,7 @@ int main(int argc, char* argv[])
     Scene spheres;
     Boxes boxes;
     
-    const float facteurLumiere = 0.2;
-    
+
     InitSpheres(spheres);
     
     // Ajouter struct Material { Difuse (renvoie la couleur du materiaux), Mirror (rebondi et renvoi le prochain point touché), light (éclaire), glass (passe au travers (rajouter un effet "fumé" pour différentier avec "rien")}
@@ -81,8 +71,8 @@ int main(int argc, char* argv[])
     // Pour le miroir, si je tombe sur un miroir je traverse et pars dans le sens opposé
     // Pour la lumière, lui donner une intensité, diviser l'intensité par la distance
     // Désactiver le facteurLumière quand on fait l'éclairage indirect
-    GenerateImages(0, 1, spheres, ecran, facteurLumiere);
     
+    GenerateImages(0, 1, spheres, ecran, Vector3(1, 0, 0));
 //    LaunchThreads(100, spheres, ecran, facteurLumiere);
     
     return 0;
@@ -129,34 +119,35 @@ void ImageFromArray(const Image& pixelsArray, const string source, const string 
 
 void InitSpheres(Scene& spheres)
 {
-    Sphere leftWall = Sphere(Vector3(-1e5 - 100.0, 360.0, 500.0), 1e5, Material(EMaterialType::DifuseType, Color{255, 255, 0}), "Jaune");
-    Sphere rightWall = Sphere(Vector3(-1e5 + 1380, 360.0, 500.0), 1e5, Material(EMaterialType::DifuseType, Color{0, 0, 255}), "Bleu");
-    Sphere topWall = Sphere(Vector3(640.0, -1e5 - 100, 500.0), 1e5, Material(EMaterialType::DifuseType, Color{255, 20, 147}), "Rose");
-    Sphere bottomWall = Sphere(Vector3(640.0, 1e5 + 820, 500.0), 1e5, Material(EMaterialType::DifuseType, Color{255, 0, 0}), "Rouge");
-    Sphere backWall = Sphere(Vector3(640.0, 360.0, 1e5 + 1100), 1e5, Material(EMaterialType::DifuseType, Color{255, 255, 255}), "Blanc");
-    Sphere frontWall = Sphere(Vector3(640.0, 360.0, -1e5 - 1), 1e5, Material(EMaterialType::DifuseType, Color{255, 255, 255}), "Blanc");
-    
-//    spheres.push_back(Sphere(Vector3(500, 500, -150), 75, Material(EMaterials::DifuseType, Color{255, 0, 0}), "rouge")); // Rouge
-//    spheres.push_back(Sphere(Vector3(850, 100, -100), 50, Material(EMaterials::DifuseType, Color{0, 255, 0}), "verte")); // Verte
-//    spheres.push_back(Sphere(Vector3(100, 800, -850), 50, Material(EMaterials::DifuseType, Color{0, 0, 255}), "bleu")); // Bleu
-//    spheres.push_back(Sphere(Vector3(800, 150, -250), 150, Material(EMaterials::DifuseType, Color{255, 0, 255}), "rose")); // Bleu éléctrique
-//    spheres.push_back(Sphere(Vector3(600, 600, -400), 100, Material(EMaterials::DifuseType, Color{0, 255, 255}), "bleuCiel")); // Bleu ciel
-//    spheres.push_back(Sphere(Vector3(500, 500, -950), 200, Material(EMaterials::DifuseType, Color{255, 255, 0}), "jaune")); // Jaune
+    Sphere leftWall = Sphere(Vector3(-1e5 - 600., 0., -00.), 1e5, Material(EMaterialType::DifuseType, Color{255, 255, 0}), "Jaune");
+    Sphere rightWall = Sphere(Vector3(1e5 + 600., 0., -00.), 1e5, Material(EMaterialType::DifuseType, Color{0, 0, 255}), "Bleu");
+    Sphere topWall = Sphere(Vector3(0., -1e5 - 600., -00.), 1e5, Material(EMaterialType::DifuseType, Color{255, 20, 147}), "Rose");
+    Sphere bottomWall = Sphere(Vector3(0., 1e5 + 600., -00.), 1e5, Material(EMaterialType::DifuseType, Color{255, 0, 0}), "Rouge");
+    Sphere backWall = Sphere(Vector3(0., 0., 1e5 + 1100), 1e5, Material(EMaterialType::DifuseType, Color{255, 255, 255}), "Blanc");
+    Sphere frontWall = Sphere(Vector3(0., 0., -1e5 - 1100), 1e5, Material(EMaterialType::DifuseType, Color{255, 255, 255}), "Blanc");
     
     
-    spheres.push_back(Sphere(Vector3(-250, 0, -100), 50, Material(EMaterialType::DifuseType, Color{0, 0, 255}), "bleu")); // Bleu
-    spheres.push_back(Sphere(Vector3(0, 0, -100), 50, Material(EMaterialType::DifuseType, Color{255, 255, 255}), "blanc")); // Bleu
-    spheres.push_back(Sphere(Vector3(250, 0, -100), 50, Material(EMaterialType::DifuseType, Color{255, 0, 0}), "rouge")); // Bleu
+    
+//    spheres.push_back(Sphere(Vector3(500 - 500, 500 - 500, -150), 75, Material(DifuseType, Color{255, 0, 0}), "rouge")); // Rouge
+//    spheres.push_back(Sphere(Vector3(850 - 500, 100 - 500, -100), 50, Material(DifuseType, Color{0, 255, 0}), "verte")); // Verte
+//    spheres.push_back(Sphere(Vector3(100 - 500, 800 - 500, -850), 50, Material(DifuseType, Color{0, 0, 255}), "bleu")); // Bleu
+//    spheres.push_back(Sphere(Vector3(800 - 500, 150 - 500, -250), 150, Material(DifuseType, Color{255, 0, 255}), "rose")); // Bleu éléctrique
+//    spheres.push_back(Sphere(Vector3(600 - 500, 600 - 500, -400), 100, Material(DifuseType, Color{0, 255, 255}), "bleuCiel")); // Bleu ciel
+//    spheres.push_back(Sphere(Vector3(500 - 500, 500 - 500, -950), 200, Material(DifuseType, Color{255, 255, 0}), "jaune")); // Jaune
     
     
-//    spheres.push_back(leftWall);
-//    spheres.push_back(rightWall);
-//    spheres.push_back(topWall);
-//    spheres.push_back(bottomWall);
-//    spheres.push_back(backWall);
-//    spheres.push_back(frontWall);
-
-    spheres.push_back(Sphere(Vector3(lumiere.GetPosition().GetX(), lumiere.GetPosition().GetY(), lumiere.GetPosition().GetZ()), 5, Material(EMaterialType::LightType, Color{255, 255, 255}), "lampe")); // blanc
+//    spheres.push_back(Sphere(Vector3(-250, 0, -100), 50, Material(EMaterialType::DifuseType, Color{0, 0, 255}), "bleu")); // Bleu
+//    spheres.push_back(Sphere(Vector3(0, 0, -100), 50, Material(EMaterialType::DifuseType, Color{255, 255, 255}), "blanc")); // Bleu
+//    spheres.push_back(Sphere(Vector3(250, 0, -100), 50, Material(EMaterialType::DifuseType, Color{255, 0, 0}), "rouge")); // Bleu
+//
+    spheres.push_back(leftWall);
+    spheres.push_back(rightWall);
+    spheres.push_back(topWall);
+    spheres.push_back(bottomWall);
+    spheres.push_back(frontWall);
+    spheres.push_back(backWall);
+    
+    spheres.push_back(Sphere(Vector3(lumiere.GetPosition().GetX(), lumiere.GetPosition().GetY(), lumiere.GetPosition().GetZ()), 5, Material(EMaterialType::LightType, Color{255, 0, 0}), "lampe")); // blanc
 
 
 //    spheres.push_back(Sphere(Vector3(lumiere.position.x, lumiere.position.y, lumiere.position.z), 5, Color{255, 255, 255}, "lampe", 0)); // blanc
@@ -230,9 +221,13 @@ int RunTests()
 
 void MoveLight (Light& lumiere, const Vector3 direction)
 {
-    lumiere.GetPosition().SetX(lumiere.GetPosition().GetX() + direction.GetX());
-    lumiere.GetPosition().SetY(lumiere.GetPosition().GetY() + direction.GetY());
-    lumiere.GetPosition().SetZ(lumiere.GetPosition().GetZ() + direction.GetZ());
+    lumiere.SetPosition(lumiere.GetPosition() + direction);
+}
+
+void MoveLight (Light& lumiere, const Vector3 direction, Scene spheres)
+{
+    lumiere.SetPosition(lumiere.GetPosition() + direction);
+    spheres[0].SetOrigine(spheres[0].GetOrigine() + Vector3(1, 0, 0));
 }
 
 void ClearImage (Image& imageArray, const Camera& ecran)
@@ -248,22 +243,21 @@ void ClearImage (Image& imageArray, const Camera& ecran)
     }
 }
 
-
-
-void GenerateImages(const int firstImage, const int lastImage, Scene spheres, const Camera& ecran, const float facteurLumiere)
+void GenerateImages(const int firstImage, const int lastImage, Scene spheres, const Camera& ecran, const Vector3& MoveLightDirection)
 {
-//    for (int i = 0; i < firstImage; i++)
-//    {
-//        MoveLight(lumiere);
-//    }
     Light theLight = lumiere;
     
-    theLight.GetPosition().SetY(theLight.GetPosition().GetY() + (1 * firstImage));
+    for (int i = 0; i < firstImage; i++)
+    {
+        MoveLight(theLight, MoveLightDirection);
+    }
+//    theLight.GetPosition().SetY(theLight.GetPosition().GetY() + (1 * firstImage));
     
 //    lumiere.position.y += 5 * firstImage;
     for (int i = firstImage; i < lastImage; i++)
     {
         Image image(ecran.GetWidth() * ecran.GetHeight(), Color{0, 0, 0});
+//        Image image(ecran.GetWidth() * ecran.GetHeight(), Color{44, 117, 255});
         for (int y = -ecran.GetHeight() / 2; y < ecran.GetHeight() / 2; y++)
         {
             for (int x = -ecran.GetWidth() / 2; x < ecran.GetWidth() / 2; x++)
@@ -275,9 +269,11 @@ void GenerateImages(const int firstImage, const int lastImage, Scene spheres, co
                 
                 for (const Sphere& sphereEnTest : spheres)
                 {
-                    // Rayon(Vector3 origine, Vector3 direction)
-                    const Rayon rayon = Rayon(ecran.GetPosition() + Vector3(x + 0., y + 0., ecran.GetPosition().GetZ()), ecran.GetDirection());
+                    // Position of the center of the camera + the x & y shift
+                    const Vector3 pointOnScreen = ecran.GetPosition() + Vector3(x + 0., y + 0., ecran.GetPosition().GetZ());
+                    const Rayon rayon = Rayon(pointOnScreen, ecran.GetFocalDirection(Vector3(x, y)));
                     Intersect(rayon, sphereEnTest, result);
+                    
                     if (!result.intersect || result.distance >= dist)
                     {
                         continue;
@@ -376,7 +372,7 @@ void GenerateImages(const int firstImage, const int lastImage, Scene spheres, co
         
 //        cout << "position light : " << theLight.position.y << endl;
         
-        MoveLight(theLight, Vector3(0, 1, 0));
+        MoveLight(theLight, MoveLightDirection);
         spheres[6].GetOrigine() = theLight.GetPosition();
         ClearImage(image, ecran);
     }
@@ -386,28 +382,51 @@ void GenerateImages(const int firstImage, const int lastImage, Scene spheres, co
 void LaunchThreads(const int nbImages, Scene& spheres, const Camera& ecran, const float facteurLumiere)
 {
     int _nbImages = nbImages;
-    while (0 != _nbImages % 100)
+    while (0 != _nbImages % 50)
     {
         _nbImages++;
     }
+    
+    Vector3 direction = Vector3(10, 0, 0);
 
-    for (int i = 0; i < (_nbImages / 25 / 4); i++)
+    // nbImages / images par thread / nb threads
+    for (int i = 0; i < (_nbImages / 5 / 10); i++)
     {
-        std::thread t1(GenerateImages, i * 100 + 0, i * 100 + 25, std::ref(spheres), std::ref(ecran), facteurLumiere);
-        std::thread t2(GenerateImages, i * 100 + 25, i * 100 + 50, std::ref(spheres), std::ref(ecran), facteurLumiere);
-        std::thread t3(GenerateImages, i * 100 + 50, i * 100 + 75, std::ref(spheres), std::ref(ecran), facteurLumiere);
-        std::thread t4(GenerateImages, i * 100 + 75, i * 100 + 100, std::ref(spheres), std::ref(ecran), facteurLumiere);
+        std::thread t1(GenerateImages, i * 50 + 0, i * 50 + 5, std::ref(spheres), std::ref(ecran), direction);
+        std::thread t2(GenerateImages, i * 50 + 5, i * 50 + 10, std::ref(spheres), std::ref(ecran), direction);
+        std::thread t3(GenerateImages, i * 50 + 10, i * 50 + 15, std::ref(spheres), std::ref(ecran), direction);
+        std::thread t4(GenerateImages, i * 50 + 15, i * 50 + 20, std::ref(spheres), std::ref(ecran), direction);
+        std::thread t5(GenerateImages, i * 50 + 20, i * 50 + 25, std::ref(spheres), std::ref(ecran), direction);
+        
+        std::thread t6(GenerateImages, i * 50 + 25, i * 50 + 30, std::ref(spheres), std::ref(ecran), direction);
+        std::thread t7(GenerateImages, i * 50 + 30, i * 50 + 35, std::ref(spheres), std::ref(ecran), direction);
+        std::thread t8(GenerateImages, i * 50 + 35, i * 50 + 40, std::ref(spheres), std::ref(ecran), direction);
+        std::thread t9(GenerateImages, i * 50 + 40, i * 50 + 45, std::ref(spheres), std::ref(ecran), direction);
+        std::thread t10(GenerateImages, i * 50 + 45, i * 50 + 50, std::ref(spheres), std::ref(ecran), direction);
         
         t1.join();
-        cout << "t1 fini" << endl;
+        cout << "Thread 1 terminé" << endl;
         t2.join();
-        cout << "t2 fini" << endl;
-        t3.join();
-        cout << "t3 fini" << endl;
-        t4.join();
-        cout << "t4 fini" << endl;
-        
-        cout << "Série " << i << " terminée" << endl;
+        cout << "Thread 2 terminé" << endl;
+t3.join();
+        cout << "Thread 3 terminé" << endl;
+t4.join();
+        cout << "Thread 4 terminé" << endl;
+t5.join();
+        cout << "Thread 5 terminé" << endl;
+
+        t6.join();
+        cout << "Thread 6 terminé" << endl;
+t7.join();
+        cout << "Thread 7 terminé" << endl;
+t8.join();
+        cout << "Thread 8 terminé" << endl;
+t9.join();
+        cout << "Thread 9 terminé" << endl;
+t10.join();
+        cout << "Thread 10 terminé" << endl;
+
+        cout << "Série " << i + 1 << " sur " << (_nbImages / 5 / 10) << " terminée" << endl;
     }
     
 }
