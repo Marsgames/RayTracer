@@ -8,13 +8,12 @@
 
 #pragma once
 
-#include "main.hpp"
-#include "Color.hpp"
 #include <iostream>
-#include "Rayon.hpp"
 #include <math.h>
-#include "Vector3.hpp"
-#include "Material.hpp"
+#include <Material.hpp>
+#include <Rayon.hpp>
+#include <Vector3.hpp>
+
 
 using namespace std;
 
@@ -36,16 +35,10 @@ private:
     double m_rayon;
     Material m_material;
     string m_nom;
-public:
-//    Vector3 origine;
-//    double rayon;
-//    Material m_material;
-////    Color couleur;
-//    string nom;
-////    int debugSphere;
-////    SphereType type;
     
+public:
     Sphere(){};
+    
     Sphere(const Vector3& origine, const double& rayon){
         m_origine = origine;
         m_rayon = rayon;
@@ -57,13 +50,6 @@ public:
         m_material = material;
         m_nom = nom;
     };
-//    Sphere(const Vector3& origine, const double rayon, const Material& material, const string nom){
-//        this->origine = origine;
-//        this->rayon = rayon;
-//        m_material = material;
-////        this->couleur = couleur;
-//        this->nom = nom;
-//    };
     
     Sphere(const Vector3& origine, const double rayon, const Material& material, const string nom, int isLight){
         m_origine = origine;
@@ -126,6 +112,6 @@ void Intersect(const Rayon& rayon, const Sphere& sphere, Intersection& myRes)
         myRes.intersect = true;
         myRes.distance = inter2;
     }
-    
+
     myRes.point = rayon.GetOrigine() + rayon.GetDirection() * myRes.distance;
 }

@@ -8,7 +8,7 @@
 
 #pragma once
 
-#include "Vector3.hpp"
+#include <Vector3.hpp>
 
 class Camera
 {
@@ -25,14 +25,14 @@ public:
         m_width = width;
 //        m_direction = Normalize(direction);
         m_direction = direction.Normalize();
-        if (focal < 0)
-        {
-            throw "Focal cannot be less than 0 !";
-        }
-        else
-        {
+//        if (focal < 0)
+//        {
+//            throw "Focal cannot be less than 0 !";
+//        }
+//        else
+//        {
             m_focal = focal;
-        }
+//        }
     };
     
     int GetHeight() const

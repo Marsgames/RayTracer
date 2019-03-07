@@ -203,4 +203,15 @@ TEST(CanSeeLightFunc, ComplexeTest)
     EXPECT_EQ(false, CanSeeLight(p1, lum, scene));
     p1 = Vector3(-100, 40, -27);
     EXPECT_EQ(true, CanSeeLight(p1, lum, scene));
+    
+//    scene.push_back(Sphere(Vector3(21, 36, -28), 25));
+//
+//    p1 = Vector3(0, 0, 0);
+//    EXPECT_EQ(false, CanSeeLight(p1, lum, scene));
+//    p1 = Vector3(76, 54, -48);
+//    EXPECT_EQ(false, CanSeeLight(p1, lum, scene));
+//    p1 = Vector3(11, 40, -70);
+//    EXPECT_EQ(false, CanSeeLight(p1, lum, scene));
+//    p1 = Vector3(-100, 40, -27);
+//    EXPECT_EQ(false, CanSeeLight(p1, lum, scene));
 }

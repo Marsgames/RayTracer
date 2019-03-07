@@ -8,8 +8,8 @@
 
 #pragma once
 
-#include "Vector3.hpp"
-#include "Color.hpp"
+#include <Vector3.hpp>
+#include <Color.hpp>
 
 enum EMaterialType
 {

@@ -9,13 +9,13 @@
 #pragma once
 
 #include <iostream>
-#include "Rayon.hpp"
-#include "Vector3.hpp"
-#include "Light.hpp"
-#include "Sphere.hpp"
-#include "Box.hpp"
+#include <Rayon.hpp>
+#include <Vector3.hpp>
+#include <Light.hpp>
+#include <Sphere.hpp>
+#include <Box.hpp>
 
-using namespace std;
+using std::vector;
 
 void DebugIntersect(const Intersection res)
 {
@@ -35,12 +35,13 @@ typedef vector<Color> Image;
 void Intersect(const Rayon& rayon, const Sphere& sphere, Intersection& myRes);
 void ImageFromArray(const Image& pixelsArray, const string source, const string nomImage);
 void InitSpheres(Scene& spheres);
-bool CanSeeLight(const Vector3& point, const Light& lightPos, const Scene& scene);
-void SetLightning(const Vector3& point, const int index, const Light& light,  Image& image);
+//bool CanSeeLight(const Vector3& point, const Light& lightPos, const Scene& scene);
+//Color CanSeeLightWithResult(const Vector3& point, const Light& lightPos, const Scene& scene);
+//void SetLightning(const Vector3& point, const int index, const Light& light,  Image& image);
 int RunTests();
 double GetDistance(const Vector3& pointA, const Vector3& pointB);
 void CreateSpheresBoxes(Boxes& boxesScene, const Scene& scene);
-void MoveLight (Light& lumiere, const Vector3 direction);
+void MoveLight (Light& lumiere, const Vector3 direction, Sphere& lightSphere);
 //void MoveLight (Light& lumiere, const Vector3 direction, Scene spheres);
 void ClearImage (Image& imageArray, const Camera& ecran);
 void GenerateImages(const int firstImage, const int lastImage, Scene spheres, const Camera& ecran, const Vector3& MoveLightDirection = Vector3(0, 0, 0));

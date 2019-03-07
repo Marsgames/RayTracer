@@ -9,8 +9,12 @@
 #pragma once
 
 #include <vector>
-#include "Box.hpp"
+#include <Box.hpp>
 
+
+//////////////////////////////////////////////////////
+/// !!! NE PAS METTRE LES MURS DANS DES BOITES !!! ///
+//////////////////////////////////////////////////////
 class BoundingBox : public Box
 {
 public:

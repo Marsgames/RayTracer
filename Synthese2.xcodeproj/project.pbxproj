@@ -81,15 +81,15 @@
 				AE376F652158B2D100044A00 /* Library */,
 				AE376F5E2158B2C700044A00 /* main.cpp */,
 				AEA8E6352158FF1100E89BCC /* main.hpp */,
-				AE01D3A3216257E20092FCB5 /* Vector3.hpp */,
-				AE82F5CD216B662700E00378 /* Light.hpp */,
+				AE38D1F021A30A2D00E89C5D /* BoundingBox.hpp */,
+				AE38D1EF21A2B11600E89C5D /* Box.hpp */,
 				AE82F5CE216BA2B000E00378 /* Camera.hpp */,
+				AEB11834217DB03600925ED7 /* Color.hpp */,
+				AE82F5CD216B662700E00378 /* Light.hpp */,
+				AE0D03AB222BAA220062CFBE /* Material.hpp */,
 				AE82F5CF216BA78A00E00378 /* Rayon.hpp */,
 				AEB11833217DAF8700925ED7 /* Sphere.hpp */,
-				AEB11834217DB03600925ED7 /* Color.hpp */,
-				AE38D1EF21A2B11600E89C5D /* Box.hpp */,
-				AE38D1F021A30A2D00E89C5D /* BoundingBox.hpp */,
-				AE0D03AB222BAA220062CFBE /* Material.hpp */,
+				AE01D3A3216257E20092FCB5 /* Vector3.hpp */,
 			);
 			path = Synthese2;
 			sourceTree = "<group>";
@@ -308,7 +308,10 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 7RA755DD97;
 				GCC_VERSION = "";
-				HEADER_SEARCH_PATHS = /Users/Raph/Documents/Gamagora/Synthese/Synthese2/googletest/googletest/include;
+				HEADER_SEARCH_PATHS = (
+					/Users/Raph/Documents/Gamagora/Synthese/Synthese2/googletest/googletest/include,
+					/Users/Raph/Documents/Gamagora/Synthese/Synthese2/Synthese2,
+				);
 				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)/googletest/build/lib";
 				MACOSX_DEPLOYMENT_TARGET = 10.14;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -321,7 +324,10 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 7RA755DD97;
 				GCC_VERSION = "";
-				HEADER_SEARCH_PATHS = /Users/Raph/Documents/Gamagora/Synthese/Synthese2/googletest/googletest/include;
+				HEADER_SEARCH_PATHS = (
+					/Users/Raph/Documents/Gamagora/Synthese/Synthese2/googletest/googletest/include,
+					/Users/Raph/Documents/Gamagora/Synthese/Synthese2/Synthese2,
+				);
 				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)/googletest/build/lib";
 				MACOSX_DEPLOYMENT_TARGET = 10.14;
 				PRODUCT_NAME = "$(TARGET_NAME)";
