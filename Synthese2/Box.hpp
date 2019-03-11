@@ -30,8 +30,8 @@ protected:
 public:
     Box(){};
     Box(const Sphere& sphere){
-        m_pMin = Vector3(sphere.GetOrigine().GetX() - sphere.GetRayon(), sphere.GetOrigine().GetY() - sphere.GetRayon(), sphere.GetOrigine().GetZ() - sphere.GetRayon());
-        m_pMax = Vector3(sphere.GetOrigine().GetX() + sphere.GetRayon(), sphere.GetOrigine().GetY() + sphere.GetRayon(), sphere.GetOrigine().GetZ() + sphere.GetRayon());
+        m_pMin = Vector3(sphere.GetCenter().GetX() - sphere.GetRayon(), sphere.GetCenter().GetY() - sphere.GetRayon(), sphere.GetCenter().GetZ() - sphere.GetRayon());
+        m_pMax = Vector3(sphere.GetCenter().GetX() + sphere.GetRayon(), sphere.GetCenter().GetY() + sphere.GetRayon(), sphere.GetCenter().GetZ() + sphere.GetRayon());
         m_source = sphereType;
         m_mySphere = sphere;
     };
@@ -118,15 +118,15 @@ bool IntersectBox(const Rayon& ray, const Box& box)
     const float rinvz = 1 / ray.GetDirection().GetZ();
     
     // X slab Max box size
-    const float tx1 = (box.GetPMin().GetX() - ray.GetOrigine().GetX()) * rinvx;
-    const float tx2 = (box.GetPMax().GetX() - ray.GetOrigine().GetX()) * rinvx;
+    const float tx1 = (box.GetPMin().GetX() - ray.GetOrigin().GetX()) * rinvx;
+    const float tx2 = (box.GetPMax().GetX() - ray.GetOrigin().GetX()) * rinvx;
     
     const float tminX = tx1 < tx2 ? tx1 : tx2;
     const float tmaxX = tx1 > tx2 ? tx1 : tx2;
     
     // Y slab
-    const float ty1 = (box.GetPMin().GetY() - ray.GetOrigine().GetY()) * rinvy;
-    const float ty2 = (box.GetPMax().GetY() - ray.GetOrigine().GetY()) * rinvy;
+    const float ty1 = (box.GetPMin().GetY() - ray.GetOrigin().GetY()) * rinvy;
+    const float ty2 = (box.GetPMax().GetY() - ray.GetOrigin().GetY()) * rinvy;
     
     const float tminY = max(tminX, (min(ty1, ty2)));
     const float tmaxY = min(tmaxX, (max(ty1, ty2)));
@@ -134,8 +134,8 @@ bool IntersectBox(const Rayon& ray, const Box& box)
 //    const float tmaxY = tmaxX < (ty1 > ty2 ? ty1 : ty2) ? tmaxX : (ty1 > ty2 ? ty1 : ty2);
     
     // Z slab
-    const float tz1 = (box.GetPMin().GetZ() - ray.GetOrigine().GetZ()) * rinvz;
-    const float tz2 = (box.GetPMax().GetZ() - ray.GetOrigine().GetZ()) * rinvz;
+    const float tz1 = (box.GetPMin().GetZ() - ray.GetOrigin().GetZ()) * rinvz;
+    const float tz2 = (box.GetPMax().GetZ() - ray.GetOrigin().GetZ()) * rinvz;
     
     const float tminZ = max(tminY, (min(tz1, tz2)));
     const float tmaxZ = min(tmaxY, (max(tz1, tz2)));

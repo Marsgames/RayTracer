@@ -8,6 +8,7 @@
 
 #pragma once
 
+#include <math.h>
 #include <Vector3.hpp>
 
 class Camera
@@ -23,16 +24,15 @@ public:
         m_origin = origin;
         m_height = height;
         m_width = width;
-//        m_direction = Normalize(direction);
         m_direction = direction.Normalize();
-//        if (focal < 0)
-//        {
-//            throw "Focal cannot be less than 0 !";
-//        }
-//        else
-//        {
+        if (focal < 0)
+        {
+            throw "Focal cannot be less than 0 !";
+        }
+        else
+        {
             m_focal = focal;
-//        }
+        }
     };
     
     int GetHeight() const
@@ -49,10 +49,18 @@ public:
     {
         return m_origin;
     }
+    void SetPosition(Vector3 position)
+    {
+        m_origin = position;
+    }
     
     Vector3 GetDirection() const
     {
         return m_direction;
+    }
+    void SetDirection(Vector3 direction)
+    {
+        m_direction = direction.Normalize();
     }
     
     Vector3 GetFocalDirection(const Vector3& toThatPoint) const
@@ -64,3 +72,16 @@ public:
         return (startPoint - focalStart).Normalize();
     }
 };
+
+Vector3 MoveCameraOnCircle(const Vector3& circleOrigin, const double rayon, Camera& cam, const double index)
+{
+    Vector3 newPosition = Vector3((circleOrigin.GetX() + rayon * cos(index)), circleOrigin.GetY(), (circleOrigin.GetZ() + rayon * sin(index)));
+    return newPosition;
+}
+
+
+double fDeX(const double petitX, const Vector3& circleOrigin, const float rayon)
+{
+    //  sqrt(r²-(x-xO)²)+yO
+    return sqrt((rayon * rayon) - ((petitX - circleOrigin.GetX()) * (petitX - circleOrigin.GetX()))) + circleOrigin.GetZ();
+}

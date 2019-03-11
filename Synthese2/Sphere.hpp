@@ -14,6 +14,10 @@
 #include <Rayon.hpp>
 #include <Vector3.hpp>
 
+#include <numeric>
+//#include <vector>
+//#include <functional>
+
 
 using namespace std;
 
@@ -31,7 +35,7 @@ struct Intersection{
 
 class Sphere{
 private:
-    Vector3 m_origine;
+    Vector3 m_center;
     double m_rayon;
     Material m_material;
     string m_nom;
@@ -40,32 +44,32 @@ public:
     Sphere(){};
     
     Sphere(const Vector3& origine, const double& rayon){
-        m_origine = origine;
+        m_center = origine;
         m_rayon = rayon;
     };
     
     Sphere(const Vector3& origine, const double rayon, const Material& material, const string nom){
-        m_origine = origine;
+        m_center = origine;
         m_rayon = rayon;
         m_material = material;
         m_nom = nom;
     };
     
     Sphere(const Vector3& origine, const double rayon, const Material& material, const string nom, int isLight){
-        m_origine = origine;
+        m_center = origine;
         m_rayon = rayon;
         m_material = material;
         m_nom = nom;
 //        this->type = 0 == isLight ? lumiereType : miroirType;
     };
     
-    Vector3 GetOrigine() const
+    Vector3 GetCenter() const
     {
-        return m_origine;
+        return m_center;
     }
-    void SetOrigine(Vector3 origine)
+    void SetCenter(Vector3 center)
     {
-        m_origine = origine;
+        m_center = center;
     }
     
     double GetRayon() const
@@ -86,23 +90,23 @@ public:
 
 void Intersect(const Rayon& rayon, const Sphere& sphere, Intersection& myRes)
 {
-    const double B = 2 * (Vector3::Dot(rayon.GetOrigine(), rayon.GetDirection()) - Vector3::Dot(sphere.GetOrigine(), rayon.GetDirection()));
-    const double C = Dist2(sphere.GetOrigine() - rayon.GetOrigine()) - (sphere.GetRayon() * sphere.GetRayon());
+    const double B = 2 * (Vector3::Dot(rayon.GetOrigin(), rayon.GetDirection()) - Vector3::Dot(sphere.GetCenter(), rayon.GetDirection()));
+    const double C = Dist2(sphere.GetCenter() - rayon.GetOrigin()) - (sphere.GetRayon() * sphere.GetRayon());
     const double delta = (B * B) - 4 * C;
-    
+
     myRes.intersect = false;
     myRes.distance = 0;
-    
+
     if (delta < 0)
     {
         myRes.intersect = false;
         return;
     }
-    
+
     const double sqrtDelta = sqrt(delta);
     const double inter1 = (-B - sqrtDelta) / 2;
     const double inter2 = (-B + sqrtDelta) / 2;
-    
+
     if (inter1 > 0)
     {
         myRes.intersect = true;
@@ -113,5 +117,5 @@ void Intersect(const Rayon& rayon, const Sphere& sphere, Intersection& myRes)
         myRes.distance = inter2;
     }
 
-    myRes.point = rayon.GetOrigine() + rayon.GetDirection() * myRes.distance;
+    myRes.point = rayon.GetOrigin() + rayon.GetDirection() * myRes.distance;
 }

@@ -66,6 +66,12 @@ TEST(IntersectFunc, SimpleIntersect)
     
     Intersect(Rayon(Vector3(500, 500, 0), Vector3(0, 0, -1)), Sphere(Vector3(500, 500, -100), 10), result);
     EXPECT_EQ(true, result.intersect);
+    
+    Intersect(Rayon(Vector3(0, 0, 0), Vector3(1, 0, 1)), Sphere(Vector3(10, 0, 0), 1), result);
+    EXPECT_EQ(false, result.intersect);
+    
+    Intersect(Rayon(Vector3(0, 0, 0), Vector3(1, 0, 1)), Sphere(Vector3(5.75, 0., 5.), 1), result);
+    EXPECT_EQ(false, result.intersect);
 }
 
 TEST(IntersectFunc, TestsEva)
@@ -80,11 +86,11 @@ TEST(IntersectFunc, TestsEva)
     EXPECT_GE(result.distance, 0);
     EXPECT_EQ(result.distance, sphere.GetRayon());
     
-    sphere.SetOrigine(Vector3(-200, -200, -200));
+    sphere.SetCenter(Vector3(-200, -200, -200));
     Intersect(rayon, sphere, result);
     EXPECT_EQ(result.intersect, false);
     
-    sphere.SetOrigine(Vector3(200, 200, 200));
+    sphere.SetCenter(Vector3(200, 200, 200));
     Intersect(rayon, sphere, result);
     EXPECT_EQ(result.intersect, true);
     EXPECT_GE(result.distance, 0);

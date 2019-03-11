@@ -23,11 +23,18 @@
 #include <thread>
 #include <Material.hpp>
 
+// TODO : lumière indirecte
+// TODO : rajouter intersection rayon triangle
+// TODO : créer classe cube
+// TODO : rotation des objets
+// TODO : importation de modèles 3D
+// TODO : couleur de la lumière
+
 //Light lumiere = Light{Vector3{0, 0, 200}, 1000};
 //Camera ecran = Camera(Vector3{500, 500, 0}, 1000, 1000, Vector3(0, 0, -1), 1000);
 
-Light lumiere = Light{Vector3(0, 0, 300), 10};
-Camera ecran = Camera(Vector3(0, 0, 0), 1280, 720, Vector3(0, 0, -1), 1000);
+Light lumiere = Light{Vector3(0, -100, -300), 1000};
+Camera ecran = Camera(Vector3(0, 0, 0), 1280, 720, Vector3(0., 0., -1.), 1000);
 
 
 const float facteurLumiere = .2;
@@ -61,7 +68,43 @@ int main(int argc, char* argv[])
     // Pour la lumière, lui donner une intensité, diviser l'intensité par la distance
     // Désactiver le facteurLumière quand on fait l'éclairage indirect
     
-    GenerateImages(0, 1, spheres, ecran, Vector3(1, 0, 0));
+    
+    
+    
+    
+    
+//    GenerateImages(0, 1, spheres, ecran, Vector3(0, 0, 0));
+    
+    
+    // Make camera move around a point
+    {
+        typedef Vector3 Point;
+        Point centreDeRotation = Point(0, 0, 0);
+        float rayonRotation = 10;
+        int index = 0;
+        for (int i = -rayonRotation; i < rayonRotation; i++)
+        {
+            Point camPos = Point(i + 0., 0., fDeX(i, centreDeRotation, rayonRotation));
+            ecran.SetPosition(camPos);
+            ecran.SetDirection(centreDeRotation - camPos);
+            GenerateImages(index, ++index, spheres, ecran, Vector3(0, 0, 0));
+            cout << "(" << camPos.GetX() << "," << camPos.GetZ() << "),";
+        }
+
+        for (int i = rayonRotation; i > -rayonRotation; i--)
+        {
+            // remplacer 100 par le Z du point autour duquel on tourne
+            Point camPos = Point(i + 0., 0., -fDeX(i, centreDeRotation, rayonRotation) + 2 * centreDeRotation.GetZ());
+            ecran.SetPosition(camPos);
+            ecran.SetDirection(centreDeRotation - camPos);
+            GenerateImages(index, ++index, spheres, ecran, Vector3(0, 0, 0));
+            cout << "(" << camPos.GetX() << "," << camPos.GetZ() << "),";
+        }
+    }
+    
+    
+    
+
 //        LaunchThreads(50, spheres, ecran, Vector3(10, 0, 0));
 //        LaunchThreads(1000, spheres, ecran, Vector3(1, 0, 0));
 
@@ -104,12 +147,13 @@ void ImageFromArray(const Image& pixelsArray, const string source, const string 
 
 void InitSpheres(Scene& spheres)
 {
-    Sphere leftWall = Sphere(Vector3(-1e5 - 700., 0., -00.), 1e5, Material(EMaterialType::DifuseType, Vector3(0.2f, 0.8f, 0.2f)), "Vert");
-    Sphere rightWall = Sphere(Vector3(1e5 + 700., 0., -00.), 1e5, Material(EMaterialType::DifuseType, Vector3(0.2f, 0.8f, 0.8f)), "Bleu");
-    Sphere topWall = Sphere(Vector3(0., -1e5 - 400., -00.), 1e5, Material(EMaterialType::DifuseType, Vector3(0.8f, 0.2f, 0.8f)), "Rose");
-    Sphere bottomWall = Sphere(Vector3(0., 1e5 + 400., -00.), 1e5, Material(EMaterialType::DifuseType, Vector3(0.9f, 0.9f, 0.9f)), "Blanc");
-    Sphere backWall = Sphere(Vector3(0., 0., 1e5 + 1500), 1e5, Material(EMaterialType::DifuseType, Vector3(0.8f, 0.2f, 0.2f)), "Rouge");
-    Sphere frontWall = Sphere(Vector3(0., 0., -1e5 - 1500), 1e5, Material(EMaterialType::DifuseType, Vector3(0.8f, 0.8f, 0.2f)), "Jaune");
+    // Enlever un 0 à 7000, 4000 et 15000
+    Sphere leftWall = Sphere(Vector3(-1e5 - 7000., 0., -00.), 1e5, Material(EMaterialType::DifuseType, Vector3(0.2f, 0.8f, 0.2f)), "Vert");
+    Sphere rightWall = Sphere(Vector3(1e5 + 7000., 0., -00.), 1e5, Material(EMaterialType::DifuseType, Vector3(0.2f, 0.8f, 0.8f)), "Bleu");
+    Sphere topWall = Sphere(Vector3(0., -1e5 - 4000., -00.), 1e5, Material(EMaterialType::DifuseType, Vector3(0.8f, 0.2f, 0.8f)), "Rose");
+    Sphere bottomWall = Sphere(Vector3(0., 1e5 + 4000., -00.), 1e5, Material(EMaterialType::DifuseType, Vector3(0.9f, 0.9f, 0.9f)), "Blanc");
+    Sphere backWall = Sphere(Vector3(0., 0., 1e5 + 15000), 1e5, Material(EMaterialType::DifuseType, Vector3(0.8f, 0.2f, 0.2f)), "Rouge");
+    Sphere frontWall = Sphere(Vector3(0., 0., -1e5 - 15000), 1e5, Material(EMaterialType::DifuseType, Vector3(0.8f, 0.8f, 0.2f)), "Jaune");
     
     
     
@@ -124,6 +168,9 @@ void InitSpheres(Scene& spheres)
 //    spheres.push_back(Sphere(Vector3(-250, 0, 100), 50, Material(EMaterialType::DifuseType, Color{0, 0, 255}), "bleu")); // Bleu
 //    spheres.push_back(Sphere(Vector3(0, 0, 100), 50, Material(EMaterialType::DifuseType, Color{255, 255, 255}), "blanc")); // Bleu
 //    spheres.push_back(Sphere(Vector3(250, 0, 100), 50, Material(EMaterialType::DifuseType, Color{255, 0, 0}), "rouge")); // Bleu
+    
+    spheres.push_back(Sphere(Vector3(0, 0, 0), 10, Material(EMaterialType::DifuseType, Color{255, 0, 0}), "Rouge")); // Bleu
+
 //
     spheres.push_back(leftWall);
     spheres.push_back(rightWall);
@@ -132,7 +179,7 @@ void InitSpheres(Scene& spheres)
     spheres.push_back(frontWall);
     spheres.push_back(backWall);
     
-    spheres.push_back(Sphere(Vector3(lumiere.GetPosition()), 5, Material(EMaterialType::LightType, Color{255, 0, 0}), "lampe")); // blanc
+    spheres.push_back(Sphere(Vector3(lumiere.GetPosition()), 5, Material(EMaterialType::LightType, Color{255 * (1 / facteurLumiere), 0, 0}), "lampe")); // blanc
 
 
 //    spheres.push_back(Sphere(Vector3(lumiere.position.x, lumiere.position.y, lumiere.position.z), 5, Color{255, 255, 255}, "lampe", 0)); // blanc
@@ -146,7 +193,7 @@ int RunTests()
 void MoveLight (Light& lumiere, const Vector3 direction, Sphere& lightSphere)
 {
     lumiere.SetPosition(lumiere.GetPosition() + direction);
-    lightSphere.SetOrigine(lumiere.GetPosition());
+    lightSphere.SetCenter(lumiere.GetPosition());
 }
 
 //void MoveLight (Light& lumiere, const Vector3 direction, Scene spheres)
@@ -172,13 +219,21 @@ void GenerateImages(const int firstImage, const int lastImage, Scene spheres, co
 {
     Light theLight = lumiere;
     
-    for (int i = 0; i < firstImage; i++)
-    {
-        MoveLight(theLight, MoveLightDirection, spheres[spheres.size() - 1]);
-    }
-//    theLight.GetPosition().SetY(theLight.GetPosition().GetY() + (1 * firstImage));
     
-//    lumiere.position.y += 5 * firstImage;
+        for (Sphere& sphere : spheres)
+        {
+            if (EMaterialType::LightType == sphere.GetMaterial().m_materialType)
+            {
+                continue;
+            }
+            
+            for (int i = 0; i < firstImage; i++)
+            {
+            MoveLight(theLight, MoveLightDirection, sphere);
+            }
+        }
+
+    
     for (int i = firstImage; i < lastImage; i++)
     {
         Image image(ecran.GetWidth() * ecran.GetHeight(), Color{0, 0, 0});
@@ -188,7 +243,7 @@ void GenerateImages(const int firstImage, const int lastImage, Scene spheres, co
             for (int x = -ecran.GetWidth() / 2; x < ecran.GetWidth() / 2; x++)
             {
                 // distance to intersection, to keep only the first one
-                double dist = INT_MAX;
+                double dist = DBL_MAX;
                 Sphere sphereTouchee;
                 Intersection result;
                 
@@ -209,7 +264,7 @@ void GenerateImages(const int firstImage, const int lastImage, Scene spheres, co
                         sphereTouchee = sphereEnTest;
                 }
                 
-                if (INT_MAX != dist)
+                if (DBL_MAX != dist)
                 {
 //                    cout << "GetColor r : " << sphere.m_material.GetColor().ToString() << endl;
 
@@ -235,13 +290,13 @@ void GenerateImages(const int firstImage, const int lastImage, Scene spheres, co
                 }
             }
             
-            if (y % 10 == 0)
-            {
-//                const string nomImage = "01Scene" + to_string(i + 1 + y + ecran.GetWidth() / 2) + ".bmp";
-                const string nomImage = "image" + to_string(i) + ".bmp";
-                const string source = "/Users/Raph/Desktop/TestSynthese/";
-                ImageFromArray(image, source, nomImage);
-            }
+//            if (y % 10 == 0)
+//            {
+////                const string nomImage = "01Scene" + to_string(i + 1 + y + ecran.GetWidth() / 2) + ".bmp";
+//                const string nomImage = "image" + to_string(i) + ".bmp";
+//                const string source = "/Users/Raph/Desktop/TestSynthese/";
+//                ImageFromArray(image, source, nomImage);
+//            }
         }
 
         
@@ -289,7 +344,7 @@ void GenerateImages(const int firstImage, const int lastImage, Scene spheres, co
         ImageFromArray(image, source, nomImage);
         
         MoveLight(theLight, MoveLightDirection, spheres[spheres.size() - 1]);
-        spheres[6].GetOrigine() = theLight.GetPosition();
+        spheres[6].GetCenter() = theLight.GetPosition();
         ClearImage(image, ecran);
     }
     

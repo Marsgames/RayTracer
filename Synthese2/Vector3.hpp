@@ -82,9 +82,9 @@ public:
     
     Vector3 Normalize() const
     {
-        double norme = sqrt(Vector3::Dot(*this, *this));
+        double norme = sqrt(Dot(*this, *this));
         
-        return Vector3(this->m_x / norme, this->m_y / norme, this->m_z / norme);
+        return Vector3(m_x / norme, m_y / norme, m_z / norme);
     }
     
     static double Dot(const Vector3& pA, const Vector3& pB)

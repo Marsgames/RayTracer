@@ -13,18 +13,18 @@
 class Rayon
 {
 private:
-    Vector3 m_origine, m_direction;
+    Vector3 m_origin, m_direction;
 public:
-    Rayon(Vector3 origine, Vector3 direction)
+    Rayon(Vector3 origin, Vector3 direction)
     {
-        m_origine = origine;
+        m_origin = origin;
 //        m_direction = Normalize(direction);
         m_direction = direction.Normalize();
     };
     
-    Vector3 GetOrigine() const
+    Vector3 GetOrigin() const
     {
-        return m_origine;
+        return m_origin;
     }
     
     Vector3 GetDirection() const

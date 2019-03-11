@@ -65,6 +65,7 @@ bool CanSeeLight(const Vector3& point, const Light& light, const vector<Sphere>&
         if (EMaterialType::LightType == sphere.GetMaterial().m_materialType)
         {
             continue;
+//            return false;
         }
         
         Intersection result;
