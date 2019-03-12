@@ -50,7 +50,7 @@ public:
     
     std::string ToString() const
     {
-        return "(" + to_string(int(m_x)) + ", " + to_string(int(m_y)) + ", " + to_string(int(m_z)) + ")";
+        return "(" + to_string(float(m_x)) + ", " + to_string(float(m_y)) + ", " + to_string(float(m_z)) + ")";
     }
     
     double GetX() const
@@ -87,16 +87,12 @@ public:
         return Vector3(m_x / norme, m_y / norme, m_z / norme);
     }
     
+    // Magnitude
     static double Dot(const Vector3& pA, const Vector3& pB)
     {
         return pA.GetX() * pB.GetX() + pA.GetY() * pB.GetY() + pA.GetZ() * pB.GetZ();
     }
 };
-
-//double Dot(const Vector3& pA, const Vector3& pB)
-//{
-//    return pA.GetX() * pB.GetX() + pA.GetY() * pB.GetY() + pA.GetZ() * pB.GetZ();
-//}
 
 double Dist2(const Vector3& pA)
 {
@@ -146,6 +142,11 @@ bool operator<(const Vector3 leftV, const Vector3 rightV)
 bool operator>(const Vector3 leftV, const Vector3 rightV)
 {
     return (leftV.GetX() + leftV.GetY() + leftV.GetZ()) > (rightV.GetX() + rightV.GetY() + rightV.GetZ());
+}
+
+bool operator==(const Vector3 leftV, const Vector3 rightV)
+{
+    return (leftV.GetX() == rightV.GetX() && leftV.GetY() == rightV.GetY() && leftV.GetZ() == rightV.GetZ());
 }
 
 Vector3 Negate(const Vector3& v)
