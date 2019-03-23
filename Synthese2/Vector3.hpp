@@ -159,8 +159,6 @@ double GetDistance(const Vector3& pointA, const Vector3& pointB)
     return sqrt(((pointA.GetX() - pointB.GetX()) * (pointA.GetX() - pointB.GetX())) + ((pointA.GetY() - pointB.GetY()) * (pointA.GetY() - pointB.GetY())) + ((pointA.GetZ() - pointB.GetZ()) * (pointA.GetZ() - pointB.GetZ())));
 }
 
-
-
 void Print(const Vector3& v)
 {
     std::cout << "vector : (" << v.GetX() << ", " << v.GetY() << ", " << v.GetZ() << ")" << std::endl;

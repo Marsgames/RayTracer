@@ -33,7 +33,7 @@ typedef vector<Box> Boxes;
 typedef vector<Color> Image;
 
 void Intersect(const Rayon& rayon, const Sphere& sphere, Intersection& myRes);
-void ImageFromArray(const Image& pixelsArray, const string source, const string nomImage);
+void ImageFromArray(const Image& pixelsArray, const string source, const string nomImage, const Camera& ecran);
 void InitSpheres(Scene& spheres);
 //bool CanSeeLight(const Vector3& point, const Light& lightPos, const Scene& scene);
 //Color CanSeeLightWithResult(const Vector3& point, const Light& lightPos, const Scene& scene);

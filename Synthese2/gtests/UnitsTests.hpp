@@ -30,7 +30,6 @@ TEST(Vector3, SimpleTests)
     const Vector3 v4 = Negate(v3);
     EXPECT_EQ(Vector3(-60, -56, 0), v4);
 }
-
 TEST(Vector3, NormalizeFunc)
 {
     const Vector3 v1 = Vector3(-8., 8., -8.).Normalize();
@@ -39,57 +38,72 @@ TEST(Vector3, NormalizeFunc)
     const Vector3 v2 = Vector3(3., -4., 0.).Normalize();
     EXPECT_EQ(Vector3(.6, -.8, .0), v2);
     EXPECT_EQ(Vector3(3 / sqrt(25), -4 / sqrt(25), 0 / sqrt(25)), v2);
-
+    
     const Vector3 v3 = Vector3(128., -12., 31.).Normalize();
     EXPECT_EQ(Vector3(128 / sqrt(17489), -12 / sqrt(17489), 31 / sqrt(17489)), v3);
 }
-
 TEST(Vector3, DotFunc)
 {
     const Vector3 v1 = Vector3(0, 0, 0);
     const Vector3 v2 = Vector3(0, 0, 0);
     EXPECT_EQ(0, Vector3::Dot(v1, v2));
-
+    
     const Vector3 v3 = Vector3(564, 12, 12);
     const Vector3 v4 = Vector3(-53, 23, 45);
     EXPECT_EQ(-29076, Vector3::Dot(v3, v4));
-
+    
     const Vector3 v5 = Vector3(10, 10, 10);
     const Vector3 v6 = Vector3(-31, 21, 12);
     EXPECT_EQ(20, Vector3::Dot(v5, v6));
-
+    
     const Vector3 v7 = Vector3(18, -3, -7);
     const Vector3 v8 = Vector3(521, 86, 39);
     EXPECT_EQ(8847, Vector3::Dot(v7, v8));
-
+    
     const Vector3 v9 = Vector3(521, 86, 39);
     const Vector3 v10 = Vector3(18, -3, -7);
     EXPECT_EQ(8847, Vector3::Dot(v9, v10));
-
+    
     const Vector3 v11 = Vector3(-521, -86, -39);
     const Vector3 v12 = Vector3(-18, 3, 7);
     EXPECT_EQ(8847, Vector3::Dot(v11, v12));
-
+    
     const Vector3 v13 = Vector3(7, 3, 18);
     const Vector3 v14 = Vector3(39, -86, 521);
     EXPECT_EQ(9393, Vector3::Dot(v13, v14));
-
+    
     const Vector3 v15 = Vector3(1, 2, 3);
     const Vector3 v16 = Vector3(4, 5, 6);
     EXPECT_EQ(32, Vector3::Dot(v15, v16));
-
+    
     const Vector3 v17 = Vector3(346, 87654, 235);
     const Vector3 v18 = Vector3(-23, -634, -643);
     EXPECT_EQ(-55731699, Vector3::Dot(v17, v18));
-
+    
     const Vector3 v19 = Vector3(12, 12, 12);
     const Vector3 v20 = Vector3(100, 100, 100);
     EXPECT_EQ(3600, Vector3::Dot(v19, v20));
 }
-
 TEST(Vector3, Dist2Func)
 {
     EXPECT_EQ(1954, Dist2(Vector3(12, 21, 37)));
+    EXPECT_EQ(564601, Dist2(Vector3(741, 124, 12)));
+    EXPECT_EQ(3, Dist2(Vector3(1, 1, 1)));
+    EXPECT_EQ(3, Dist2(Vector3(-1, -1, -1)));
+    EXPECT_EQ(10101, Dist2(Vector3(100, 10, 1)));
+    EXPECT_EQ(10101, Dist2(Vector3(1, 10, 100)));
+    EXPECT_EQ(845586, Dist2(Vector3(123, 456, 789)));
+    EXPECT_EQ(1000674, Dist2(Vector3(-25, 7, 1000)));
+    EXPECT_EQ(6002, Dist2(Vector3(-23, -73, 12)));
+    EXPECT_EQ(2387, Dist2(Vector3(37, 27, 17)));
+}
+TEST(Vector3, Distance)
+{
+    EXPECT_EQ(sqrt(105), GetDistance(Vector3(7, 4, 3), Vector3(17, 6, 2)));
+    EXPECT_EQ(sqrt(25437), GetDistance(Vector3(-21, 77, 21), Vector3(37, -71, 8)));
+    EXPECT_EQ(sqrt(8), GetDistance(Vector3(1, 2, 3), Vector3(3, 2, 1)));
+    EXPECT_EQ(sqrt(27), GetDistance(Vector3(4, 5, 6), Vector3(7, 8, 9)));
+    EXPECT_EQ(sqrt(120000), GetDistance(Vector3(100, 100, 100), Vector3(-100, -100, -100)));
 }
 
 TEST(IntersectFunc, SimpleIntersect)
@@ -133,7 +147,7 @@ TEST(IntersectFunc, SimpleIntersect)
     // Intersection dessous
     Intersect(Rayon(Vector3{20, 0, 40}, Vector3{0, 0, -1}), sphere, result);
     EXPECT_EQ(true, result.intersect);
-
+    
     // Intersection dessus
     Intersect(Rayon(Vector3{20, 0, -40}, Vector3{0, 0, 1}), sphere, result);
     EXPECT_EQ(true, result.intersect);
@@ -149,8 +163,8 @@ TEST(IntersectFunc, SimpleIntersect)
     EXPECT_EQ(false, result.intersect);
     
     // Vérifier manuellement ce test
-//    Intersect(Rayon(Vector3(0, 0, 0), Vector3(1, 0, 1)), Sphere(Vector3(5.75, 0., 5.), 1), result);
-//    EXPECT_EQ(false, result.intersect);
+    //    Intersect(Rayon(Vector3(0, 0, 0), Vector3(1, 0, 1)), Sphere(Vector3(5.75, 0., 5.), 1), result);
+    //    EXPECT_EQ(false, result.intersect);
 }
 
 TEST(IntersectFunc, TestsEva)
@@ -184,7 +198,7 @@ TEST(IntersectFunc, BoxSimple)
     const Rayon r2 = Rayon(Vector3(-5., 2.5, 0.), Vector3(-1, 0, 0));
     const Rayon r3 = Rayon(Vector3(5., 30., 5.), Vector3(0, -1, 0));
     const Rayon r4 = Rayon(Vector3(-5., 25., 0.), Vector3(-1, 0, 0));
-
+    
     EXPECT_EQ(IntersectBox(r, b), true);
     EXPECT_EQ(IntersectBox(r1, b), true);
     EXPECT_EQ(IntersectBox(r2, b), true);
@@ -247,27 +261,27 @@ TEST(CanSeeLightFunc, SimpleTest)
     Sphere sp1 = Sphere{Vector3{0, 0, 0}, 10};
     Light lum = Light{Vector3{20, 0, 0}, 1000};
     scene.push_back(sp1);
-
-
+    
+    
     // Le rayon est intersepté par une sphère
     Vector3 point1 = Vector3{-20, 0, 0};
     EXPECT_EQ(false, CanSeeLight(point1, lum, scene));
-
+    
     // le rayon n'est pas intersepté par la sphère
     Vector3 point2 = Vector3{15, 0, 0};
     EXPECT_EQ(true, CanSeeLight(point2, lum, scene));
-
+    
     // Le rayon part de l'intérieur de la sphère
     Vector3 point3 = Vector3{0, 0, 0};
     EXPECT_EQ(false, CanSeeLight(point3, lum, scene));
-
+    
     // La lumière est dans la sphère, le rayon non
     EXPECT_EQ(false, CanSeeLight(point1, Light{Vector3(0, 0, 0)}, scene));
-
+    
     // La lumière est dans la sphère, le rayon aussi
     Vector3 point4 = Vector3(2, 0, 0);
     EXPECT_EQ(true, CanSeeLight(point4, Light{Vector3(8, 0, 0)}, scene));
-
+    
     // Le point est après la lumière
     Vector3 point5 = Vector3(30, 0, 0);
     EXPECT_EQ(true, CanSeeLight(point5, lum, scene));
@@ -279,7 +293,7 @@ TEST(CanSeeLightFunc, ComplexeTest)
     Sphere sp1 = Sphere{Vector3(21, 36, -28), 20};
     Light lum = Light{Vector3(57, 13, 100)};
     scene.push_back(sp1);
-
+    
     Vector3 p1 = Vector3(0, 0, 0);
     EXPECT_EQ(true, CanSeeLight(p1, lum, scene));
     p1 = Vector3(76, 54, -48);
@@ -289,14 +303,14 @@ TEST(CanSeeLightFunc, ComplexeTest)
     p1 = Vector3(-100, 40, -27);
     EXPECT_EQ(true, CanSeeLight(p1, lum, scene));
     
-//    scene.push_back(Sphere(Vector3(21, 36, -28), 25));
-//
-//    p1 = Vector3(0, 0, 0);
-//    EXPECT_EQ(false, CanSeeLight(p1, lum, scene));
-//    p1 = Vector3(76, 54, -48);
-//    EXPECT_EQ(false, CanSeeLight(p1, lum, scene));
-//    p1 = Vector3(11, 40, -70);
-//    EXPECT_EQ(false, CanSeeLight(p1, lum, scene));
-//    p1 = Vector3(-100, 40, -27);
-//    EXPECT_EQ(false, CanSeeLight(p1, lum, scene));
+    //    scene.push_back(Sphere(Vector3(21, 36, -28), 25));
+    //
+    //    p1 = Vector3(0, 0, 0);
+    //    EXPECT_EQ(false, CanSeeLight(p1, lum, scene));
+    //    p1 = Vector3(76, 54, -48);
+    //    EXPECT_EQ(false, CanSeeLight(p1, lum, scene));
+    //    p1 = Vector3(11, 40, -70);
+    //    EXPECT_EQ(false, CanSeeLight(p1, lum, scene));
+    //    p1 = Vector3(-100, 40, -27);
+    //    EXPECT_EQ(false, CanSeeLight(p1, lum, scene));
 }
