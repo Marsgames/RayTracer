@@ -42,6 +42,7 @@
 		AEA8E63621590E1900E89BCC /* bitmap_image.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = bitmap_image.hpp; sourceTree = "<group>"; };
 		AEB11833217DAF8700925ED7 /* Sphere.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Sphere.hpp; sourceTree = "<group>"; };
 		AEB11834217DB03600925ED7 /* Color.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Color.hpp; sourceTree = "<group>"; };
+		AEBE9666224FBEC50012D617 /* Pixel.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; name = Pixel.hpp; path = Synthese2/Pixel.hpp; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -87,6 +88,7 @@
 				AEB11834217DB03600925ED7 /* Color.hpp */,
 				AE82F5CD216B662700E00378 /* Light.hpp */,
 				AE0D03AB222BAA220062CFBE /* Material.hpp */,
+				AEBE9666224FBEC50012D617 /* Pixel.hpp */,
 				AE82F5CF216BA78A00E00378 /* Rayon.hpp */,
 				AEB11833217DAF8700925ED7 /* Sphere.hpp */,
 				AE01D3A3216257E20092FCB5 /* Vector3.hpp */,

@@ -10,7 +10,7 @@
 #include <Camera.hpp>
 #include <Light.hpp>
 #include <main.hpp>
-#include <math.h>
+//#include <math.h>
 #include <Rayon.hpp>
 #include <Vector3.hpp>
 #include <gtest/gtest.h>
@@ -33,11 +33,13 @@
 //Light lumiere = Light{Vector3{0, 0, 200}, 1000};
 //Camera ecran = Camera(Vector3{500, 500, 0}, 1000, 1000, Vector3(0, 0, -1), 1000);
 
-Light lumiere = Light{Vector3(0., -950., -100.), 1000};
-Camera m_ecran = Camera(Vector3(0, 0, 0), 4096, 2160, Vector3(0., 0.,  -1.), 3000);
+Light lumiere = Light{Vector3(0., -950., -100.), 10000};
+//Camera m_ecran = Camera(Vector3(0, 0, 0), 4096, 2160, Vector3(-1., 0.,  0.), 3000);
+//Camera m_ecran = Camera(Vector3(200, 0, -420), 1000, 1000, Vector3(-0., 0.,  1.), 1000);
+Camera m_ecran = Camera(Vector3(0, 0, -800), 4096, 2160, Vector3(0., 0.,  1.), 3000);
 
-Camera m_ecran2 = Camera(Vector3(200, 0, 0), 4096, 2160, Vector3(-1.0, 0.,  -1.), 3000);
-Camera m_ecran3 = Camera(Vector3(-200, 0, 0), 4096, 2160, Vector3(1.0, 0.,  -1.), 3000);
+//Camera m_ecran2 = Camera(Vector3(200, 0, 0), 4096, 2160, Vector3(-1.0, 0.,  -1.), 3000);
+//Camera m_ecran3 = Camera(Vector3(-200, 0, 0), 4096, 2160, Vector3(1.0, 0.,  -1.), 3000);
 
 
 
@@ -80,16 +82,55 @@ int main(int argc, char* argv[])
     // Désactiver le facteurLumière quand on fait l'éclairage indirect
     
     
+    //    cout << "angle1 : " << acos((Vector3::Dot(Vector3(0, 0, 1), Vector3(1, 0, 0))) / 1) << endl;
+    //    cout << "angle2 : " << acos((Vector3::Dot(Vector3(0, 0, 1), Vector3(1, 0, 0))) / 100) << endl;
+    //    cout << "angle3 : " << acos(Vector3::Dot(Vector3(0, 0, 1), Vector3(1, 0, 0))) << endl;
+    //    cout << "angle3 : " << acos(Vector3::Dot(Vector3(0, 0, 1), Vector3(1, 0, 0))) * 180 / M_PI << endl;
+    
+    
+    // Calcul angle AOB en degré : acos(Vector3::Dot(Vector3(AO), Vector3(OB))) * 180 / M_PI
+    // .   .   .      --> (-1, 0, 0)   (0, 0, 0)    (1, 0, 0)
+    
+    //      <==>   (0, 0, 1)    (0, 0, 0)     (0, 0, -1)
+    // .
+    //
+    // .
+    //
+    // .
+    
+    //    cout << "angle de rotation- : " << acos((Vector3::Dot(Vector3(0, 0, 1), Vector3(-1, 0, 0)))) * 180 / M_PI << endl;
+    //    cout << "angle de rotation+ : " << acos((Vector3::Dot(Vector3(0, 0, 1), Vector3(1, 0, 0)))) * 180 / M_PI << endl;
+    
+    Vector3 p1 = Vector3(-1, 0, 0);
+    Vector3 p2 = Vector3(0, 0, 0);
+    Vector3 p3 = Vector3(1, 0, 0);
+    
+    double teta = acos((Vector3::Dot(Vector3(0, 0, 1), Vector3(-1, 0, 0))));
+    
+    cout << "cos(" << teta << ") : " << cos(teta) << endl;
+    cout << "cos(90) : " << cos(90) << endl;
+    
+    p1 = Vector3(cos(teta) * p1.GetX() + sin(teta) * p1.GetZ(), p1.GetY(), -sin(teta) * p1.GetX() + cos(teta) * p1.GetZ());
+    p2 = Vector3(cos(teta) * p2.GetX() + sin(teta) * p2.GetZ(), p2.GetY(), -sin(teta) * p2.GetX() + cos(teta) * p2.GetZ());
+    p3 = Vector3(cos(teta) * p3.GetX() + sin(teta) * p3.GetZ(), p3.GetY(), -sin(teta) * p3.GetX() + cos(teta) * p3.GetZ());
+    
+    p1.Print();
+    p2.Print();
+    p3.Print();
+    cout << endl << endl;
+    
+    
+    
     
     
     
     
     GenerateImages(1, 2, spheres, m_ecran, Vector3(0, 0, 0));
-    GenerateImages(0, 1, spheres, m_ecran2, Vector3(0, 0, 0));
-    GenerateImages(2, 3, spheres, m_ecran3, Vector3(0, 0, 0));
-//    GenerateImages(3, 4, spheres, m_ecran4, Vector3(0, 0, 0));
-//    GenerateImages(4, 5, spheres, m_ecran5, Vector3(0, 0, 0));
-
+    //    GenerateImages(0, 1, spheres, m_ecran2, Vector3(0, 0, 0));
+    //    GenerateImages(2, 3, spheres, m_ecran3, Vector3(0, 0, 0));
+    //    GenerateImages(3, 4, spheres, m_ecran4, Vector3(0, 0, 0));
+    //    GenerateImages(4, 5, spheres, m_ecran5, Vector3(0, 0, 0));
+    
     
     
     //    // Make camera move around a point
@@ -132,25 +173,24 @@ void ImageFromArray(const Image& pixelsArray, const string source, const string 
 {
     bitmap_image img(ecran.GetWidth(), ecran.GetHeight());
     
-    for(int y = 0; y < ecran.GetHeight(); y++)
+    for (int i = 0; i < ecran.GetHeight() * ecran.GetWidth(); i++)
     {
-        for(int x = 0; x < ecran.GetWidth(); x++)
+        int x = i % ecran.GetWidth();
+        int y = i / ecran.GetWidth();
+        int index = y * ecran.GetWidth() + x;
+        
+        double r = pixelsArray[index].GetR() > 255 ? 255 : pixelsArray[index].GetR();
+        double g = pixelsArray[index].GetG() > 255 ? 255 : pixelsArray[index].GetG();
+        double b = pixelsArray[index].GetB() > 255 ? 255 : pixelsArray[index].GetB();
+        
+        if(r < 0 || g < 0 || b < 0)
         {
-            int index = y * ecran.GetWidth() + x;
-            
-            double r = pixelsArray[index].GetR() > 255 ? 255 : pixelsArray[index].GetR();
-            double g = pixelsArray[index].GetG() > 255 ? 255 : pixelsArray[index].GetG();
-            double b = pixelsArray[index].GetB() > 255 ? 255 : pixelsArray[index].GetB();
-            
-            if(r < 0 || g < 0 || b < 0)
-            {
-                cout << "color < 0 : (" << r << ", " << g << ", " << b << ")" << endl;
-                exit(2);
-                // EXIT CODE: 2 --> Un pixel avait une couleur < 0
-            }
-            
-            img.set_pixel(x, y, r, g, b);
+            cout << "color < 0 : (" << r << ", " << g << ", " << b << ")" << endl;
+            exit(2);
+            // EXIT CODE: 2 --> Un pixel avait une couleur < 0
         }
+        
+        img.set_pixel(x, y, r, g, b);
     }
     
     img.save_image(source + nomImage);
@@ -181,23 +221,23 @@ void InitSpheres(Scene& spheres)
     //    spheres.push_back(Sphere(Vector3(500 - 500, 500 - 1500, -950), 200, Material(DifuseType, Color{255, 255, 0}), "jaune")); // Jaune
     //
     //
-        spheres.push_back(Sphere(Vector3(-1000, 0, -400), 200, Material(EMaterialType::DifuseType, Color{0, 0, 255}), "Bleu")); // Bleu
-        spheres.push_back(Sphere(Vector3(0, 0, -400), 200, Material(EMaterialType::DifuseType, Color{255, 255, 255}), "Blanc")); // Blanc
-        spheres.push_back(Sphere(Vector3(1000, 0, -400), 200, Material(EMaterialType::DifuseType, Color{255, 0, 0}), "Rouge")); // Rouge
+    //        spheres.push_back(Sphere(Vector3(-1000, 0, -400), 200, Material(EMaterialType::DifuseType, Color{0, 0, 255}), "Bleu")); // Bleu
+    spheres.push_back(Sphere(Vector3(0, 0, -400), 200, Material(EMaterialType::DifuseType, Color{255, 255, 255}), "Blanc")); // Blanc
+    //        spheres.push_back(Sphere(Vector3(1000, 0, -400), 200, Material(EMaterialType::DifuseType, Color{255, 0, 0}), "Rouge")); // Rouge
+    //
+    //    spheres.push_back(Sphere(Vector3(0, -800, -400), 200, Material(EMaterialType::DifuseType, Color{255, 0, 255}), "Rose")); // Rose
+    //    spheres.push_back(Sphere(Vector3(0, 800, -400), 200, Material(EMaterialType::DifuseType, Color{255, 255, 0}), "Jaune")); // Jaune
     
-    spheres.push_back(Sphere(Vector3(0, -800, -400), 200, Material(EMaterialType::DifuseType, Color{255, 0, 255}), "Rose")); // Rose
-    spheres.push_back(Sphere(Vector3(0, 800, -400), 200, Material(EMaterialType::DifuseType, Color{255, 255, 0}), "Jaune")); // Jaune
-
     
     //    spheres.push_back(Sphere(Vector3(0, 0, 0), 10, Material(EMaterialType::DifuseType, Color{255, 0, 0}), "Rouge")); // Bleu
     
     //
-//    spheres.push_back(leftWall);
-//    spheres.push_back(rightWall);
-//    spheres.push_back(topWall);
-//    spheres.push_back(bottomWall);
-//    spheres.push_back(frontWall);
-//    spheres.push_back(backWall);
+    //    spheres.push_back(leftWall);
+    //    spheres.push_back(rightWall);
+    //    spheres.push_back(topWall);
+    //    spheres.push_back(bottomWall);
+    //    spheres.push_back(frontWall);
+    //    spheres.push_back(backWall);
     
     spheres.push_back(Sphere(Vector3(lumiere.GetPosition()), 20, Material(EMaterialType::LightType, Color{255 * (1 / facteurLumiere), 0, 0}), "lampe")); // blanc
     
@@ -279,9 +319,16 @@ void GenerateImages(const int firstImage, const int lastImage, Scene spheres, co
                 for (const Sphere& sphereEnTest : spheres)
                 {
                     // Position of the center of the camera + the x & y shift
+                    //                    const Vector3 pointOnScreen = Vector3(indexX + .0, indexY + .0, ((- ecran.GetDirection().GetX()) * indexX) / (ecran.GetDirection().GetZ()));
+                    //                    pointOnScreen.Print();
+                    
+                    
                     const Vector3 pointOnScreen = ecran.GetPosition() + Vector3(indexX + 0., indexY + 0., ecran.GetPosition().GetZ());
-                    const Rayon rayon = Rayon(pointOnScreen, ecran.GetFocalDirection(Vector3(indexX, indexY)));
+                    //                    const Rayon rayon = Rayon(pointOnScreen, ecran.GetFocalDirection(Vector3(indexX, indexY)));
                     //                    const Rayon rayon = Rayon(pointOnScreen, ecran.GetDirection());
+                    
+                    
+                    const Rayon rayon = Rayon(pointOnScreen, ecran.GetDirection());
                     Intersect(rayon, sphereEnTest, result);
                     
                     if (!result.intersect || result.distance >= dist)

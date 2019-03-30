@@ -14,6 +14,7 @@
 #include <Light.hpp>
 #include <Sphere.hpp>
 #include <Box.hpp>
+#include <Pixel.hpp>
 
 using std::vector;
 
