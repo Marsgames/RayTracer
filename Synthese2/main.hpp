@@ -29,9 +29,9 @@ void DebugIntersect(const Intersection res)
 }
 
 //typedef vector<vector<Vector3>> V3Tab;
-typedef vector<Sphere> Scene;
+using Scene = vector<Sphere>;
 typedef vector<Box> Boxes;
-typedef vector<Color> Image;
+typedef vector<Pixel> Image;
 
 void Intersect(const Rayon& rayon, const Sphere& sphere, Intersection& myRes);
 void ImageFromArray(const Image& pixelsArray, const string source, const string nomImage, const Camera& ecran);
@@ -45,5 +45,5 @@ void CreateSpheresBoxes(Boxes& boxesScene, const Scene& scene);
 void MoveLight (Light& lumiere, const Vector3 direction, Sphere& lightSphere);
 //void MoveLight (Light& lumiere, const Vector3 direction, Scene spheres);
 void ClearImage (Image& imageArray, const Camera& ecran);
-void GenerateImages(const int firstImage, const int lastImage, Scene spheres, const Camera& ecran, const Vector3& MoveLightDirection = Vector3(0, 0, 0));
+void GenerateImages(const int firstImage, const int lastImage, Scene spheres, Camera& ecran, const Vector3& MoveLightDirection = Vector3(0, 0, 0));
 void LaunchThreads(const int nbImages, Scene& spheres, const Camera& ecran, const Vector3& directionLight);

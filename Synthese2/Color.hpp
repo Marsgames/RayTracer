@@ -10,6 +10,7 @@
 
 #include <algorithm>
 #include <iostream>
+#include <Vector3.hpp>
 
 using std::to_string;
 using std::string;

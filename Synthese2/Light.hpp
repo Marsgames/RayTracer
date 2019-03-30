@@ -9,6 +9,7 @@
 #pragma once
 
 #include <Color.hpp>
+#include <Pixel.hpp>
 #include <Sphere.hpp>
 #include <Vector3.hpp>
 
@@ -55,7 +56,7 @@ public:
 
 bool CanSeeLight(const Vector3& point, const Light& light, const vector<Sphere>& scene)
 {
-    const Vector3 dirLampe = (light.GetPosition() - point).Normalize();
+    Vector3 dirLampe = (light.GetPosition() - point).Normalize();
     //    const Vector3 dirCam = (ecran.GetPosition() - point).Normalize();
     const double distPL = GetDistance(point, light.GetPosition());
     
@@ -90,11 +91,11 @@ bool CanSeeLight(const Vector3& point, const Light& light, const vector<Sphere>&
     return true;
 }
 
-void SetLightning(const Vector3& point, const int index, const Light& light,  vector<Color>& image)
+void SetLightning(const Vector3& point, const int index, const Light& light,  vector<Pixel>& image)
 {
     const double puissance = light.GetPuissance() * (1 / (abs((light.GetPosition().GetX() - point.GetX()) + (light.GetPosition().GetY() - point.GetY()) + (light.GetPosition().GetZ() - point.GetZ()))));
     
-    image[index].SetR(image[index].GetR() * puissance);
-    image[index].SetG(image[index].GetG() * puissance);
-    image[index].SetB(image[index].GetB() * puissance);
+    Color col = image[index].GetColor();
+    
+    image[index].SetColor(Color(col.GetR() * puissance, col.GetG() * puissance, col.GetB() * puissance));
 }

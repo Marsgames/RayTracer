@@ -109,7 +109,10 @@ TEST(Vector3, Distance)
 TEST(IntersectFunc, SimpleIntersect)
 {
     Intersection result;
-    const Rayon rayon = Rayon(Vector3{0, 0, 0}, Vector3{1, 0, 0});
+    const Vector3 a{0, 0, 0};
+    Vector3 b{1, 0, 0};
+
+    const Rayon rayon = Rayon(a, b);
     const Sphere sphere = Sphere(Vector3{20, 0, 0}, 10);
     
     // Intersection avec un rayon partant de devant la sphère
@@ -129,11 +132,15 @@ TEST(IntersectFunc, SimpleIntersect)
     EXPECT_EQ(0, result.point.GetZ());
     
     // Pas d'intersection, le rayon est dans le mauvais sens
-    Intersect(Rayon(Vector3{0, 0, 0}, Vector3{-1, 0, 0}), sphere, result);
+    const Vector3 v1{0, 0, 0};
+    Vector3 v2{-1, 0, 0};
+    Intersect(Rayon(v1, v2), sphere, result);
     EXPECT_EQ(false, result.intersect);
     
     // Intersection tangeante
-    Intersect(Rayon(Vector3{0, 10, 0}, Vector3{1, 0, 0}), sphere, result);
+    const Vector3 v3{0, 10, 0};
+    Vector3 v4{1, 0, 0};
+    Intersect(Rayon(v3, v4), sphere, result);
     EXPECT_EQ(true, result.intersect);
     EXPECT_EQ(20, result.distance);
     EXPECT_EQ(20, result.point.GetX());
@@ -141,25 +148,39 @@ TEST(IntersectFunc, SimpleIntersect)
     EXPECT_EQ(0, result.point.GetZ());
     
     // Intersection derrière
-    Intersect(Rayon(Vector3{40, 0, 0}, Vector3{-1, 0, 0}), sphere, result);
+    const Vector3 v5{40, 0, 0};
+    Vector3 v6{-1, 0, 0};
+    Intersect(Rayon(v5, v6), sphere, result);
     EXPECT_EQ(true, result.intersect);
     
     // Intersection dessous
-    Intersect(Rayon(Vector3{20, 0, 40}, Vector3{0, 0, -1}), sphere, result);
+    const Vector3 v7{20, 0, 40};
+    Vector3 v8{0, 0, -1};
+    Intersect(Rayon(v7, v8), sphere, result);
     EXPECT_EQ(true, result.intersect);
     
     // Intersection dessus
-    Intersect(Rayon(Vector3{20, 0, -40}, Vector3{0, 0, 1}), sphere, result);
+    const Vector3 v9{20, 0, -40};
+    Vector3 v10{0, 0, 1};
+    Intersect(Rayon(v9, v10), sphere, result);
     EXPECT_EQ(true, result.intersect);
     
     // Intersection à droite
-    Intersect(Rayon(Vector3(20, 40, 0), Vector3(0, -1, 0)), sphere, result);
+    const Vector3 v11{20, 40, 0};
+    Vector3 v12{0, -1, 0};
+    Intersect(Rayon(v11, v12), sphere, result);
     EXPECT_EQ(true, result.intersect);
     
-    Intersect(Rayon(Vector3(500, 500, 0), Vector3(0, 0, -1)), Sphere(Vector3(500, 500, -100), 10), result);
+    const Vector3 v13{500, 500, 0};
+    Vector3 v14{0, 0, -1};
+    const Vector3 v15{500, 500, -100};
+    Intersect(Rayon(v13, v14), Sphere(v15, 10), result);
     EXPECT_EQ(true, result.intersect);
     
-    Intersect(Rayon(Vector3(0, 0, 0), Vector3(1, 0, 1)), Sphere(Vector3(10, 0, 0), 1), result);
+    const Vector3 v16{0, 0, 0};
+    Vector3 v17{1, 0, 1};
+    const Vector3 v18{10, 0, 0};
+    Intersect(Rayon(v16, v17), Sphere(v18, 1), result);
     EXPECT_EQ(false, result.intersect);
     
     // Vérifier manuellement ce test
@@ -170,7 +191,9 @@ TEST(IntersectFunc, SimpleIntersect)
 TEST(IntersectFunc, TestsEva)
 {
     Intersection result;
-    const Rayon rayon = Rayon(Vector3(0, 0, 0), Vector3(1, 1, 1));
+    const Vector3 v1{0, 0, 0};
+    Vector3 v2{1, 1, 1};
+    const Rayon rayon = Rayon(v1, v2);
     Sphere sphere = Sphere{Vector3(0, 0, 0), 100};
     
     Intersect(rayon, sphere, result);
@@ -193,11 +216,24 @@ TEST(IntersectFunc, BoxSimple)
 {
     const Sphere sp = Sphere(Vector3(5, 5, 5), 5);
     const Box b = Box(sp);
-    const Rayon r = Rayon(Vector3(-5., 2.5, 0.), Vector3(1, 0, 0));
-    const Rayon r1 = Rayon(Vector3(-1, 1, 0), Vector3(.5, -.5, 0.));
-    const Rayon r2 = Rayon(Vector3(-5., 2.5, 0.), Vector3(-1, 0, 0));
-    const Rayon r3 = Rayon(Vector3(5., 30., 5.), Vector3(0, -1, 0));
-    const Rayon r4 = Rayon(Vector3(-5., 25., 0.), Vector3(-1, 0, 0));
+    const Vector3 v1{-5., 2.5, 0.};
+    Vector3 v2{1, 0, 0};
+
+    const Rayon r = Rayon(v1, v2);
+    
+    const Vector3 v3{-1, 1, 0};
+    Vector3 v4{.5, -.5, 0.};
+    
+    const Rayon r1 = Rayon(v3, v4);
+    const Vector3 v5{-5., 2.5, 0.};
+    Vector3 v6{-1, 0, 0};
+    const Rayon r2 = Rayon(v5, v6);
+    const Vector3 v7{5., 30., 5.};
+    Vector3 v8{0, -1, 0};
+    const Rayon r3 = Rayon(v7, v8);
+    const Vector3 v9{-5., 25., 0.};
+    Vector3 v10{-1, 0, 0};
+    const Rayon r4 = Rayon(v9, v10);
     
     EXPECT_EQ(IntersectBox(r, b), true);
     EXPECT_EQ(IntersectBox(r1, b), true);
