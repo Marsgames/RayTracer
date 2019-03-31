@@ -10,6 +10,11 @@
 		AE376F5F2158B2C700044A00 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AE376F5E2158B2C700044A00 /* main.cpp */; };
 		AE58E43F216FED1900189557 /* libgtest_main.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE58E43D216FED1900189557 /* libgtest_main.a */; };
 		AE58E440216FED1900189557 /* libgtest.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE58E43E216FED1900189557 /* libgtest.a */; };
+		AEBE96692250D30B0012D617 /* Vector3.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AEBE96682250D30B0012D617 /* Vector3.cpp */; };
+		AEBE966B2250E6090012D617 /* Sphere.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AEBE966A2250E6090012D617 /* Sphere.cpp */; };
+		AEBE966F2250F2AD0012D617 /* Light.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AEBE966E2250F2AD0012D617 /* Light.cpp */; };
+		AEBE96712250F4A40012D617 /* Camera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AEBE96702250F4A40012D617 /* Camera.cpp */; };
+		AEBE9674225122940012D617 /* Scene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AEBE9672225122940012D617 /* Scene.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -43,6 +48,12 @@
 		AEB11833217DAF8700925ED7 /* Sphere.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Sphere.hpp; sourceTree = "<group>"; };
 		AEB11834217DB03600925ED7 /* Color.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Color.hpp; sourceTree = "<group>"; };
 		AEBE9666224FBEC50012D617 /* Pixel.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; name = Pixel.hpp; path = Synthese2/Pixel.hpp; sourceTree = SOURCE_ROOT; };
+		AEBE96682250D30B0012D617 /* Vector3.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Vector3.cpp; sourceTree = "<group>"; };
+		AEBE966A2250E6090012D617 /* Sphere.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Sphere.cpp; sourceTree = "<group>"; };
+		AEBE966E2250F2AD0012D617 /* Light.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Light.cpp; sourceTree = "<group>"; };
+		AEBE96702250F4A40012D617 /* Camera.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Camera.cpp; sourceTree = "<group>"; };
+		AEBE9672225122940012D617 /* Scene.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Scene.cpp; sourceTree = "<group>"; };
+		AEBE9673225122940012D617 /* Scene.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Scene.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -84,13 +95,19 @@
 				AEA8E6352158FF1100E89BCC /* main.hpp */,
 				AE38D1F021A30A2D00E89C5D /* BoundingBox.hpp */,
 				AE38D1EF21A2B11600E89C5D /* Box.hpp */,
+				AEBE96702250F4A40012D617 /* Camera.cpp */,
 				AE82F5CE216BA2B000E00378 /* Camera.hpp */,
 				AEB11834217DB03600925ED7 /* Color.hpp */,
+				AEBE966E2250F2AD0012D617 /* Light.cpp */,
 				AE82F5CD216B662700E00378 /* Light.hpp */,
 				AE0D03AB222BAA220062CFBE /* Material.hpp */,
 				AEBE9666224FBEC50012D617 /* Pixel.hpp */,
 				AE82F5CF216BA78A00E00378 /* Rayon.hpp */,
+				AEBE9672225122940012D617 /* Scene.cpp */,
+				AEBE9673225122940012D617 /* Scene.hpp */,
+				AEBE966A2250E6090012D617 /* Sphere.cpp */,
 				AEB11833217DAF8700925ED7 /* Sphere.hpp */,
+				AEBE96682250D30B0012D617 /* Vector3.cpp */,
 				AE01D3A3216257E20092FCB5 /* Vector3.hpp */,
 			);
 			path = Synthese2;
@@ -170,6 +187,7 @@
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
+				Base,
 			);
 			mainGroup = AE376F522158B2C700044A00;
 			productRefGroup = AE376F5C2158B2C700044A00 /* Products */;
@@ -186,6 +204,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AEBE96692250D30B0012D617 /* Vector3.cpp in Sources */,
+				AEBE966B2250E6090012D617 /* Sphere.cpp in Sources */,
+				AEBE96712250F4A40012D617 /* Camera.cpp in Sources */,
+				AEBE9674225122940012D617 /* Scene.cpp in Sources */,
+				AEBE966F2250F2AD0012D617 /* Light.cpp in Sources */,
 				AE376F5F2158B2C700044A00 /* main.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -309,6 +332,7 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 7RA755DD97;
+				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				GCC_VERSION = "";
 				HEADER_SEARCH_PATHS = (
 					/Users/Raph/Documents/Gamagora/Synthese/Synthese2/googletest/googletest/include,
@@ -325,6 +349,7 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 7RA755DD97;
+				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				GCC_VERSION = "";
 				HEADER_SEARCH_PATHS = (
 					/Users/Raph/Documents/Gamagora/Synthese/Synthese2/googletest/googletest/include,

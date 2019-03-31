@@ -10,6 +10,9 @@
 
 #include <Vector3.hpp>
 #include <Color.hpp>
+#include <map>
+
+using std::map;
 
 enum EMaterialType
 {
@@ -22,62 +25,59 @@ enum EMaterialType
 class Material
 {
 private:
-//    EMaterialType m_materialType;
     Color m_color;
     float m_albedo;
+    map<EMaterialType, float> albedoMap =
+    {
+        {DifuseType, 0},
+        {MirrorType, 1},
+        {LightType, 0},
+        {GlassType, 9},
+    };
     
 public:
     int m_materialType;
     
-    Material(){}
-//    Material(const EMaterialType material, const Color color)
-//    {
-//        m_materialType = material;
-//        m_color = color;
-//        SetAlbedo();
-//    }
-    Material(const int material, const Color color)
+    inline Material(){}
+    inline Material(const int material, const Color color) :
+    m_materialType{material},
+    m_color{color}
     {
-        m_materialType = material;
-        m_color = color;
         SetAlbedo();
     }
     
-//    EMaterialType GetMaterialType() const
-//    {
-//        return m_materialType;
-//    }
-    
-    Color GetColor() const
+    inline Color GetColor() const
     {
         return m_color;
     }
     
-    float GetAlbedo() const
+    inline float GetAlbedo() const
     {
         return m_albedo;
     }
     
 private:
-    void SetAlbedo()
+    inline void SetAlbedo()
     {
-        switch (m_materialType)
-        {
-            case DifuseType:
-                m_albedo = 0;
-                break;
-                
-            case MirrorType:
-                m_albedo = 1;
-                break;
-                
-            case LightType:
-                m_albedo = 0;
-                break;
-                
-            case GlassType:
-                m_albedo = 9;
-                break;
-        }
+        m_albedo = albedoMap[static_cast<EMaterialType>(m_materialType)];
+        
+//        switch (m_materialType)
+//        {
+//            case DifuseType:
+//                m_albedo = 0;
+//                break;
+//
+//            case MirrorType:
+//                m_albedo = 1;
+//                break;
+//
+//            case LightType:
+//                m_albedo = 0;
+//                break;
+//
+//            case GlassType:
+//                m_albedo = 9;
+//                break;
+//        }
     }
 };

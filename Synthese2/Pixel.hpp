@@ -16,26 +16,25 @@ class Pixel {
     Color m_color;
     
 public:
-    Pixel(const Vector3& position, const Color& color)
-    {
-        m_position = position;
-        m_color = color;
-    }
+    inline Pixel(const Vector3& position, const Color& color) :
+    m_position{position},
+    m_color{color}
+    {}
     
-    Vector3 GetPosition() const
+    inline Vector3 GetPosition() const
     {
         return m_position;
     }
-    void SetPosition(const Vector3& position)
+    inline void SetPosition(const Vector3& position)
     {
         m_position = position;
     }
     
-    Color GetColor() const
+    inline Color GetColor() const
     {
         return m_color;
     }
-    void SetColor(const Color& color)
+    inline void SetColor(const Color& color)
     {
         m_color = color;
     }

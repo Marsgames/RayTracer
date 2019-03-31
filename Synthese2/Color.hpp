@@ -21,66 +21,55 @@ private:
     double m_r, m_g, m_b;
     
 public:    
-    Color() {}
+    inline Color() {}
     
-    Color(double r, double g, double b)
-    {
-        m_r = r;
-        m_g = g;
-        m_b = b;
-    }
+    inline Color(double r, double g, double b) :
+    m_r{r},
+    m_g{g},
+    m_b{b}
+    {}
     
-    Color(Vector3 color)
+//    inline Color(int r, int g, int b) :
+//    m_r{static_cast<double>(r)},
+//    m_g{static_cast<double>(g)},
+//    m_b{static_cast<double>(b)}
+//    {}
+    
+    inline Color(Vector3 color)
     {
         m_r = color.GetX() * 255;
         m_g = color.GetY() * 255;
         m_b = color.GetZ() * 255;
     }
     
-//    Color(string color)
-//    {
-//        std::transform(color.begin(), color.end(), color.begin(), tolower);
-//
-//        switch (color)
-//        {
-//            case "red", "rouge":
-//                m_r = 255;
-//                m_g = 0;
-//                m_b = 0;
-//                break;
-//
-//        }
-//    }
-    
-    double GetR() const
+    inline double GetR() const
     {
         return m_r;
     }
-    double GetG() const
+    inline double GetG() const
     {
         return m_g;
     }
-    double GetB() const
+    inline double GetB() const
     {
         return m_b;
     }
     
-    void SetR(double r)
+    inline void SetR(double r)
     {
         m_r = r;
     }
-    void SetG(double g)
+    inline void SetG(double g)
     {
         m_g = g;
     }
-    void SetB(double b)
+    inline void SetB(double b)
     {
         m_b = b;
     }
     
-    
-    string ToString()
+    inline string ToString()
     {
-        return "(" + to_string(int(m_r)) + ", " + to_string(int(m_g)) + ", " + to_string(int(m_b)) + ")";
+        return "(" + to_string(static_cast<int>(m_r)) + ", " + to_string(static_cast<int>(m_g)) + ", " + to_string(static_cast<int>(m_b)) + ")";
     }
 };

@@ -14,12 +14,7 @@
 #include <Rayon.hpp>
 #include <Vector3.hpp>
 
-#include <numeric>
-//#include <vector>
-//#include <functional>
-
-
-using namespace std;
+using std::string;
 
 struct Intersection{
     bool intersect;
@@ -27,11 +22,6 @@ struct Intersection{
     string nameInterObj;
     Vector3 point;
 };
-
-//enum SphereType
-//{
-//    difusType, miroirType, verreType, lumiereType
-//};
 
 class Sphere{
 private:
@@ -41,82 +31,52 @@ private:
     string m_nom;
     
 public:
-    Sphere(){};
+    inline Sphere(){};
     
-    Sphere(const Vector3& origine, const double& rayon){
-        m_center = origine;
-        m_rayon = rayon;
-    };
+    inline Sphere(const Vector3& origin, const double& rayon) :
+    m_center{origin},
+    m_rayon{rayon}
+    {};
     
-    Sphere(const Vector3& origine, const double rayon, const Material& material, const string nom){
-        m_center = origine;
-        m_rayon = rayon;
-        m_material = material;
-        m_nom = nom;
-    };
+    inline Sphere(const Vector3& origin, const double rayon, const Material& material, const string nom) :
+    m_center{origin},
+    m_rayon{rayon},
+    m_material{material},
+    m_nom{nom}
+    {};
     
-    Sphere(const Vector3& origine, const double rayon, const Material& material, const string nom, int isLight){
-        m_center = origine;
-        m_rayon = rayon;
-        m_material = material;
-        m_nom = nom;
-//        this->type = 0 == isLight ? lumiereType : miroirType;
-    };
+//    inline Sphere(const Vector3& origine, const double rayon, const Material& material, const string nom, int isLight){
+//        m_center = origine;
+//        m_rayon = rayon;
+//        m_material = material;
+//        m_nom = nom;
+//    };
     
-    Vector3 GetCenter() const
+    inline Vector3 GetCenter() const
     {
         return m_center;
     }
-    void SetCenter(Vector3 center)
+    inline void SetCenter(Vector3 center)
     {
         m_center = center;
     }
     
-    double GetRayon() const
+    inline double GetRayon() const
     {
         return m_rayon;
     }
     
-    Material GetMaterial() const
+    inline Material GetMaterial() const
     {
         return m_material;
     }
     
-    string GetName() const
+    inline string GetName() const
     {
         return m_nom;
     }
+    
+    static void Intersect(const Rayon& rayon, const Sphere& sphere, Intersection& myRes);
 };
 
-void Intersect(const Rayon& rayon, const Sphere& sphere, Intersection& myRes)
-{
-    
-    const double B = 2 * (Vector3::Dot(rayon.GetOrigin(), rayon.GetDirection()) - Vector3::Dot(sphere.GetCenter(), rayon.GetDirection()));
-    const double C = Dist2(sphere.GetCenter() - rayon.GetOrigin()) - (sphere.GetRayon() * sphere.GetRayon());
-    const double delta = (B * B) - 4 * C;
 
-    myRes.intersect = false;
-    myRes.distance = 0;
-
-    if (delta < 0)
-    {
-        myRes.intersect = false;
-        return;
-    }
-
-    const double sqrtDelta = sqrt(delta);
-    const double inter1 = (-B - sqrtDelta) / 2;
-    const double inter2 = (-B + sqrtDelta) / 2;
-
-    if (inter1 > 0)
-    {
-        myRes.intersect = true;
-        myRes.distance = inter1;
-    }else if (inter2 > 0)
-    {
-        myRes.intersect = true;
-        myRes.distance = inter2;
-    }
-
-    myRes.point = rayon.GetOrigin() + rayon.GetDirection() * myRes.distance;
-}

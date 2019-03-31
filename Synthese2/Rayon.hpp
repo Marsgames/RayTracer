@@ -15,19 +15,17 @@ class Rayon
 private:
     Vector3 m_origin, m_direction;
 public:
-    Rayon(const Vector3& origin, Vector3& direction)
-    {
-        m_origin = origin;
-//        m_direction = Normalize(direction);
-        m_direction = direction.Normalize();
-    };
+    inline Rayon(const Vector3& origin, Vector3& direction) :
+    m_origin{origin},
+    m_direction{direction}
+    {};
     
-    const Vector3& GetOrigin() const
+    inline const Vector3& GetOrigin() const
     {
         return m_origin;
     }
     
-    const Vector3& GetDirection() const
+    inline const Vector3& GetDirection() const
     {
         return m_direction;
     }

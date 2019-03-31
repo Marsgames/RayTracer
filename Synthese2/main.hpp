@@ -17,8 +17,28 @@
 #include <Pixel.hpp>
 
 using std::vector;
+using std::cout;
 
-void DebugIntersect(const Intersection res)
+using Spheres = vector<Sphere>;
+typedef vector<Box> Boxes;
+typedef vector<Pixel> Image;
+
+//void ImageFromArray(const Image& pixelsArray, const string source, const string nomImage, const Camera& ecran);
+void InitSpheres(Spheres& spheres, const Light& lumiere);
+int RunTests();
+void CreateSpheresBoxes(Boxes& boxesScene, const Spheres& scene);
+void MoveLight (Light& lumiere, const Vector3 direction, Sphere& lightSphere);
+//void MoveLight (Light& lumiere, const Vector3 direction, Scene spheres);
+//void ClearImage (Image& imageArray, const Camera& ecran);
+//void GenerateImages(const int firstImage, const int lastImage, Scene spheres, Camera& ecran, const Vector3& MoveLightDirection = Vector3(0, 0, 0));
+//void LaunchThreads(const int nbImages, const Scene& spheres, const Camera& ecran, const Vector3& directionLight);
+
+
+void Print(const Vector3& v)
+{
+    cout << "vector : (" << v.GetX() << ", " << v.GetY() << ", " << v.GetZ() << ")" << std::endl;
+}
+void Print(const Intersection& res)
 {
     cout << "--------------------" << endl;
     cout << "intersect : " << res.intersect << endl;
@@ -27,23 +47,14 @@ void DebugIntersect(const Intersection res)
     cout << "y : " << res.point.GetY() << endl;
     cout << "z : " << res.point.GetZ() << endl;
 }
-
-//typedef vector<vector<Vector3>> V3Tab;
-using Scene = vector<Sphere>;
-typedef vector<Box> Boxes;
-typedef vector<Pixel> Image;
-
-void Intersect(const Rayon& rayon, const Sphere& sphere, Intersection& myRes);
-void ImageFromArray(const Image& pixelsArray, const string source, const string nomImage, const Camera& ecran);
-void InitSpheres(Scene& spheres);
-//bool CanSeeLight(const Vector3& point, const Light& lightPos, const Scene& scene);
-//Color CanSeeLightWithResult(const Vector3& point, const Light& lightPos, const Scene& scene);
-//void SetLightning(const Vector3& point, const int index, const Light& light,  Image& image);
-int RunTests();
-double GetDistance(const Vector3& pointA, const Vector3& pointB);
-void CreateSpheresBoxes(Boxes& boxesScene, const Scene& scene);
-void MoveLight (Light& lumiere, const Vector3 direction, Sphere& lightSphere);
-//void MoveLight (Light& lumiere, const Vector3 direction, Scene spheres);
-void ClearImage (Image& imageArray, const Camera& ecran);
-void GenerateImages(const int firstImage, const int lastImage, Scene spheres, Camera& ecran, const Vector3& MoveLightDirection = Vector3(0, 0, 0));
-void LaunchThreads(const int nbImages, Scene& spheres, const Camera& ecran, const Vector3& directionLight);
+void Print(const Box& box)
+{
+    cout << "Box : " << endl;
+    cout << "\tCenter : " << ((box.GetPMax().GetX() - box.GetPMin().GetX()) + (box.GetPMax().GetY() - box.GetPMin().GetY()) + (box.GetPMax().GetZ() - box.GetPMin().GetZ())) / 2 << endl;
+    cout << "\tpMin : ";
+    box.GetPMin().Print();
+    cout << endl;
+    cout << "\tpMax : ";
+    box.GetPMax().Print();
+    cout << endl;
+}

@@ -90,7 +90,7 @@ public:
         }
         
         vector<Box> list2ndPart;
-        for (int i = boxes.size() / 2; i < boxes.size(); i++)
+        for (int i = static_cast<int>(boxes.size() / 2); i < boxes.size(); i++)
         {
             list2ndPart.push_back(boxes[i]);
         }
@@ -110,7 +110,7 @@ bool IntersectBBox(const Rayon& ray, const BoundingBox& bBox)
     {
         cout << bBox.GetMySphere().GetName() << endl;
         Intersection inter;
-        Intersect(ray, bBox.GetMySphere(), inter);
+        Sphere::Intersect(ray, bBox.GetMySphere(), inter);
         return inter.intersect;
     }
     

@@ -43,26 +43,6 @@ public:
         m_source = boundingBoxType;
     };
     
-//    Box(const Box& b1, const Box& b2, const vector<Box>& boxes)
-//    {
-//        pMin = b1.pMin < b2.pMin ? b1.pMin : b2.pMin;
-//        pMax = b1.pMax > b2.pMax ? b1.pMax : b2.pMax;
-//        source = boundingBoxType;
-//        boxesList = boxes;
-//    };
-    
-    void Print() const
-    {
-        cout << "Box : " << endl;
-        cout << "\tCenter : " << ((m_pMax.GetX() - m_pMin.GetX()) + (m_pMax.GetY() - m_pMin.GetY()) + (m_pMax.GetZ() - m_pMin.GetZ())) / 2 << endl;
-        cout << "\tpMin : ";
-        m_pMin.Print();
-        cout << endl;
-        cout << "\tpMax : ";
-        m_pMax.Print();
-        cout << endl;
-    }
-    
     // (pMax - pMin) / 2 --> centre
     Vector3 GetPMin() const
     {
@@ -100,15 +80,16 @@ public:
         m_mySphere = mySphere;
     }
     
+    friend bool operator<(Box bA, const Box& bB)
+    {
+        // Pas bon car se base sur le centre de la sphère
+        //    return (((bA.pMax.x - bA.pMin.x) + (bA.pMax.y - bA.pMin.y) + (bA.pMax.z - bA.pMin.z)) / 2) < (((bB.pMax.x - bB.pMin.x) + (bB.pMax.y - bB.pMin.y) + (bB.pMax.z - bB.pMin.z)) / 2);
+        
+        return bA.GetPMin() < bB.GetPMin();
+    }
 };
 
-bool operator<(const Box& bA, const Box& bB)
-{
-    // Pas bon car se base sur le centre de la sphère
-//    return (((bA.pMax.x - bA.pMin.x) + (bA.pMax.y - bA.pMin.y) + (bA.pMax.z - bA.pMin.z)) / 2) < (((bB.pMax.x - bB.pMin.x) + (bB.pMax.y - bB.pMin.y) + (bB.pMax.z - bB.pMin.z)) / 2);
-    
-    return bA.GetPMin() < bB.GetPMin();
-}
+
 
 bool IntersectBox(const Rayon& ray, const Box& box)
 {
