@@ -15,8 +15,8 @@
 void Camera::InitImage()
 {
     Vector3 baseDirection{0,0,1};
-    const double tetaUnsigned = acos((Vector3::Dot(baseDirection, m_direction)));
-    const double tetaSigned = m_direction.GetX() >= 0 ? m_direction.GetZ() >= 0 ? tetaUnsigned : tetaUnsigned * -1 : m_direction.GetZ() >= 0 ? tetaUnsigned * -1 : tetaUnsigned;
+    const double thetaUnsigned = acos((Vector3::Dot(baseDirection, m_direction)));
+    const double thetaSigned = m_direction.GetX() >= 0 ? m_direction.GetZ() >= 0 ? thetaUnsigned : thetaUnsigned * -1 : m_direction.GetZ() >= 0 ? thetaUnsigned * -1 : thetaUnsigned;
     m_image.reserve(m_height * m_width);
     Color defaultColor {0, 0, 0};
     
@@ -32,7 +32,7 @@ void Camera::InitImage()
         const int indexY = (index / m_width - m_height / 2);// + m_origin.GetY();
         
         const Vector3 actualPos {indexX, indexY, static_cast<int>(m_origin.GetZ())};
-        const Vector3 newPos = Vector3{cos(tetaSigned) * actualPos.GetX() + sin(tetaSigned) * actualPos.GetZ(), actualPos.GetY(), -sin(tetaSigned) * actualPos.GetX() + cos(tetaSigned) * actualPos.GetZ()};
+        const Vector3 newPos = Vector3{cos(thetaSigned) * actualPos.GetX() + sin(thetaSigned) * actualPos.GetZ(), actualPos.GetY(), -sin(thetaSigned) * actualPos.GetX() + cos(thetaSigned) * actualPos.GetZ()};
         m_image.push_back(Pixel(newPos, defaultColor));
     }
 }

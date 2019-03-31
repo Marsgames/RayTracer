@@ -17,7 +17,7 @@ private:
 public:
     inline Rayon(const Vector3& origin, Vector3& direction) :
     m_origin{origin},
-    m_direction{direction}
+    m_direction{direction.Normalize()}
     {};
     
     inline const Vector3& GetOrigin() const

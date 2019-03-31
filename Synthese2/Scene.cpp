@@ -213,7 +213,7 @@ void Scene::GenerateImages(const int firstImage, const int lastImage, Camera& ec
         
 //        MoveLight(theLight, MoveLightDirection, spheres[spheres.size() - 1]);
         
-        Sphere* lightSphere = &m_spheres[6];
+        Sphere lightSphere = m_spheres[6];
         
 //        m_spheres[6].SetCenter(m_light->GetPosition());
 //        &m_spheres[6].SetCenter(m_light->GetPosition());

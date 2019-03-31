@@ -106,6 +106,107 @@ TEST(Vector3, Distance)
     EXPECT_EQ(sqrt(120000), Vector3::GetDistance(Vector3(100, 100, 100), Vector3(-100, -100, -100)));
 }
 
+TEST(Camera, Rotation)
+{
+    srand(0);
+    
+    // Ecran regarde en face
+    Vector3 camDir = Vector3{0, 0, 1};
+    Camera cam = Camera(Vector3(0, 0, 0), 100, 100, camDir, 0);
+    
+    int pixelsToTest = (cam.GetHeight() * cam.GetWidth()) * .1;
+    const int min = 0;
+    int max = (cam.GetHeight() * cam.GetWidth());
+    for (int i = 0; i < pixelsToTest; i++)
+    {
+        const int randNum = rand()%(max-min + 1) + min;
+        
+        Vector3 point = cam.GetImage()[randNum].GetPosition();
+        
+        EXPECT_EQ(0, Vector3::Dot(camDir, point.Normalize()));
+    }
+    
+    camDir = Vector3{0, 0, 1};
+    cam = Camera(Vector3(100, 0, 0), 100, 100, camDir, 0);
+    
+    pixelsToTest = (cam.GetHeight() * cam.GetWidth()) * .1;
+    max = (cam.GetHeight() * cam.GetWidth());
+    for (int i = 0; i < pixelsToTest; i++)
+    {
+        const int randNum = rand()%(max-min + 1) + min;
+        
+        Vector3 point = cam.GetImage()[randNum].GetPosition();
+        double dot = roundl(Vector3::Dot(camDir, point.Normalize()) * 1000000000) / 1000000000;
+        
+        EXPECT_EQ(0, dot);
+    }
+    
+    camDir = Vector3{0, 0, 1};
+    cam = Camera(Vector3(0, 100, 0), 100, 100, camDir, 0);
+    
+    pixelsToTest = (cam.GetHeight() * cam.GetWidth()) * .1;
+    max = (cam.GetHeight() * cam.GetWidth());
+    for (int i = 0; i < pixelsToTest; i++)
+    {
+        const int randNum = rand()%(max-min + 1) + min;
+        
+        Vector3 point = cam.GetImage()[randNum].GetPosition();
+        double dot = roundl(Vector3::Dot(camDir, point.Normalize()) * 1000000000) / 1000000000;
+        
+        EXPECT_EQ(0, dot);
+    }
+    
+    // Rotation en Z crash
+    camDir = Vector3{0, 0, 1};
+    cam = Camera(Vector3(0, 0, 100), 100, 100, camDir, 0);
+    
+    pixelsToTest = (cam.GetHeight() * cam.GetWidth()) * .1;
+    max = (cam.GetHeight() * cam.GetWidth());
+    for (int i = 0; i < pixelsToTest; i++)
+    {
+        const int randNum = rand()%(max-min + 1) + min;
+        
+        Vector3 point = cam.GetImage()[randNum].GetPosition();
+        double dot = roundl(Vector3::Dot(camDir, point.Normalize()) * 1000000000) / 1000000000;
+        
+        EXPECT_EQ(0, dot);
+    }
+    
+    
+    
+    // Ecran regarde à droite
+    camDir = Vector3{1, 0, 0};
+    cam = Camera(Vector3(7, 2, 0), 100, 100, camDir, 0);
+
+    pixelsToTest = (cam.GetHeight() * cam.GetWidth()) * .1;
+    max = (cam.GetHeight() * cam.GetWidth());
+    for (int i = 0; i < pixelsToTest; i++)
+    {
+        const int randNum = rand()%(max-min + 1) + min;
+
+        Vector3 point = cam.GetImage()[randNum].GetPosition();
+        double dot = roundl(Vector3::Dot(camDir, point.Normalize()) * 1000000000) / 1000000000;
+        
+        EXPECT_EQ(0, dot);
+    }
+    
+    // Ecran regarde en diagonale à droite
+    camDir = Vector3{-1, 0, 0};
+    cam = Camera(Vector3(34, 67, 0), 100, 100, camDir, 0);
+    
+    pixelsToTest = (cam.GetHeight() * cam.GetWidth()) * .1;
+    max = (cam.GetHeight() * cam.GetWidth());
+    for (int i = 0; i < pixelsToTest; i++)
+    {
+        const int randNum = rand()%(max-min + 1) + min;
+        
+        Vector3 point = cam.GetImage()[randNum].GetPosition();
+        double dot = roundl(Vector3::Dot(camDir, point.Normalize()) * 1000000000) / 1000000000;
+        
+        EXPECT_EQ(0, dot);
+    }
+}
+
 TEST(IntersectFunc, SimpleIntersect)
 {
     Intersection result;
@@ -177,10 +278,10 @@ TEST(IntersectFunc, SimpleIntersect)
     Sphere::Intersect(Rayon(v13, v14), Sphere(v15, 10), result);
     EXPECT_EQ(true, result.intersect);
     
-    const Vector3 v16{0, 0, 0};
-    Vector3 v17{1, 0, 1};
-    const Vector3 v18{10, 0, 0};
-    Sphere::Intersect(Rayon(v16, v17), Sphere(v18, 1), result);
+    const Vector3 rOrigin{0, 0, 0};
+    Vector3 rDirection{1, 0, 1};
+    const Vector3 sPosition{10, 0, 0};
+    Sphere::Intersect(Rayon(rOrigin, rDirection), Sphere(sPosition, 1), result);
     EXPECT_EQ(false, result.intersect);
     
     // Vérifier manuellement ce test
@@ -301,28 +402,28 @@ TEST(CanSeeLightFunc, SimpleTest)
     
     // Le rayon est intersepté par une sphère
     Vector3 point1 = Vector3{-20, 0, 0};
-    EXPECT_EQ(false, Light::CanSeeLight(point1, &lum, scene));
+    EXPECT_EQ(false, Light::CanSeeLight(point1, &lum, &scene));
     
     // le rayon n'est pas intersepté par la sphère
     Vector3 point2 = Vector3{15, 0, 0};
-    EXPECT_EQ(true, Light::CanSeeLight(point2, &lum, scene));
+    EXPECT_EQ(true, Light::CanSeeLight(point2, &lum, &scene));
     
     // Le rayon part de l'intérieur de la sphère
     Vector3 point3 = Vector3{0, 0, 0};
-    EXPECT_EQ(false, Light::CanSeeLight(point3, &lum, scene));
+    EXPECT_EQ(false, Light::CanSeeLight(point3, &lum, &scene));
     
     // La lumière est dans la sphère, le rayon non
     const Light& lightInsideSphere = Light{Vector3(0, 0, 0), 1000};
-    EXPECT_EQ(false, Light::CanSeeLight(point1, &lightInsideSphere, scene));
+    EXPECT_EQ(false, Light::CanSeeLight(point1, &lightInsideSphere, &scene));
     
     // La lumière est dans la sphère, le rayon aussi
     Vector3 point4 = Vector3(2, 0, 0);
     const Light& lightInsideSphere2 = Light{Vector3(8, 0, 0), 1000};
-    EXPECT_EQ(true, Light::CanSeeLight(point4, &lightInsideSphere2, scene));
+    EXPECT_EQ(true, Light::CanSeeLight(point4, &lightInsideSphere2, &scene));
     
     // Le point est après la lumière
     Vector3 point5 = Vector3(30, 0, 0);
-    EXPECT_EQ(true, Light::CanSeeLight(point5, &lum, scene));
+    EXPECT_EQ(true, Light::CanSeeLight(point5, &lum, &scene));
 }
 
 TEST(CanSeeLightFunc, ComplexeTest)
@@ -333,13 +434,13 @@ TEST(CanSeeLightFunc, ComplexeTest)
     scene.push_back(sp1);
     
     Vector3 p1 = Vector3(0, 0, 0);
-    EXPECT_EQ(true, Light::CanSeeLight(p1, &lum, scene));
+    EXPECT_EQ(true, Light::CanSeeLight(p1, &lum, &scene));
     p1 = Vector3(76, 54, -48);
-    EXPECT_EQ(true, Light::CanSeeLight(p1, &lum, scene));
+    EXPECT_EQ(true, Light::CanSeeLight(p1, &lum, &scene));
     p1 = Vector3(11, 40, -70);
-    EXPECT_EQ(false, Light::CanSeeLight(p1, &lum, scene));
+    EXPECT_EQ(false, Light::CanSeeLight(p1, &lum, &scene));
     p1 = Vector3(-100, 40, -27);
-    EXPECT_EQ(true, Light::CanSeeLight(p1, &lum, scene));
+    EXPECT_EQ(true, Light::CanSeeLight(p1, &lum, &scene));
     
     //    scene.push_back(Sphere(Vector3(21, 36, -28), 25));
     //

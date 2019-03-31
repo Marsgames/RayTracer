@@ -81,7 +81,7 @@ int main(int argc, char* argv[])
     InitSpheres(spheres, light);
     Scene myScene(light, spheres);
     
-    myScene.GenerateImages(0, 1, spheres, m_ecran, Vector3{0, 0, 0});
+    myScene.GenerateImages(0, 1, m_ecran, Vector3{0, 0, 0});
 
     
 //    Boxes boxes;
