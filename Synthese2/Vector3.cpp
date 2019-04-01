@@ -19,7 +19,6 @@ void Vector3::Print() const
 
 string Vector3::ToString() const
 {
-    return "aze";
     return "(" + to_string(static_cast<float>(m_x)) + ", " + to_string(static_cast<float>(m_y)) + ", " + to_string(static_cast<float>(m_z)) + ")";
 }
 

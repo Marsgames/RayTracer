@@ -46,7 +46,7 @@ public:
     }
     
     void Print() const;
-    inline string ToString() const;
+    string ToString() const;
     
     inline double GetX() const
     {
