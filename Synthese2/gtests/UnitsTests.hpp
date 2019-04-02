@@ -113,98 +113,236 @@ TEST(Camera, Rotation)
     // Ecran regarde en face
     Vector3 camDir = Vector3{0, 0, 1};
     Camera cam = Camera(Vector3(0, 0, 0), 100, 100, camDir, 0);
+    double dot = DBL_MAX;
+    bool result = false;
+    int randNum = 0;
     
     int pixelsToTest = (cam.GetHeight() * cam.GetWidth()) * .1;
     const int min = 0;
     int max = (cam.GetHeight() * cam.GetWidth());
     for (int i = 0; i < pixelsToTest; i++)
     {
-        const int randNum = rand()%(max-min + 1) + min;
+        randNum = rand()%(max-min + 1) + min;
         
-        Vector3 point = cam.GetImage()[randNum].GetPosition();
+        Vector3 point = cam.GetImage()[randNum].GetPosition() - cam.GetPosition();
+        dot = Vector3::Dot(camDir, point);
         
-        EXPECT_EQ(0, Vector3::Dot(camDir, point.Normalize()));
+        if (cam.GetPosition() == Vector3::Negate(point))
+        {
+            continue;
+        }
+
+        result = (0 == dot || 1 == dot || -1 == dot);
+        
+        EXPECT_TRUE(result);
     }
+    dot = DBL_MAX;
+    
     
     camDir = Vector3{0, 0, 1};
     cam = Camera(Vector3(100, 0, 0), 100, 100, camDir, 0);
-    
+
     pixelsToTest = (cam.GetHeight() * cam.GetWidth()) * .1;
     max = (cam.GetHeight() * cam.GetWidth());
     for (int i = 0; i < pixelsToTest; i++)
     {
-        const int randNum = rand()%(max-min + 1) + min;
+        randNum = rand()%(max-min + 1) + min;
         
-        Vector3 point = cam.GetImage()[randNum].GetPosition();
-        double dot = roundl(Vector3::Dot(camDir, point.Normalize()) * 1000000000) / 1000000000;
+        Vector3 point = cam.GetImage()[randNum].GetPosition() - cam.GetPosition();
+        dot = Vector3::Dot(camDir, point);
         
-        EXPECT_EQ(0, dot);
+        if (cam.GetPosition() == Vector3::Negate(point))
+        {
+            continue;
+        }
+        
+        result = (0 == dot || 1 == dot || -1 == dot);
+        
+        EXPECT_TRUE(result);
     }
+    dot = DBL_MAX;
     
+
     camDir = Vector3{0, 0, 1};
     cam = Camera(Vector3(0, 100, 0), 100, 100, camDir, 0);
-    
+
     pixelsToTest = (cam.GetHeight() * cam.GetWidth()) * .1;
     max = (cam.GetHeight() * cam.GetWidth());
     for (int i = 0; i < pixelsToTest; i++)
     {
-        const int randNum = rand()%(max-min + 1) + min;
+        randNum = rand()%(max-min + 1) + min;
         
-        Vector3 point = cam.GetImage()[randNum].GetPosition();
-        double dot = roundl(Vector3::Dot(camDir, point.Normalize()) * 1000000000) / 1000000000;
+        Vector3 point = cam.GetImage()[randNum].GetPosition() - cam.GetPosition();
+        dot = Vector3::Dot(camDir, point);
         
-        EXPECT_EQ(0, dot);
+        if (cam.GetPosition() == Vector3::Negate(point))
+        {
+            continue;
+        }
+        
+//        cout << endl << "point : " << point.ToString() << endl;
+//        cout << "camDir : " << camDir.ToString() << endl;
+//        cout << "dot : " << dot << endl;
+        
+        result = (0 == dot || 1 == dot || -1 == dot);
+        
+        EXPECT_TRUE(result);
     }
+    dot = DBL_MAX;
     
-    // Rotation en Z crash
+
     camDir = Vector3{0, 0, 1};
     cam = Camera(Vector3(0, 0, 100), 100, 100, camDir, 0);
-    
+
     pixelsToTest = (cam.GetHeight() * cam.GetWidth()) * .1;
     max = (cam.GetHeight() * cam.GetWidth());
     for (int i = 0; i < pixelsToTest; i++)
     {
-        const int randNum = rand()%(max-min + 1) + min;
+        randNum = rand()%(max-min + 1) + min;
+
+        Vector3 point = cam.GetImage()[randNum].GetPosition() - cam.GetPosition();
+        dot = Vector3::Dot(camDir, point);
         
-        Vector3 point = cam.GetImage()[randNum].GetPosition();
-        double dot = roundl(Vector3::Dot(camDir, point.Normalize()) * 1000000000) / 1000000000;
-        
-        EXPECT_EQ(0, dot);
+        if (cam.GetPosition() == Vector3::Negate(point))
+        {
+            continue;
+        }
+
+//        cout << endl << "point : " << point.ToString() << endl;
+//        cout << "camDir : " << camDir.ToString() << endl;
+//        cout << "dot : " << dot << endl;
+
+        result = (0 == dot || 1 == dot) || -1 == dot;
+
+        EXPECT_TRUE(result);
     }
-    
-    
-    
+    dot = DBL_MAX;
+
+
     // Ecran regarde à droite
     camDir = Vector3{1, 0, 0};
-    cam = Camera(Vector3(7, 2, 0), 100, 100, camDir, 0);
+    cam = Camera(Vector3(7, 0, -28), 100, 100, camDir, 0);
 
     pixelsToTest = (cam.GetHeight() * cam.GetWidth()) * .1;
     max = (cam.GetHeight() * cam.GetWidth());
     for (int i = 0; i < pixelsToTest; i++)
     {
-        const int randNum = rand()%(max-min + 1) + min;
-
-        Vector3 point = cam.GetImage()[randNum].GetPosition();
-        double dot = roundl(Vector3::Dot(camDir, point.Normalize()) * 1000000000) / 1000000000;
+        Vector3 point = cam.GetImage()[randNum].GetPosition() - cam.GetPosition();
+        dot = Vector3::Dot(camDir, point);
         
-        EXPECT_EQ(0, dot);
+        if (cam.GetPosition() == Vector3::Negate(point))
+        {
+            continue;
+        }
+
+//        cout << endl << "point : " << point.ToString() << endl;
+//        cout << "dot : " << dot << endl;
+
+        result = (0 == dot || 1 == dot) || -1 == dot;
+
+        EXPECT_TRUE(result);
     }
+    dot = DBL_MAX;
     
+
     // Ecran regarde en diagonale à droite
     camDir = Vector3{-1, 0, 0};
-    cam = Camera(Vector3(34, 67, 0), 100, 100, camDir, 0);
+    cam = Camera(Vector3(34, 0, 67), 100, 100, camDir, 0);
+
+    pixelsToTest = (cam.GetHeight() * cam.GetWidth()) * .1;
+    max = (cam.GetHeight() * cam.GetWidth());
+    for (int i = 0; i < pixelsToTest; i++)
+    {
+        Vector3 point = cam.GetImage()[randNum].GetPosition() - cam.GetPosition();
+        dot = Vector3::Dot(camDir, point);
+        
+        if (cam.GetPosition() == Vector3::Negate(point))
+        {
+            continue;
+        }
+        
+//        cout << endl << "point : " << point.ToString() << endl;
+//        cout << "dot : " << dot << endl;
+        
+        result = (0 == dot || 1 == dot) || -1 == dot;
+        
+        EXPECT_TRUE(result);
+    }
+    dot = DBL_MAX;
+    
+    camDir = Vector3{-1, 0, 1};
+    cam = Camera(Vector3(34, 0, 67), 100, 100, camDir, 0);
+
+    pixelsToTest = (cam.GetHeight() * cam.GetWidth()) * .1;
+    max = (cam.GetHeight() * cam.GetWidth());
+    for (int i = 0; i < pixelsToTest; i++)
+    {
+        Vector3 point = cam.GetImage()[randNum].GetPosition() - cam.GetPosition();
+        dot = Vector3::Dot(camDir, point);
+
+        if (cam.GetPosition() == Vector3::Negate(point))
+        {
+            continue;
+        }
+
+//                cout << endl << "point : " << point.ToString() << endl;
+//                cout << "dot : " << dot << endl;
+
+        result = (0 == dot || 1 == dot) || -1 == dot;
+
+        EXPECT_TRUE(result);
+    }
+    dot = DBL_MAX;
+    
+    
+    camDir = Vector3{.487, 0., -.751};
+    cam = Camera(Vector3(34, 0, 67), 100, 100, camDir, 0);
     
     pixelsToTest = (cam.GetHeight() * cam.GetWidth()) * .1;
     max = (cam.GetHeight() * cam.GetWidth());
     for (int i = 0; i < pixelsToTest; i++)
     {
-        const int randNum = rand()%(max-min + 1) + min;
+        Vector3 point = cam.GetImage()[randNum].GetPosition() - cam.GetPosition();
+        dot = Vector3::Dot(camDir, point);
         
-        Vector3 point = cam.GetImage()[randNum].GetPosition();
-        double dot = roundl(Vector3::Dot(camDir, point.Normalize()) * 1000000000) / 1000000000;
+        if (cam.GetPosition() == Vector3::Negate(point))
+        {
+            continue;
+        }
         
-        EXPECT_EQ(0, dot);
+//        cout << endl << "point : " << point.ToString() << endl;
+//        cout << "dot : " << dot << endl;
+        
+        result = (0 == dot || 1 == dot) || -1 == dot;
+        
+        EXPECT_TRUE(result);
     }
+    dot = DBL_MAX;
+    
+    
+    camDir = Vector3{-.487, 0., -.751};
+    cam = Camera(Vector3(34, 0, 67), 100, 100, camDir, 0);
+    
+    pixelsToTest = (cam.GetHeight() * cam.GetWidth()) * .1;
+    max = (cam.GetHeight() * cam.GetWidth());
+    for (int i = 0; i < pixelsToTest; i++)
+    {
+        Vector3 point = cam.GetImage()[randNum].GetPosition() - cam.GetPosition();
+        dot = Vector3::Dot(camDir, point);
+        
+        if (cam.GetPosition() == Vector3::Negate(point))
+        {
+            continue;
+        }
+        
+//        cout << endl << "point : " << point.ToString() << endl;
+//        cout << "dot : " << dot << endl;
+        
+        result = (0 == dot || 1 == dot) || -1 == dot;
+        
+        EXPECT_TRUE(result);
+    }
+    dot = DBL_MAX;
 }
 
 TEST(IntersectFunc, SimpleIntersect)

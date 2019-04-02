@@ -40,9 +40,11 @@ using std::thread;
 
 //Light lumiere = Light{Vector3(0., -950., -1000.), 10000};
 //Light lumiere = Light{Vector3(0., -450., -500.), 1000};
-const Vector3 camOrigin{-30, 0, 0};
-Vector3 camDirection{1., 0., 0.};
+
+const Vector3 camOrigin{0, 0, 0};
+Vector3 camDirection{0., 0., 1.};
 Camera m_ecran = Camera(camOrigin, 1000, 1000, camDirection, 1000); // 4096 * 2160
+
 //Camera m_ecran = Camera(Vector3(200, 0, -420), 1000, 1000, Vector3(-0., 0.,  1.), 1000);
 //Camera m_ecran = Camera(Vector3(0, 0, -800), 4096, 2160, Vector3(0., 0.,  1.), 3000);
 //Camera m_ecran = Camera(Vector3(0, 0, -30), 500, 500, Vector3(0., 0.,  1.), 3000);
@@ -81,14 +83,80 @@ int main(int argc, char* argv[])
     InitSpheres(spheres, light);
     Scene myScene(light, spheres);
     
-    myScene.GenerateImages(0, 1, m_ecran, Vector3{0, 0, 0});
-
+//    myScene.LaunchThreads(1, m_ecran, Vector3{0, 0, 0});
+//    myScene.GenerateImages(0, 1, m_ecran, Vector3{0, 0, 0});
     
-//    Boxes boxes;
+//    double cosTheta = cos((2 * M_PI * 0) / 6);
+//    double sinTheta = sin((2 * M_PI * 0) / 6);
+//    Vector3 camPos{0 + 100 * cosTheta, 0., 0 + 100 * sinTheta};
+//    Vector3 camDir{Vector3{0, 0, 0} - camPos};
+//    cout << camPos.ToString() << ", ";
+//
+//    m_ecran.SetPosition(camPos);
+//    m_ecran.SetDirection(camDir);
+//
+//    myScene.GenerateImages(0, 1, m_ecran, Vector3{0, 0, 0});
+//
+//    cosTheta = cos((2 * M_PI * 1) / 6);
+//    sinTheta = sin((2 * M_PI * 1) / 6);
+//    camPos = Vector3(0 + 100 * cosTheta, 0., 0 + 100 * sinTheta);
+//    camDir = Vector3(0, 0, 0) - camPos;
+//    cout << camPos.ToString() << ", ";
+//
+//    m_ecran.SetPosition(camPos);
+//    m_ecran.SetDirection(camDir);
+//    myScene.GenerateImages(1, 2, m_ecran, Vector3{0, 0, 0});
+//
+//    cosTheta = cos((2 * M_PI * 2) / 6);
+//    sinTheta = sin((2 * M_PI * 2) / 6);
+//    camPos = Vector3(0 + 100 * cosTheta, 0., 0 + 100 * sinTheta);
+//    camDir = Vector3(0, 0, 0) - camPos;
+//    cout << camPos.ToString() << ", ";
+//
+//
+//    m_ecran.SetPosition(camPos);
+//    m_ecran.SetDirection(camDir);
+//    myScene.GenerateImages(2, 3, m_ecran, Vector3{0, 0, 0});
+//
+//    cosTheta = cos((2 * M_PI * 3) / 6);
+//    sinTheta = sin((2 * M_PI * 3) / 6);
+//    camPos = Vector3(0 + 100 * cosTheta, 0., 0 + 100 * sinTheta);
+//    camDir = Vector3(0, 0, 0) - camPos;
+//    cout << camPos.ToString() << ", ";
+//
+//
+//    m_ecran.SetPosition(camPos);
+//    m_ecran.SetDirection(camDir);
+//    myScene.GenerateImages(3, 4, m_ecran, Vector3{0, 0, 0});
+//
+//    cosTheta = cos((2 * M_PI * 4) / 6);
+//    sinTheta = sin((2 * M_PI * 4) / 6);
+//    camPos = Vector3(0 + 100 * cosTheta, 0., 0 + 100 * sinTheta);
+//    camDir = Vector3(0, 0, 0) - camPos;
+//    cout << camPos.ToString() << ", ";
+//
+//
+//    m_ecran.SetPosition(camPos);
+//    m_ecran.SetDirection(camDir);
+//    myScene.GenerateImages(4, 5, m_ecran, Vector3{0, 0, 0});
+//
+//    cosTheta = cos((2 * M_PI * 5) / 6);
+//    sinTheta = sin((2 * M_PI * 5) / 6);
+//    camPos = Vector3(0 + 100 * cosTheta, 0., 0 + 100 * sinTheta);
+//    camDir = Vector3(0, 0, 0) - camPos;
+//    cout << camPos.ToString() << endl;
+//
+//
+//    m_ecran.SetPosition(camPos);
+//    m_ecran.SetDirection(camDir);
+//    myScene.GenerateImages(5, 6, m_ecran, Vector3{0, 0, 0});
+    
+    
+    //    Boxes boxes;
     
     
     
-
+    
     
     // Ajouter struct Material { Difuse (renvoie la couleur du materiaux), Mirror (rebondi et renvoi le prochain point touché), light (éclaire), glass (passe au travers (rajouter un effet "fumé" pour différentier avec "rien")}
     
@@ -98,7 +166,7 @@ int main(int argc, char* argv[])
     
     
     
-//    GenerateImages(100000, 100001, spheres, m_ecran, Vector3(0, 0, 0));
+    //    GenerateImages(100000, 100001, spheres, m_ecran, Vector3(0, 0, 0));
     //    Vector3 direction{0, 0, 1};
     //    m_ecran.SetDirection(direction);
     //    GenerateImages(100001, 100002, spheres, m_ecran, Vector3(0, 0, 0));
@@ -110,29 +178,29 @@ int main(int argc, char* argv[])
     
     
     
-//        // Make camera move around a point
-//        {
-//            const Vector3 posSphere = Vector3(0, 0, 0);
-//            const double rayonRotation = 100;
-//            int index = 0;
-//            cout << endl << endl;
-//            int nbParts = 360;
-//            for (int i = 0; i < nbParts; i++)
-//            {
-//                const double cosTeta = cos((2 * M_PI * i) / nbParts);
-//                const double sinTeta = sin((2 * M_PI * i) / nbParts);
-//                Vector3 camPos = Vector3(posSphere.GetX() + rayonRotation * cosTeta, m_ecran.GetPosition().GetY(), posSphere.GetZ() + rayonRotation * sinTeta);
-//                Vector3 dirCam = Vector3(posSphere - camPos);
-//
-//
-//                m_ecran.SetPosition(camPos);
-//                m_ecran.SetDirection(dirCam);
-//                myScene.GenerateImages(index, index + 1, spheres, m_ecran, Vector3(0, 0, 0));
-//                index++;
-//                cout << "(" << camPos.GetX() << "," << camPos.GetZ() << "), ";
-//            }
-//            cout << endl << endl;
-//        }
+            // Make camera move around a point
+            {
+                const Vector3 posSphere = Vector3(0, 0, 0);
+                const double rayonRotation = 100;
+                int index = 0;
+                cout << endl << endl;
+                int nbParts = 120;
+                for (int i = 0; i < nbParts; i++)
+                {
+                    const double cosTheta = cos((2 * M_PI * i) / nbParts);
+                    const double sinTheta = sin((2 * M_PI * i) / nbParts);
+                    Vector3 camPos = Vector3(posSphere.GetX() + rayonRotation * cosTheta, m_ecran.GetPosition().GetY(), posSphere.GetZ() + rayonRotation * sinTheta);
+                    Vector3 dirCam = Vector3(posSphere - camPos);
+    
+    
+                    m_ecran.SetPosition(camPos);
+                    m_ecran.SetDirection(dirCam);
+                    myScene.GenerateImages(index, index + 1, m_ecran, Vector3(0, 0, 0));
+                    index++;
+                    cout << "(" << camPos.GetX() << "," << camPos.GetZ() << "), ";
+                }
+                cout << endl << endl;
+            }
     
     
     

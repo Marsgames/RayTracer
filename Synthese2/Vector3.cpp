@@ -17,10 +17,13 @@ void Vector3::Print() const
     std::cout << "vector : (" << m_x << ", " << m_y << ", " << m_z << ")" << std::endl;
 }
 
+//string Vector3::ToString() const
+//{
+//    return "(" + to_string(static_cast<float>(m_x)) + ", " + to_string(static_cast<float>(m_y)) + ", " + to_string(static_cast<float>(m_z)) + ")";
+//}
 string Vector3::ToString() const
 {
-    return "aze";
-    return "(" + to_string(static_cast<float>(m_x)) + ", " + to_string(static_cast<float>(m_y)) + ", " + to_string(static_cast<float>(m_z)) + ")";
+    return to_string(static_cast<float>(m_x)) + "," + to_string(static_cast<float>(m_y)) + "," + to_string(static_cast<float>(m_z));
 }
 
 double Vector3::Dot(const Vector3& pA, const Vector3& pB)
