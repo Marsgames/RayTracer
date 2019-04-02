@@ -88,12 +88,25 @@ void Scene::GenerateImages(const int firstImage, const int lastImage, Camera& ec
     //    }
     
     //    Image image(ecran.GetWidth() * ecran.GetHeight(), Pixel(Vector3(0, 0, 0), Color{0, 0, 0}));
+    
+    
+    
     Image image = ecran.GetImage();
+    
+    
+    
     
     for (int i = firstImage; i < lastImage; i++)
     {
         //        Image image(ecran.GetWidth() * ecran.GetHeight(), Color{44, 117, 255});
         
+        double dist = DBL_MAX;
+        Sphere sphereTouchee;
+        Intersection result;
+        
+        Vector3 pointOnScreen;
+        Vector3 dir;
+        Vector3 focalDir = ecran.GetDirection();
         
         for (int i = 0; i < ecran.GetHeight() * ecran.GetWidth(); i++)
         {
@@ -107,9 +120,7 @@ void Scene::GenerateImages(const int firstImage, const int lastImage, Camera& ec
             //            const int indexY = y - ecran.GetHeight() / 2;
             
             // distance to intersection, to keep only the first one
-            double dist = DBL_MAX;
-            Sphere sphereTouchee;
-            Intersection result;
+            
             
             for (const Sphere& sphereEnTest : *m_spheres)
             {
@@ -117,12 +128,12 @@ void Scene::GenerateImages(const int firstImage, const int lastImage, Camera& ec
                 //                    const Vector3 pointOnScreen = Vector3(indexX + .0, indexY + .0, ((- ecran.GetDirection().GetX()) * indexX) / (ecran.GetDirection().GetZ()));
                 //                    pointOnScreen.Print();
                 
-                const Vector3 pointOnScreen = image[i].GetPosition();
-                
+                pointOnScreen = image[i].GetPosition();
+                dir = Vector3{pointOnScreen.GetX(), pointOnScreen.GetY(), 0.};
                 //                const Vector3 pointOnScreen = ecran.GetPosition() + Vector3(indexX + 0., indexY + 0., ecran.GetPosition().GetZ());
-                const Vector3 dir{pointOnScreen.GetX(), pointOnScreen.GetY(), 0.};
+//                const
                 //                Vector3 focalDir = ecran.GetFocalDirection(dir);
-                Vector3 focalDir = ecran.GetDirection();
+                
                 const Rayon rayon = Rayon(pointOnScreen, focalDir);
                 //                    const Rayon rayon = Rayon(pointOnScreen, ecran.GetDirection());
                 
@@ -154,6 +165,9 @@ void Scene::GenerateImages(const int firstImage, const int lastImage, Camera& ec
                     image[i].SetColor(Color(col.GetR() * facteurLumiere, col.GetG() * facteurLumiere, col.GetB() * facteurLumiere));
                 }
             }
+            
+            dist = DBL_MAX;
+   
             
             //            if (y % 10 == 0)
             //            {

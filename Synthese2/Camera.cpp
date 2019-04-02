@@ -11,12 +11,36 @@
 #include <Color.hpp>
 #include <Pixel.hpp>
 #include <math.h>
+#include <fstream>
+
+using std::cout;
+using std::endl;
+using std::ofstream;
 
 void Camera::InitImage()
 {
+//    ofstream pointsFile;
+//    ofstream directionsFile;
+//
+//    pointsFile.open ("/Users/Raph/Desktop/TestSynthese/points.txt");
+//    directionsFile.open("/Users/Raph/Desktop/TestSynthese/directions.txt");
+    
+    
     Vector3 baseDirection{0,0,1};
     const double thetaUnsigned = acos((Vector3::Dot(baseDirection, m_direction)));
-    const double thetaSigned = m_direction.GetX() >= 0 ? m_direction.GetZ() >= 0 ? thetaUnsigned : thetaUnsigned * -1 : m_direction.GetZ() >= 0 ? thetaUnsigned * -1 : thetaUnsigned;
+    double thetaSigned;
+    
+    if (m_direction.GetX() >= 0)
+    {
+        thetaSigned = thetaUnsigned;
+    }
+    else
+    {
+        thetaSigned = thetaUnsigned * -1;
+    }
+    
+    
+    
     m_image.reserve(m_height * m_width);
     Color defaultColor {0, 0, 0};
     
@@ -32,9 +56,22 @@ void Camera::InitImage()
         const int indexY = (index / m_width - m_height / 2);// + m_origin.GetY();
         
         const Vector3 actualPos {indexX, indexY, static_cast<int>(m_origin.GetZ())};
-        const Vector3 newPos = Vector3{cos(thetaSigned) * actualPos.GetX() + sin(thetaSigned) * actualPos.GetZ(), actualPos.GetY(), -sin(thetaSigned) * actualPos.GetX() + cos(thetaSigned) * actualPos.GetZ()};
+//        const Vector3 newPos = Vector3{cos(thetaSigned) * actualPos.GetX() + sin(thetaSigned) * actualPos.GetZ(), actualPos.GetY(), -sin(thetaSigned) * actualPos.GetX() + cos(thetaSigned) * actualPos.GetZ()};
+
+        Vector3 newPos = Vector3{cos(thetaSigned) * actualPos.GetX() + sin(thetaSigned) * 1, actualPos.GetY(), -sin(thetaSigned) * actualPos.GetX() + cos(thetaSigned) * 1};
+        
+        newPos.SetX(newPos.GetX() + m_origin.GetX());
+        newPos.SetY(newPos.GetY() + m_origin.GetY());
+        newPos.SetZ(newPos.GetZ() + m_origin.GetZ());
+
         m_image.push_back(Pixel(newPos, defaultColor));
+        
+//        pointsFile << newPos.ToString() << "|";
+//        directionsFile << m_direction.ToString() << "|";
     }
+
+//    pointsFile.close();
+//    directionsFile.close();
 }
 
 Vector3 Camera::GetFocalDirection(const Vector3& toThatPoint) const
