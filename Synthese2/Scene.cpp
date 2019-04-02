@@ -18,8 +18,9 @@
 using std::thread;
 using std::cout;
 using std::endl;
+using std::ref;
 
-void Scene::LaunchThreads(const int nbImages, const Camera& ecran, const Vector3& directionLight)
+void Scene::LaunchThreads(const int nbImages, Camera& ecran, const Vector3& directionLight)
 {
     int _nbImages = nbImages;
     while (0 != _nbImages % 50)
@@ -30,46 +31,40 @@ void Scene::LaunchThreads(const int nbImages, const Camera& ecran, const Vector3
     // nbImages / images par thread / nb threads
     for (int i = 0; i < (_nbImages / 5 / 10); i++)
     {
-//        thread t1(GenerateImages, 0, 15, spheres)
+                thread t01(&Scene::GenerateImages, this, i * 50 + 00, i * 50 + 05, ref(ecran), directionLight);
+                thread t02(&Scene::GenerateImages, this, i * 50 + 05, i * 50 + 10, ref(ecran), directionLight);
+                thread t03(&Scene::GenerateImages, this, i * 50 + 10, i * 50 + 15, ref(ecran), directionLight);
+                thread t04(&Scene::GenerateImages, this, i * 50 + 15, i * 50 + 20, ref(ecran), directionLight);
+                thread t05(&Scene::GenerateImages, this, i * 50 + 20, i * 50 + 25, ref(ecran), directionLight);
         
+                thread t06(&Scene::GenerateImages, this, i * 50 + 25, i * 50 + 30, ref(ecran), directionLight);
+                thread t07(&Scene::GenerateImages, this, i * 50 + 30, i * 50 + 35, ref(ecran), directionLight);
+                thread t08(&Scene::GenerateImages, this, i * 50 + 35, i * 50 + 40, ref(ecran), directionLight);
+                thread t09(&Scene::GenerateImages, this, i * 50 + 40, i * 50 + 45, ref(ecran), directionLight);
+                thread t10(&Scene::GenerateImages, this, i * 50 + 45, i * 50 + 50, ref(ecran), directionLight);
         
-//        thread t1(&Scene::GenerateImages, this, 0, 15, spheres, ecran, directionLight);
-        //        std::thread t01(&GenerateImages, i * 50 + 00, i * 50 + 05, spheres, std::ref(ecran), std::ref(directionLight));
+                t01.join();
+                cout << "Thread 1 terminé" << endl;
+                t02.join();
+                cout << "Thread 2 terminé" << endl;
+                t03.join();
+                cout << "Thread 3 terminé" << endl;
+                t04.join();
+                cout << "Thread 4 terminé" << endl;
+                t05.join();
+                cout << "Thread 5 terminé" << endl;
         
-//                std::thread t01(GenerateImages, i * 50 + 00, i * 50 + 05, spheres, std::ref(ecran), directionLight);
-        //        std::thread t02(GenerateImages, i * 50 + 05, i * 50 + 10, spheres, std::ref(ecran), directionLight);
-        //        std::thread t03(GenerateImages, i * 50 + 10, i * 50 + 15, spheres, std::ref(ecran), directionLight);
-        //        std::thread t04(GenerateImages, i * 50 + 15, i * 50 + 20, spheres, std::ref(ecran), directionLight);
-        //        std::thread t05(GenerateImages, i * 50 + 20, i * 50 + 25, spheres, std::ref(ecran), directionLight);
-        //
-        //        std::thread t06(GenerateImages, i * 50 + 25, i * 50 + 30, spheres, std::ref(ecran), directionLight);
-        //        std::thread t07(GenerateImages, i * 50 + 30, i * 50 + 35, spheres, std::ref(ecran), directionLight);
-        //        std::thread t08(GenerateImages, i * 50 + 35, i * 50 + 40, spheres, std::ref(ecran), directionLight);
-        //        std::thread t09(GenerateImages, i * 50 + 40, i * 50 + 45, spheres, std::ref(ecran), directionLight);
-        //        std::thread t10(GenerateImages, i * 50 + 45, i * 50 + 50, spheres, std::ref(ecran), directionLight);
-        //
-        //        t01.join();
-        //        cout << "Thread 1 terminé" << endl;
-        //        t02.join();
-        //        cout << "Thread 2 terminé" << endl;
-        //        t03.join();
-        //        cout << "Thread 3 terminé" << endl;
-        //        t04.join();
-        //        cout << "Thread 4 terminé" << endl;
-        //        t05.join();
-        //        cout << "Thread 5 terminé" << endl;
-        //
-        //        t06.join();
-        //        cout << "Thread 6 terminé" << endl;
-        //        t07.join();
-        //        cout << "Thread 7 terminé" << endl;
-        //        t08.join();
-        //        cout << "Thread 8 terminé" << endl;
-        //        t09.join();
-        //        cout << "Thread 9 terminé" << endl;
-        //        t10.join();
-        //        cout << "Thread 10 terminé" << endl;
-        //
+                t06.join();
+                cout << "Thread 6 terminé" << endl;
+                t07.join();
+                cout << "Thread 7 terminé" << endl;
+                t08.join();
+                cout << "Thread 8 terminé" << endl;
+                t09.join();
+                cout << "Thread 9 terminé" << endl;
+                t10.join();
+                cout << "Thread 10 terminé" << endl;
+        
         cout << "Série " << i + 1 << " sur " << (_nbImages / 5 / 10) << " terminée" << endl;
     }
 }
@@ -93,12 +88,25 @@ void Scene::GenerateImages(const int firstImage, const int lastImage, Camera& ec
     //    }
     
     //    Image image(ecran.GetWidth() * ecran.GetHeight(), Pixel(Vector3(0, 0, 0), Color{0, 0, 0}));
+    
+    
+    
     Image image = ecran.GetImage();
+    
+    
+    
     
     for (int i = firstImage; i < lastImage; i++)
     {
         //        Image image(ecran.GetWidth() * ecran.GetHeight(), Color{44, 117, 255});
         
+        double dist = DBL_MAX;
+        Sphere sphereTouchee;
+        Intersection result;
+        
+        Vector3 pointOnScreen;
+        Vector3 dir;
+        Vector3 focalDir = ecran.GetDirection();
         
         for (int i = 0; i < ecran.GetHeight() * ecran.GetWidth(); i++)
         {
@@ -112,9 +120,7 @@ void Scene::GenerateImages(const int firstImage, const int lastImage, Camera& ec
             //            const int indexY = y - ecran.GetHeight() / 2;
             
             // distance to intersection, to keep only the first one
-            double dist = DBL_MAX;
-            Sphere sphereTouchee;
-            Intersection result;
+            
             
             for (const Sphere& sphereEnTest : *m_spheres)
             {
@@ -122,12 +128,12 @@ void Scene::GenerateImages(const int firstImage, const int lastImage, Camera& ec
                 //                    const Vector3 pointOnScreen = Vector3(indexX + .0, indexY + .0, ((- ecran.GetDirection().GetX()) * indexX) / (ecran.GetDirection().GetZ()));
                 //                    pointOnScreen.Print();
                 
-                const Vector3 pointOnScreen = image[i].GetPosition();
-                
+                pointOnScreen = image[i].GetPosition();
+                dir = Vector3{pointOnScreen.GetX(), pointOnScreen.GetY(), 0.};
                 //                const Vector3 pointOnScreen = ecran.GetPosition() + Vector3(indexX + 0., indexY + 0., ecran.GetPosition().GetZ());
-                const Vector3 dir{pointOnScreen.GetX(), pointOnScreen.GetY(), 0.};
+//                const
                 //                Vector3 focalDir = ecran.GetFocalDirection(dir);
-                Vector3 focalDir = ecran.GetDirection();
+                
                 const Rayon rayon = Rayon(pointOnScreen, focalDir);
                 //                    const Rayon rayon = Rayon(pointOnScreen, ecran.GetDirection());
                 
@@ -159,6 +165,9 @@ void Scene::GenerateImages(const int firstImage, const int lastImage, Camera& ec
                     image[i].SetColor(Color(col.GetR() * facteurLumiere, col.GetG() * facteurLumiere, col.GetB() * facteurLumiere));
                 }
             }
+            
+            dist = DBL_MAX;
+   
             
             //            if (y % 10 == 0)
             //            {
@@ -213,7 +222,7 @@ void Scene::GenerateImages(const int firstImage, const int lastImage, Camera& ec
         
 //        MoveLight(theLight, MoveLightDirection, spheres[spheres.size() - 1]);
         
-        Sphere lightSphere = m_spheres[6];
+//        Sphere lightSphere = m_spheres[6];
         
 //        m_spheres[6].SetCenter(m_light->GetPosition());
 //        &m_spheres[6].SetCenter(m_light->GetPosition());

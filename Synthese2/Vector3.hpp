@@ -16,7 +16,7 @@ using std::string;
 class Vector3 {
 private:
     double m_x{}, m_y{}, m_z{};
-    double norme;
+//    double norme;
     
 public:
     inline Vector3() {};
@@ -26,7 +26,7 @@ public:
     m_y{static_cast<float>(y)},
     m_z{static_cast<float>(z)}
     {
-        norme = sqrt(Dot(*this, *this));
+//        norme = sqrt(Dot(*this, *this));
     }
     
     inline Vector3(double x, double y, double z) :
@@ -34,7 +34,7 @@ public:
     m_y{static_cast<float>(y)},
     m_z{static_cast<float>(z)}
     {
-        norme = sqrt(Dot(*this, *this));
+//        norme = sqrt(Dot(*this, *this));
     }
     
     inline Vector3(float x, float y, float z) :
@@ -42,11 +42,11 @@ public:
     m_y{static_cast<float>(y)},
     m_z{static_cast<float>(z)}
     {
-        norme = sqrt(Dot(*this, *this));
+//        norme = sqrt(Dot(*this, *this));
     }
     
     void Print() const;
-    inline string ToString() const;
+    string ToString() const;
     
     inline double GetX() const
     {
@@ -55,7 +55,6 @@ public:
     inline void SetX(const double x)
     {
         m_x = x;
-        norme = sqrt(Dot(*this, *this));
     }
     
     inline double GetY() const
@@ -65,7 +64,6 @@ public:
     inline void SetY(const double y)
     {
         m_y = y;
-        norme = sqrt(Dot(*this, *this));
     }
     
     inline double GetZ() const
@@ -75,11 +73,11 @@ public:
     inline void SetZ(const double z)
     {
         m_z = z;
-        norme = sqrt(Dot(*this, *this));
     }
     
     inline Vector3 Normalize()
     {
+        double norme = sqrt(Dot(*this, *this));
         return Vector3(m_x / norme, m_y / norme, m_z / norme);
     }
     
