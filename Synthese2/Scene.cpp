@@ -20,7 +20,7 @@ using std::cout;
 using std::endl;
 using std::ref;
 
-void Scene::LaunchThreads(const int nbImages, Camera& ecran, const Vector3& directionLight)
+void Scene::LaunchThreads(const int nbImages, Camera& ecran, const Vector3& directionLight, Light& theLight)
 {
     int _nbImages = nbImages;
     while (0 != _nbImages % 50)
@@ -31,17 +31,17 @@ void Scene::LaunchThreads(const int nbImages, Camera& ecran, const Vector3& dire
     // nbImages / images par thread / nb threads
     for (int i = 0; i < (_nbImages / 5 / 10); i++)
     {
-                thread t01(&Scene::GenerateImages, this, i * 50 + 00, i * 50 + 05, ref(ecran), directionLight);
-                thread t02(&Scene::GenerateImages, this, i * 50 + 05, i * 50 + 10, ref(ecran), directionLight);
-                thread t03(&Scene::GenerateImages, this, i * 50 + 10, i * 50 + 15, ref(ecran), directionLight);
-                thread t04(&Scene::GenerateImages, this, i * 50 + 15, i * 50 + 20, ref(ecran), directionLight);
-                thread t05(&Scene::GenerateImages, this, i * 50 + 20, i * 50 + 25, ref(ecran), directionLight);
+                thread t01(&Scene::GenerateImages, this, i * 50 + 00, i * 50 + 05, ref(ecran), directionLight, ref(theLight));
+                thread t02(&Scene::GenerateImages, this, i * 50 + 05, i * 50 + 10, ref(ecran), directionLight, ref(theLight));
+                thread t03(&Scene::GenerateImages, this, i * 50 + 10, i * 50 + 15, ref(ecran), directionLight, ref(theLight));
+                thread t04(&Scene::GenerateImages, this, i * 50 + 15, i * 50 + 20, ref(ecran), directionLight, ref(theLight));
+                thread t05(&Scene::GenerateImages, this, i * 50 + 20, i * 50 + 25, ref(ecran), directionLight, ref(theLight));
         
-                thread t06(&Scene::GenerateImages, this, i * 50 + 25, i * 50 + 30, ref(ecran), directionLight);
-                thread t07(&Scene::GenerateImages, this, i * 50 + 30, i * 50 + 35, ref(ecran), directionLight);
-                thread t08(&Scene::GenerateImages, this, i * 50 + 35, i * 50 + 40, ref(ecran), directionLight);
-                thread t09(&Scene::GenerateImages, this, i * 50 + 40, i * 50 + 45, ref(ecran), directionLight);
-                thread t10(&Scene::GenerateImages, this, i * 50 + 45, i * 50 + 50, ref(ecran), directionLight);
+                thread t06(&Scene::GenerateImages, this, i * 50 + 25, i * 50 + 30, ref(ecran), directionLight, ref(theLight));
+                thread t07(&Scene::GenerateImages, this, i * 50 + 30, i * 50 + 35, ref(ecran), directionLight, ref(theLight));
+                thread t08(&Scene::GenerateImages, this, i * 50 + 35, i * 50 + 40, ref(ecran), directionLight, ref(theLight));
+                thread t09(&Scene::GenerateImages, this, i * 50 + 40, i * 50 + 45, ref(ecran), directionLight, ref(theLight));
+                thread t10(&Scene::GenerateImages, this, i * 50 + 45, i * 50 + 50, ref(ecran), directionLight, ref(theLight));
         
                 t01.join();
                 cout << "Thread 1 terminé" << endl;
@@ -69,24 +69,24 @@ void Scene::LaunchThreads(const int nbImages, Camera& ecran, const Vector3& dire
     }
 }
 
-void Scene::GenerateImages(const int firstImage, const int lastImage, Camera& ecran, const Vector3& MoveLightDirection)
+void Scene::GenerateImages(const int firstImage, const int lastImage, Camera& ecran, const Vector3& MoveLightDirection, Light& theLight)
 {
-    //    if (!(MoveLightDirection == Vector3(0,0,0)))
-    //    {
-    //        for (Sphere& sphere : spheres)
-    //        {
-    //            if (EMaterialType::LightType != sphere.GetMaterial().m_materialType)
-    //            {
-    //                continue;
-    //            }
-    //
-    //            for (int i = 0; i < firstImage; i++)
-    //            {
-    //                MoveLight(theLight, MoveLightDirection, sphere);
-    //            }
-    //        }
-    //    }
-    
+//        if (!(MoveLightDirection == Vector3(0,0,0)))
+//        {
+//            for (Sphere& sphere : *m_spheres)
+//            {
+//                if (EMaterialType::LightType != sphere.GetMaterial().m_materialType)
+//                {
+//                    continue;
+//                }
+//    
+//                for (int i = 0; i < firstImage; i++)
+//                {
+//                    MoveLight(theLight, MoveLightDirection, sphere);
+//                }
+//            }
+//        }
+//    
     //    Image image(ecran.GetWidth() * ecran.GetHeight(), Pixel(Vector3(0, 0, 0), Color{0, 0, 0}));
     
     
@@ -132,7 +132,7 @@ void Scene::GenerateImages(const int firstImage, const int lastImage, Camera& ec
                 dir = Vector3{pointOnScreen.GetX(), pointOnScreen.GetY(), 0.};
                 //                const Vector3 pointOnScreen = ecran.GetPosition() + Vector3(indexX + 0., indexY + 0., ecran.GetPosition().GetZ());
 //                const
-                //                Vector3 focalDir = ecran.GetFocalDirection(dir);
+                                focalDir = ecran.GetFocalDirection(dir);
                 
                 const Rayon rayon = Rayon(pointOnScreen, focalDir);
                 //                    const Rayon rayon = Rayon(pointOnScreen, ecran.GetDirection());
@@ -231,6 +231,12 @@ void Scene::GenerateImages(const int firstImage, const int lastImage, Camera& ec
 ////        m_spheres[6].GetCenter() = m_light->GetPosition();
         ClearImage(image, ecran);
     }
+}
+
+void Scene::MoveLight (Light& lumiere, const Vector3 direction, Sphere& lightSphere)
+{
+        lumiere.SetPosition(lumiere.GetPosition() + direction);
+        lightSphere.SetCenter(lumiere.GetPosition());
 }
 
 void Scene::ClearImage (Image& imageArray, const Camera& ecran)

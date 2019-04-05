@@ -27,7 +27,7 @@ typedef vector<Pixel> Image;
 void InitSpheres(Spheres& spheres, const Light& lumiere);
 int RunTests();
 void CreateSpheresBoxes(Boxes& boxesScene, const Spheres& scene);
-void MoveLight (Light& lumiere, const Vector3 direction, Sphere& lightSphere);
+//void MoveLight (Light& lumiere, const Vector3 direction, Sphere& lightSphere);
 //void MoveLight (Light& lumiere, const Vector3 direction, Scene spheres);
 //void ClearImage (Image& imageArray, const Camera& ecran);
 //void GenerateImages(const int firstImage, const int lastImage, Scene spheres, Camera& ecran, const Vector3& MoveLightDirection = Vector3(0, 0, 0));

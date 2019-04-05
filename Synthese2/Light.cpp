@@ -52,8 +52,11 @@ bool Light::CanSeeLight(const Vector3& point, const Light* light, const vector<S
 
 void Light::SetLightning(const Vector3& point, const int index, const Light* light,  vector<Pixel>& image)
 {
-    const double puissance = light->GetPuissance() * (1 / (abs((light->GetPosition().GetX() - point.GetX()) + (light->GetPosition().GetY() - point.GetY()) + (light->GetPosition().GetZ() - point.GetZ()))));
+//    const double puissance = light->GetPuissance() * (1 / (abs((light->GetPosition().GetX() - point.GetX()) + (light->GetPosition().GetY() - point.GetY()) + (light->GetPosition().GetZ() - point.GetZ()))));
     
+    Light maLumiere = *light;
+    const double puissance = light->GetPuissance() * (1 / ((Vector3::GetDistance(maLumiere.GetPosition(), point))));
+
     Color col = image[index].GetColor();
     
     image[index].SetColor(Color(col.GetR() * puissance, col.GetG() * puissance, col.GetB() * puissance));

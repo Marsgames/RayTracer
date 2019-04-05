@@ -74,7 +74,7 @@ public:
         InitImage();
     }
     
-    inline Vector3 GetFocalDirection(const Vector3& toThatPoint) const;
+    Vector3 GetFocalDirection(const Vector3& toThatPoint) const;
     
     inline vector<Pixel>& GetImage()
     {

@@ -27,13 +27,13 @@ class Material
 private:
     Color m_color;
     float m_albedo;
-    map<EMaterialType, float> albedoMap =
-    {
-        {DifuseType, 0},
-        {MirrorType, 1},
-        {LightType, 0},
-        {GlassType, 9},
-    };
+//    map<EMaterialType, float> albedoMap =
+//    {
+//        {DifuseType, 0},
+//        {MirrorType, 1},
+//        {LightType, 0},
+//        {GlassType, 9},
+//    };
     
 public:
     int m_materialType;
@@ -59,25 +59,25 @@ public:
 private:
     inline void SetAlbedo()
     {
-        m_albedo = albedoMap[static_cast<EMaterialType>(m_materialType)];
+//        m_albedo = albedoMap[static_cast<EMaterialType>(m_materialType)];
         
-//        switch (m_materialType)
-//        {
-//            case DifuseType:
-//                m_albedo = 0;
-//                break;
-//
-//            case MirrorType:
-//                m_albedo = 1;
-//                break;
-//
-//            case LightType:
-//                m_albedo = 0;
-//                break;
-//
-//            case GlassType:
-//                m_albedo = 9;
-//                break;
-//        }
+        switch (m_materialType)
+        {
+            case DifuseType:
+                m_albedo = 0;
+                break;
+
+            case MirrorType:
+                m_albedo = 1;
+                break;
+
+            case LightType:
+                m_albedo = 0;
+                break;
+
+            case GlassType:
+                m_albedo = 9;
+                break;
+        }
     }
 };

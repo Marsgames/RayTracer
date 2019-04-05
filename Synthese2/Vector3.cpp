@@ -28,7 +28,7 @@ string Vector3::ToString() const
 
 double Vector3::Dot(const Vector3& pA, const Vector3& pB)
 {
-    return pA.GetX() * pB.GetX() + pA.GetY() * pB.GetY() + pA.GetZ() * pB.GetZ();
+    return pA.m_x * pB.m_x + pA.m_y * pB.m_y + pA.m_z * pB.m_z;
 }
 
 double Vector3::Dist2(const Vector3& pA)
@@ -38,7 +38,7 @@ double Vector3::Dist2(const Vector3& pA)
 
 Vector3 Vector3::Negate(const Vector3& v)
 {
-    return Vector3{-v.GetX(), -v.GetY(), -v.GetZ()};
+    return Vector3{-v.m_x, -v.m_y, -v.m_z};
 }
 void Vector3::Negate()
 {
