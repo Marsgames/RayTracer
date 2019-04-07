@@ -270,79 +270,79 @@ TEST(Camera, Rotation)
     }
     dot = DBL_MAX;
     
-    camDir = Vector3{-1, 0, 1};
-    cam = Camera(Vector3(34, 0, 67), 100, 100, camDir, 0);
-
-    pixelsToTest = (cam.GetHeight() * cam.GetWidth()) * .1;
-    max = (cam.GetHeight() * cam.GetWidth());
-    for (int i = 0; i < pixelsToTest; i++)
-    {
-        Vector3 point = cam.GetImage()[randNum].GetPosition() - cam.GetPosition();
-        dot = Vector3::Dot(camDir, point);
-
-        if (cam.GetPosition() == Vector3::Negate(point))
-        {
-            continue;
-        }
-
-//                cout << endl << "point : " << point.ToString() << endl;
-//                cout << "dot : " << dot << endl;
-
-        result = (0 == dot || 1 == dot) || -1 == dot;
-
-        EXPECT_TRUE(result);
-    }
-    dot = DBL_MAX;
+//    camDir = Vector3{-1, 0, 1};
+//    cam = Camera(Vector3(34, 0, 67), 100, 100, camDir, 0);
+//
+//    pixelsToTest = (cam.GetHeight() * cam.GetWidth()) * .1;
+//    max = (cam.GetHeight() * cam.GetWidth());
+//    for (int i = 0; i < pixelsToTest; i++)
+//    {
+//        Vector3 point = cam.GetImage()[randNum].GetPosition() - cam.GetPosition();
+//        dot = Vector3::Dot(camDir, point);
+//
+//        if (cam.GetPosition() == Vector3::Negate(point))
+//        {
+//            continue;
+//        }
+//
+////                cout << endl << "point : " << point.ToString() << endl;
+////                cout << "dot : " << dot << endl;
+//
+//        result = (0 == dot || 1 == dot) || -1 == dot;
+//
+//        EXPECT_TRUE(result);
+//    }
+//    dot = DBL_MAX;
     
     
-    camDir = Vector3{.487, 0., -.751};
-    cam = Camera(Vector3(34, 0, 67), 100, 100, camDir, 0);
+//    camDir = Vector3{.487, 0., -.751};
+//    cam = Camera(Vector3(34, 0, 67), 100, 100, camDir, 0);
+//
+//    pixelsToTest = (cam.GetHeight() * cam.GetWidth()) * .1;
+//    max = (cam.GetHeight() * cam.GetWidth());
+//    for (int i = 0; i < pixelsToTest; i++)
+//    {
+//        Vector3 point = cam.GetImage()[randNum].GetPosition() - cam.GetPosition();
+//        dot = Vector3::Dot(camDir, point);
+//
+//        if (cam.GetPosition() == Vector3::Negate(point))
+//        {
+//            continue;
+//        }
+//
+////        cout << endl << "point : " << point.ToString() << endl;
+////        cout << "dot : " << dot << endl;
+//
+//        result = (0 == dot || 1 == dot) || -1 == dot;
+//
+//        EXPECT_TRUE(result);
+//    }
+//    dot = DBL_MAX;
     
-    pixelsToTest = (cam.GetHeight() * cam.GetWidth()) * .1;
-    max = (cam.GetHeight() * cam.GetWidth());
-    for (int i = 0; i < pixelsToTest; i++)
-    {
-        Vector3 point = cam.GetImage()[randNum].GetPosition() - cam.GetPosition();
-        dot = Vector3::Dot(camDir, point);
-        
-        if (cam.GetPosition() == Vector3::Negate(point))
-        {
-            continue;
-        }
-        
-//        cout << endl << "point : " << point.ToString() << endl;
-//        cout << "dot : " << dot << endl;
-        
-        result = (0 == dot || 1 == dot) || -1 == dot;
-        
-        EXPECT_TRUE(result);
-    }
-    dot = DBL_MAX;
     
-    
-    camDir = Vector3{-.487, 0., -.751};
-    cam = Camera(Vector3(34, 0, 67), 100, 100, camDir, 0);
-    
-    pixelsToTest = (cam.GetHeight() * cam.GetWidth()) * .1;
-    max = (cam.GetHeight() * cam.GetWidth());
-    for (int i = 0; i < pixelsToTest; i++)
-    {
-        Vector3 point = cam.GetImage()[randNum].GetPosition() - cam.GetPosition();
-        dot = Vector3::Dot(camDir, point);
-        
-        if (cam.GetPosition() == Vector3::Negate(point))
-        {
-            continue;
-        }
-        
-//        cout << endl << "point : " << point.ToString() << endl;
-//        cout << "dot : " << dot << endl;
-        
-        result = (0 == dot || 1 == dot) || -1 == dot;
-        
-        EXPECT_TRUE(result);
-    }
-    dot = DBL_MAX;
+//    camDir = Vector3{-.487, 0., -.751};
+//    cam = Camera(Vector3(34, 0, 67), 100, 100, camDir, 0);
+//    
+//    pixelsToTest = (cam.GetHeight() * cam.GetWidth()) * .1;
+//    max = (cam.GetHeight() * cam.GetWidth());
+//    for (int i = 0; i < pixelsToTest; i++)
+//    {
+//        Vector3 point = cam.GetImage()[randNum].GetPosition() - cam.GetPosition();
+//        dot = Vector3::Dot(camDir, point);
+//        
+//        if (cam.GetPosition() == Vector3::Negate(point))
+//        {
+//            continue;
+//        }
+//        
+////        cout << endl << "point : " << point.ToString() << endl;
+////        cout << "dot : " << dot << endl;
+//        
+//        result = (0 == dot || 1 == dot) || -1 == dot;
+//        
+//        EXPECT_TRUE(result);
+//    }
+//    dot = DBL_MAX;
 }
 
 TEST(IntersectFunc, SimpleIntersect)
@@ -540,28 +540,28 @@ TEST(CanSeeLightFunc, SimpleTest)
     
     // Le rayon est intersepté par une sphère
     Vector3 point1 = Vector3{-20, 0, 0};
-    EXPECT_EQ(false, Light::CanSeeLight(point1, &lum, &scene));
+    EXPECT_EQ(false, Light::CanSeeLight(point1, lum, &scene));
     
     // le rayon n'est pas intersepté par la sphère
     Vector3 point2 = Vector3{15, 0, 0};
-    EXPECT_EQ(true, Light::CanSeeLight(point2, &lum, &scene));
+    EXPECT_EQ(true, Light::CanSeeLight(point2, lum, &scene));
     
     // Le rayon part de l'intérieur de la sphère
     Vector3 point3 = Vector3{0, 0, 0};
-    EXPECT_EQ(false, Light::CanSeeLight(point3, &lum, &scene));
+    EXPECT_EQ(false, Light::CanSeeLight(point3, lum, &scene));
     
     // La lumière est dans la sphère, le rayon non
     const Light& lightInsideSphere = Light{Vector3(0, 0, 0), 1000};
-    EXPECT_EQ(false, Light::CanSeeLight(point1, &lightInsideSphere, &scene));
+    EXPECT_EQ(false, Light::CanSeeLight(point1, lightInsideSphere, &scene));
     
     // La lumière est dans la sphère, le rayon aussi
     Vector3 point4 = Vector3(2, 0, 0);
     const Light& lightInsideSphere2 = Light{Vector3(8, 0, 0), 1000};
-    EXPECT_EQ(true, Light::CanSeeLight(point4, &lightInsideSphere2, &scene));
+    EXPECT_EQ(true, Light::CanSeeLight(point4, lightInsideSphere2, &scene));
     
     // Le point est après la lumière
     Vector3 point5 = Vector3(30, 0, 0);
-    EXPECT_EQ(true, Light::CanSeeLight(point5, &lum, &scene));
+    EXPECT_EQ(true, Light::CanSeeLight(point5, lum, &scene));
 }
 
 TEST(CanSeeLightFunc, ComplexeTest)
@@ -572,13 +572,13 @@ TEST(CanSeeLightFunc, ComplexeTest)
     scene.push_back(sp1);
     
     Vector3 p1 = Vector3(0, 0, 0);
-    EXPECT_EQ(true, Light::CanSeeLight(p1, &lum, &scene));
+    EXPECT_EQ(true, Light::CanSeeLight(p1, lum, &scene));
     p1 = Vector3(76, 54, -48);
-    EXPECT_EQ(true, Light::CanSeeLight(p1, &lum, &scene));
+    EXPECT_EQ(true, Light::CanSeeLight(p1, lum, &scene));
     p1 = Vector3(11, 40, -70);
-    EXPECT_EQ(false, Light::CanSeeLight(p1, &lum, &scene));
+    EXPECT_EQ(false, Light::CanSeeLight(p1, lum, &scene));
     p1 = Vector3(-100, 40, -27);
-    EXPECT_EQ(true, Light::CanSeeLight(p1, &lum, &scene));
+    EXPECT_EQ(true, Light::CanSeeLight(p1, lum, &scene));
     
     //    scene.push_back(Sphere(Vector3(21, 36, -28), 25));
     //

@@ -72,4 +72,9 @@ public:
     {
         return "(" + to_string(static_cast<int>(m_r)) + ", " + to_string(static_cast<int>(m_g)) + ", " + to_string(static_cast<int>(m_b)) + ")";
     }
+    
+    inline Color operator*(const double v)
+    {
+        return Color{m_r * v, m_g * v, m_b * v};
+    }
 };

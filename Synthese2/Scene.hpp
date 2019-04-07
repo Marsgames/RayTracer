@@ -25,7 +25,7 @@ private:
     
     Light* m_light;
     vector<Sphere>* m_spheres;
-    double facteurLumiere{0.2};
+    double m_facteurLumiere{0.1};
     
     void ClearImage (Image& imageArray, const Camera& ecran);
     void ImageFromArray(const Image& pixelsArray, const string source, const string nomImage, const Camera& ecran);
@@ -35,6 +35,12 @@ public:
     Scene(Light& light, vector<Sphere>& spheres) :
     m_light{&light},
     m_spheres{&spheres}
+    {};
+    
+    Scene(Light& light, vector<Sphere>& spheres, const double facteurLumiere) :
+    m_light{&light},
+    m_spheres{&spheres},
+    m_facteurLumiere{facteurLumiere}
     {};
     
     void LaunchThreads(const int nbImages, Camera& ecran, const Vector3& directionLight, Light& theLight);

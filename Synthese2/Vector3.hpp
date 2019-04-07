@@ -81,6 +81,11 @@ public:
         return Vector3(m_x / norme, m_y / norme, m_z / norme);
     }
     
+    inline static Vector3 GetDirection(const Vector3& from, const Vector3& to)
+    {
+        return (to - from).Normalize();
+    }
+    
     // Magnitude
     static double Dot(const Vector3& pA, const Vector3& pB);
     
@@ -91,7 +96,21 @@ public:
     
     inline static double GetDistance(const Vector3& pointA, const Vector3& pointB)
     {
-        return sqrt(((pointA.GetX() - pointB.GetX()) * (pointA.GetX() - pointB.GetX())) + ((pointA.GetY() - pointB.GetY()) * (pointA.GetY() - pointB.GetY())) + ((pointA.GetZ() - pointB.GetZ()) * (pointA.GetZ() - pointB.GetZ())));
+        const Vector3 v = (pointA - pointB) * (pointA - pointB);
+        const double dist = sqrt(Vector3::GetSum(v));
+        
+        if (dist < 0)
+        {
+            exit(3);
+            // EXIT CODE: 3 --> Une distance ne peut être négative !
+        }
+        
+        return dist;
+    }
+    
+    inline static double GetSum(const Vector3 vector)
+    {
+        return vector.GetX() + vector.GetY() + vector.GetZ();
     }
     
     inline friend Vector3 operator*=(const Vector3& leftV, const Vector3& rightV)

@@ -42,7 +42,7 @@ void Camera::InitImage()
     
     
     m_image.reserve(m_height * m_width);
-    Color defaultColor {0, 0, 0};
+    Color defaultColor {255, 192, 203};
     
     for (int index = 0; index < m_height * m_width; index++)
     {
@@ -76,8 +76,7 @@ void Camera::InitImage()
 
 Vector3 Camera::GetFocalDirection(const Vector3& toThatPoint) const
 {
-    const Vector3 startPoint = m_origin + Vector3(toThatPoint.GetX(), toThatPoint.GetY(), m_origin.GetZ());
-    const Vector3 focalStart = m_origin + Vector3::Negate(m_direction * m_focal);
+    const Vector3 focalStart = m_origin + Vector3::Negate(m_direction) * m_focal;
     
-    return (startPoint - focalStart).Normalize();
+    return Vector3::GetDirection(focalStart, toThatPoint);
 }

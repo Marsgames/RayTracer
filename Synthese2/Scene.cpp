@@ -69,24 +69,27 @@ void Scene::LaunchThreads(const int nbImages, Camera& ecran, const Vector3& dire
     }
 }
 
-void Scene::GenerateImages(const int firstImage, const int lastImage, Camera& ecran, const Vector3& MoveLightDirection, Light& theLight)
+void Scene::GenerateImages(const int firstImage, const int lastImage, Camera& ecran, const Vector3& MoveLightDirection, Light& light)
 {
-//        if (!(MoveLightDirection == Vector3(0,0,0)))
-//        {
-//            for (Sphere& sphere : *m_spheres)
-//            {
-//                if (EMaterialType::LightType != sphere.GetMaterial().m_materialType)
-//                {
-//                    continue;
-//                }
-//    
-//                for (int i = 0; i < firstImage; i++)
-//                {
-//                    MoveLight(theLight, MoveLightDirection, sphere);
-//                }
-//            }
-//        }
-//    
+    Light theLight = light;
+    cout << "----------" << endl << "theLightPos avant : " << theLight.GetPosition().ToString() << endl;
+        if (!(MoveLightDirection == Vector3(0,0,0)))
+        {
+            for (Sphere& sphere : *m_spheres)
+            {
+                if (EMaterialType::LightType != sphere.GetMaterial().m_materialType)
+                {
+                    continue;
+                }
+                
+                for (int i = 0; i < firstImage; i++)
+                {
+                    MoveLight(theLight, MoveLightDirection, sphere);
+                }
+            }
+        }
+    cout << "theLightPos après : " << theLight.GetPosition().ToString() << endl << "----------" << endl;
+    
     //    Image image(ecran.GetWidth() * ecran.GetHeight(), Pixel(Vector3(0, 0, 0), Color{0, 0, 0}));
     
     
@@ -129,10 +132,11 @@ void Scene::GenerateImages(const int firstImage, const int lastImage, Camera& ec
                 //                    pointOnScreen.Print();
                 
                 pointOnScreen = image[i].GetPosition();
-                dir = Vector3{pointOnScreen.GetX(), pointOnScreen.GetY(), 0.};
+//                dir = Vector3{pointOnScreen.GetX(), pointOnScreen.GetY(), 0};
+//                dir = pointOnScreen;
                 //                const Vector3 pointOnScreen = ecran.GetPosition() + Vector3(indexX + 0., indexY + 0., ecran.GetPosition().GetZ());
 //                const
-                                focalDir = ecran.GetFocalDirection(dir);
+                                focalDir = ecran.GetFocalDirection(pointOnScreen);
                 
                 const Rayon rayon = Rayon(pointOnScreen, focalDir);
                 //                    const Rayon rayon = Rayon(pointOnScreen, ecran.GetDirection());
@@ -154,15 +158,18 @@ void Scene::GenerateImages(const int firstImage, const int lastImage, Camera& ec
             {
                 image[i].SetColor(sphereTouchee.GetMaterial().GetColor());
                 
+                const Light lightToUse = theLight;
+                
                 // Vérifier CanSeeLight <-- !!!
-                if (Light::CanSeeLight(result.point, m_light, m_spheres))
+                if (Light::CanSeeLight(result.point, lightToUse, m_spheres))
                 {
-                    Light::SetLightning(result.point, i, m_light, image);
+                    Light::SetLightning(result.point, i, lightToUse, image);
                 }
                 else
                 {
-                    Color col = image[i].GetColor();
-                    image[i].SetColor(Color(col.GetR() * facteurLumiere, col.GetG() * facteurLumiere, col.GetB() * facteurLumiere));
+                    image[i].SetColor(image[i].GetColor() * m_facteurLumiere);
+//                    Color col = image[i].GetColor();
+//                    image[i].SetColor(Color(col.GetR() * facteurLumiere, col.GetG() * facteurLumiere, col.GetB() * facteurLumiere));
                 }
             }
             
@@ -220,14 +227,13 @@ void Scene::GenerateImages(const int firstImage, const int lastImage, Camera& ec
         const string source = "/Users/Raph/Desktop/TestSynthese/";
         ImageFromArray(image, source, nomImage, ecran);
         
-//        MoveLight(theLight, MoveLightDirection, spheres[spheres.size() - 1]);
+//        Sphere& lightSphere = m_spheres->at(m_spheres->size() - 1);
+        Sphere lightSphere = Sphere(light.GetPosition(), 20, Material(2, Color{255, 0, 0}), "lum");
+        MoveLight(theLight, MoveLightDirection, lightSphere);
+        cout << "*****New theLight pos : " << theLight.GetPosition().ToString() << "*****" << endl;
         
-//        Sphere lightSphere = m_spheres[6];
         
-//        m_spheres[6].SetCenter(m_light->GetPosition());
-//        &m_spheres[6].SetCenter(m_light->GetPosition());
-//        *m_spheres[6].SetCenter(m_light->GetPosition());
-//        **m_spheres[6].SetCenter(m_light->GetPosition());
+        
 ////        m_spheres[6].GetCenter() = m_light->GetPosition();
         ClearImage(image, ecran);
     }

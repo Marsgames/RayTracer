@@ -33,8 +33,8 @@ public:
     m_puissance{puissance}
     {}
     
-    static bool CanSeeLight(const Vector3& point, const Light* light, const vector<Sphere>* scene);
-    static void SetLightning(const Vector3& point, const int index, const Light* light,  vector<Pixel>& image);
+    static bool CanSeeLight(const Vector3& point, const Light& light, const vector<Sphere>* scene);
+    static void SetLightning(const Vector3& point, const int index, const Light& light,  vector<Pixel>& image);
     
     inline Vector3 GetPosition() const
     {

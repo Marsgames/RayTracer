@@ -12,16 +12,17 @@
 #include <vector>
 
 using std::vector;
+using std::cout;
+using std::endl;
 
-bool Light::CanSeeLight(const Vector3& point, const Light* light, const vector<Sphere>* scene)
+bool Light::CanSeeLight(const Vector3& point, const Light& light, const vector<Sphere>* scene)
 {
-    Vector3 dirLampe = (light->GetPosition() - point).Normalize();
+    Vector3 dirLampe = Vector3::GetDirection(point, light.GetPosition());
     //    const Vector3 dirCam = (ecran.GetPosition() - point).Normalize();
-    const double distPL = Vector3::GetDistance(point, light->GetPosition());
+    const double distPointToLight = Vector3::GetDistance(point, light.GetPosition());
     
     for (const Sphere& sphere : *scene)
     {
-        
         if (EMaterialType::LightType == sphere.GetMaterial().m_materialType)
         {
             continue;
@@ -29,8 +30,9 @@ bool Light::CanSeeLight(const Vector3& point, const Light* light, const vector<S
         
         Intersection result;
         
-        //        const Rayon rayon = Rayon((point + (dirCam * .01)), dirCam);
+//        const Rayon rayon = Rayon((point + (dirLampe * .01)), dirLampe);
         const Rayon rayon = Rayon((point + (dirLampe * .5)), dirLampe);
+        //        const Rayon rayon = Rayon((point + (dirLampe * .5)), dirLampe);
         //        const Rayon rayon = Rayon(point, dirLampe);
         Sphere::Intersect(rayon, sphere, result);
         
@@ -39,7 +41,7 @@ bool Light::CanSeeLight(const Vector3& point, const Light* light, const vector<S
             const double distPI = Vector3::GetDistance(point, result.point);
             
             // Si l'objet est devant la lumière return false.
-            if (distPI <= distPL)
+            if (distPI <= distPointToLight)
             {
                 return false;
             }
@@ -50,14 +52,11 @@ bool Light::CanSeeLight(const Vector3& point, const Light* light, const vector<S
     return true;
 }
 
-void Light::SetLightning(const Vector3& point, const int index, const Light* light,  vector<Pixel>& image)
+void Light::SetLightning(const Vector3& point, const int index, const Light& light, vector<Pixel>& image)
 {
-//    const double puissance = light->GetPuissance() * (1 / (abs((light->GetPosition().GetX() - point.GetX()) + (light->GetPosition().GetY() - point.GetY()) + (light->GetPosition().GetZ() - point.GetZ()))));
+    const double puissance = light.GetPuissance() * (1 / ((Vector3::GetDistance(light.GetPosition(), point))));
     
-    Light maLumiere = *light;
-    const double puissance = light->GetPuissance() * (1 / ((Vector3::GetDistance(maLumiere.GetPosition(), point))));
-
-    Color col = image[index].GetColor();
+    Color col = image[index].GetColor() * puissance;
     
-    image[index].SetColor(Color(col.GetR() * puissance, col.GetG() * puissance, col.GetB() * puissance));
+    image[index].SetColor(col);
 }
