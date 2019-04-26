@@ -42,8 +42,9 @@ void Camera::InitImage()
     
     
     m_image.reserve(m_height * m_width);
-    Color defaultColor {255, 192, 203};
-    
+//    Color defaultColor {255, 192, 203}; // pink
+    Color defaultColor {0, 0, 0};
+
     for (int index = 0; index < m_height * m_width; index++)
     {
         // Pour un écran de 1000 * 1000
@@ -60,9 +61,7 @@ void Camera::InitImage()
 
         Vector3 newPos = Vector3{cos(thetaSigned) * actualPos.GetX() + sin(thetaSigned) * 1, actualPos.GetY(), -sin(thetaSigned) * actualPos.GetX() + cos(thetaSigned) * 1};
         
-        newPos.SetX(newPos.GetX() + m_origin.GetX());
-        newPos.SetY(newPos.GetY() + m_origin.GetY());
-        newPos.SetZ(newPos.GetZ() + m_origin.GetZ());
+        newPos += m_origin;
 
         m_image.push_back(Pixel(newPos, defaultColor));
         
@@ -72,6 +71,14 @@ void Camera::InitImage()
 
 //    pointsFile.close();
 //    directionsFile.close();
+}
+
+void Camera::ResetImagePosition()
+{
+    for (Pixel& p : m_image)
+    {
+        p.SetPosition(m_origin - p.GetPosition());
+    }
 }
 
 Vector3 Camera::GetFocalDirection(const Vector3& toThatPoint) const

@@ -25,6 +25,8 @@ private:
     vector<Pixel> m_image;
     
     void InitImage();
+    void ResetImagePosition();
+
     
 public:
     inline Camera(const Vector3& origin, const int width, const int height, Vector3& direction, float focal) :
@@ -59,9 +61,16 @@ public:
     {
         return m_origin;
     }
-    inline void SetPosition(Vector3& position)
+    inline void SetPosition(const Vector3& position)
     {
+        if (position == m_origin)
+        {
+            return;
+        }
+        
         m_origin = position;
+        
+        ResetImagePosition();
     }
     
     inline Vector3 GetDirection() const
@@ -79,5 +88,10 @@ public:
     inline vector<Pixel>& GetImage()
     {
         return m_image;
+    }
+    
+    void ResetImage()
+    {
+        m_image.clear();
     }
 };
