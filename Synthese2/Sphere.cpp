@@ -10,7 +10,6 @@
 
 void Sphere::Intersect(const Rayon& rayon, const Sphere& sphere, Intersection& myRes)
 {
-    
     const double B = 2 * (Vector3::Dot(rayon.GetOrigin(), rayon.GetDirection()) - Vector3::Dot(sphere.GetCenter(), rayon.GetDirection()));
     const double C = Vector3::Dist2(sphere.GetCenter() - rayon.GetOrigin()) - (sphere.GetRayon() * sphere.GetRayon());
     const double delta = (B * B) - 4 * C;

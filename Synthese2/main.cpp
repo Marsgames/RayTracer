@@ -42,7 +42,8 @@ using std::thread;
 
 const Vector3 camOrigin{0, 0, 0};
 Vector3 camDirection{0., 0., -1.};
-Camera m_ecran = Camera(camOrigin, 4096, 2160, camDirection, 3000); // 4096 * 2160
+Camera m_ecran = Camera(camOrigin, 1000, 1000, camDirection, 1000); // 4096 * 2160
+//Camera m_ecran = Camera(camOrigin, 10, 10, camDirection, 3000); // 4096 * 2160
 
 //Camera m_ecran = Camera(Vector3(200, 0, -420), 1000, 1000, Vector3(-0., 0.,  1.), 1000);
 //Camera m_ecran = Camera(Vector3(0, 0, -800), 4096, 2160, Vector3(0., 0.,  1.), 3000);
@@ -60,7 +61,7 @@ Camera m_ecran = Camera(camOrigin, 4096, 2160, camDirection, 3000); // 4096 * 21
 //Camera m_ecran5 = Camera(Vector3(-1000, 0, -400), 4096, 2160, Vector3(-1., 0., 0.), 3000);
 
 
-const float facteurLumiere = .001;
+const float facteurLumiere = .3;
 
 
 int main(int argc, char* argv[])
@@ -77,7 +78,7 @@ int main(int argc, char* argv[])
     // pour chaque pixels de l'ecran on fait partir un rayon
     // on récupère l'intersection et on crée une image à partir du résultat
     
-    Light light = Light{Vector3(0., -450., -200.), 500};
+    Light light = Light{Vector3(0., -450., 100.), 300};
     Spheres spheres;
     InitSpheres(spheres, light);
     Scene myScene(light, spheres, facteurLumiere);
@@ -90,9 +91,11 @@ int main(int argc, char* argv[])
     
     
         myScene.GenerateImages(0, 1, m_ecran, Vector3{0, 0, 0}, light);
-    Vector3 newDirEcran{0, 0, 1};
-    m_ecran.SetDirection(newDirEcran);
-    myScene.GenerateImages(1, 2, m_ecran, Vector3{0, 0, 0}, light);
+//    Vector3 newDirEcran{0, 0, 1};
+//    m_ecran.SetDirection(newDirEcran);
+//    Vector3 newPosEcran{0, 0, -800};
+//    m_ecran.SetPosition(newPosEcran);
+//    myScene.GenerateImages(1, 2, m_ecran, Vector3{0, 0, 0}, light);
     
     
     
@@ -191,13 +194,13 @@ int main(int argc, char* argv[])
     
     
     
-                // Make camera move around a point
+//                // Make camera move around a point
 //                {
 //                    const Vector3 posSphere = Vector3(0, 0, 0);
 //                    const double rayonRotation = 100;
 //                    int index = 0;
 //                    cout << endl << endl;
-//                    int nbParts = 360;
+//                    int nbParts = 120;
 //                    for (int i = 0; i < nbParts; i++)
 //                    {
 //                        const double cosTheta = cos((2 * M_PI * i) / nbParts);
@@ -229,30 +232,36 @@ void InitSpheres(Spheres& spheres, const Light& lumiere)
     Sphere leftWall = Sphere(Vector3(-4e5 - 7000., 0., -00.), 4e5, Material(EMaterialType::DifuseType, Vector3(0.2f, 0.8f, 0.2f)), "Vert");
     Sphere rightWall = Sphere(Vector3(4e5 + 7000., 0., -00.), 4e5, Material(EMaterialType::DifuseType, Vector3(0.2f, 0.8f, 0.8f)), "Bleu");
     Sphere topWall = Sphere(Vector3(0., -4e5 - 4000., -00.), 4e5, Material(EMaterialType::DifuseType, Vector3(0.8f, 0.2f, 0.8f)), "Rose");
-//    Sphere bottomWall = Sphere(Vector3(0., 4e5 + 4000., -00.), 4e5, Material(EMaterialType::DifuseType, Vector3(0.9f, 0.9f, 0.9f)), "Blanc");
-    Sphere bottomWall = Sphere(Vector3(0., 4e5 + 4000., -00.), 4e5, Material(EMaterialType::DifuseType, Vector3(255 / 75, 255 / 140, 255 / 225)), "Blanc");
+    Sphere bottomWall = Sphere(Vector3(0., 4e5 + 4000., -00.), 4e5, Material(EMaterialType::DifuseType, Vector3(0.9f, 0.9f, 0.9f)), "Blanc");
+//    Sphere bottomWall = Sphere(Vector3(0., 4e5 + 4000., -00.), 4e5, Material(EMaterialType::DifuseType, Vector3(255 / 75, 255 / 140, 255 / 225)), "Rouge chelou");
     Sphere backWall = Sphere(Vector3(0., 0., 4e5 + 15000), 4e5, Material(EMaterialType::DifuseType, Vector3(0.8f, 0.2f, 0.2f)), "Rouge");
     Sphere frontWall = Sphere(Vector3(0., 0., -4e5 - 15000), 4e5, Material(EMaterialType::DifuseType, Vector3(0.8f, 0.8f, 0.2f)), "Jaune");
     
     
     
-    //    spheres.push_back(Sphere(Vector3(500 - 500, 500 - 500, -150), 75, Material(DifuseType, Color{255, 0, 0}), "rouge")); // Rouge
-    //    spheres.push_back(Sphere(Vector3(100 - 350, 800 - 500, -550), 50, Material(DifuseType, Color{0, 255, 0}), "verte")); // Verte
-    //    spheres.push_back(Sphere(Vector3(800 - 500, 150 - 500, -250), 50, Material(DifuseType, Color{0, 0, 255}), "bleu")); // Bleu
-    //    spheres.push_back(Sphere(Vector3(100 - 500, 800 - 1500, -850), 150, Material(DifuseType, Color{255, 0, 255}), "rose")); // Bleu éléctrique
-    //    spheres.push_back(Sphere(Vector3(600 - 500, 600 - 500, -400), 100, Material(DifuseType, Color{0, 255, 255}), "bleuCiel")); // Bleu ciel
-    //    spheres.push_back(Sphere(Vector3(500 - 500, 500 - 1500, -950), 200, Material(DifuseType, Color{255, 255, 0}), "jaune")); // Jaune
-    //
-    //
-    spheres.push_back(Sphere(Vector3(-1000, 0, -400), 200, Material(EMaterialType::DifuseType, Color{0, 0, 255}), "Bleu")); // Bleu
-    spheres.push_back(Sphere(Vector3(00000, 0, -400), 200, Material(EMaterialType::DifuseType, Color{255, 255, 255}), "Blanc")); // Blanc
-    spheres.push_back(Sphere(Vector3(01000, 0, -400), 200, Material(EMaterialType::DifuseType, Color{255, 0, 0}), "Rouge")); // Rouge
-    //
+//        spheres.push_back(Sphere(Vector3(500 - 500, 500 - 500, -150), 75, Material(DifuseType, Color{255, 0, 0}), "rouge")); // Rouge
+//        spheres.push_back(Sphere(Vector3(100 - 350, 800 - 500, -550), 50, Material(DifuseType, Color{0, 255, 0}), "verte")); // Verte
+//        spheres.push_back(Sphere(Vector3(800 - 500, 150 - 500, -250), 50, Material(DifuseType, Color{0, 0, 255}), "bleu")); // Bleu
+//        spheres.push_back(Sphere(Vector3(100 - 500, 800 - 1500, -850), 150, Material(DifuseType, Color{255, 0, 255}), "rose")); // Bleu éléctrique
+//        spheres.push_back(Sphere(Vector3(600 - 500, 600 - 500, -400), 100, Material(DifuseType, Color{0, 255, 255}), "bleuCiel")); // Bleu ciel
+//        spheres.push_back(Sphere(Vector3(500 - 500, 500 - 1500, -950), 200, Material(DifuseType, Color{255, 255, 0}), "jaune")); // Jaune
+    
+    
+    
+//    spheres.push_back(Sphere{Vector3{450, 0, -300}, 300, Material{DifuseType, Color{255, 0, 0}}, "Rouge"});
+//    spheres.push_back(Sphere{Vector3{0, 0, -1000}, 300, Material{DifuseType, Color{0, 255, 0}}, "Vert"});
+//    spheres.push_back(Sphere{Vector3{-450, 0, -2000}, 300, Material{DifuseType, Color{0, 0, 255}}, "Bleu"});
+    
+    
+//    spheres.push_back(Sphere(Vector3(-1000, 0, -400), 200, Material(EMaterialType::DifuseType, Color{0, 0, 255}), "Bleu")); // Bleu
+//    spheres.push_back(Sphere(Vector3(    0, 0, -400), 200, Material(EMaterialType::DifuseType, Color{255, 255, 255}), "Blanc")); // Blanc
+//    spheres.push_back(Sphere(Vector3( 1000, 0, -400), 200, Material(EMaterialType::DifuseType, Color{255, 0, 0}), "Rouge")); // Rouge
+    
     //    spheres.push_back(Sphere(Vector3(0, -800, -400), 200, Material(EMaterialType::DifuseType, Color{255, 0, 255}), "Rose")); // Rose
     //    spheres.push_back(Sphere(Vector3(0, 800, -400), 200, Material(EMaterialType::DifuseType, Color{255, 255, 0}), "Jaune")); // Jaune
     
     
-    //    spheres.push_back(Sphere(Vector3(0, 0, 0), 80, Material(EMaterialType::DifuseType, Color{255, 255, 255}), "Rouge")); // Bleu
+//        spheres.push_back(Sphere(Vector3(0, 0, 0), 80, Material(EMaterialType::DifuseType, Color{255, 255, 255}), "Rouge")); // Bleu
     
     //
     spheres.push_back(leftWall);
@@ -263,7 +272,7 @@ void InitSpheres(Spheres& spheres, const Light& lumiere)
     spheres.push_back(backWall);
     
     // Lumière
-//    spheres.push_back(Sphere(Vector3(lumiere.GetPosition()), 20, Material(EMaterialType::LightType, Color{255 * (1 / facteurLumiere), 0, 0}), "lampe")); // blanc
+    spheres.push_back(Sphere(Vector3(lumiere.GetPosition()), 20, Material(EMaterialType::LightType, Color{255 * (1 / facteurLumiere), 0, 0}), "lampe")); // blanc
 }
 
 int RunTests()

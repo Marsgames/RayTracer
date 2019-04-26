@@ -31,39 +31,39 @@ void Scene::LaunchThreads(const int nbImages, Camera& ecran, const Vector3& dire
     // nbImages / images par thread / nb threads
     for (int i = 0; i < (_nbImages / 5 / 10); i++)
     {
-                thread t01(&Scene::GenerateImages, this, i * 50 + 00, i * 50 + 05, ref(ecran), directionLight, ref(theLight));
-                thread t02(&Scene::GenerateImages, this, i * 50 + 05, i * 50 + 10, ref(ecran), directionLight, ref(theLight));
-                thread t03(&Scene::GenerateImages, this, i * 50 + 10, i * 50 + 15, ref(ecran), directionLight, ref(theLight));
-                thread t04(&Scene::GenerateImages, this, i * 50 + 15, i * 50 + 20, ref(ecran), directionLight, ref(theLight));
-                thread t05(&Scene::GenerateImages, this, i * 50 + 20, i * 50 + 25, ref(ecran), directionLight, ref(theLight));
+        thread t01(&Scene::GenerateImages, this, i * 50 + 00, i * 50 + 05, ref(ecran), directionLight, ref(theLight));
+        thread t02(&Scene::GenerateImages, this, i * 50 + 05, i * 50 + 10, ref(ecran), directionLight, ref(theLight));
+        thread t03(&Scene::GenerateImages, this, i * 50 + 10, i * 50 + 15, ref(ecran), directionLight, ref(theLight));
+        thread t04(&Scene::GenerateImages, this, i * 50 + 15, i * 50 + 20, ref(ecran), directionLight, ref(theLight));
+        thread t05(&Scene::GenerateImages, this, i * 50 + 20, i * 50 + 25, ref(ecran), directionLight, ref(theLight));
         
-                thread t06(&Scene::GenerateImages, this, i * 50 + 25, i * 50 + 30, ref(ecran), directionLight, ref(theLight));
-                thread t07(&Scene::GenerateImages, this, i * 50 + 30, i * 50 + 35, ref(ecran), directionLight, ref(theLight));
-                thread t08(&Scene::GenerateImages, this, i * 50 + 35, i * 50 + 40, ref(ecran), directionLight, ref(theLight));
-                thread t09(&Scene::GenerateImages, this, i * 50 + 40, i * 50 + 45, ref(ecran), directionLight, ref(theLight));
-                thread t10(&Scene::GenerateImages, this, i * 50 + 45, i * 50 + 50, ref(ecran), directionLight, ref(theLight));
+        thread t06(&Scene::GenerateImages, this, i * 50 + 25, i * 50 + 30, ref(ecran), directionLight, ref(theLight));
+        thread t07(&Scene::GenerateImages, this, i * 50 + 30, i * 50 + 35, ref(ecran), directionLight, ref(theLight));
+        thread t08(&Scene::GenerateImages, this, i * 50 + 35, i * 50 + 40, ref(ecran), directionLight, ref(theLight));
+        thread t09(&Scene::GenerateImages, this, i * 50 + 40, i * 50 + 45, ref(ecran), directionLight, ref(theLight));
+        thread t10(&Scene::GenerateImages, this, i * 50 + 45, i * 50 + 50, ref(ecran), directionLight, ref(theLight));
         
-                t01.join();
-                cout << "Thread 1 terminé" << endl;
-                t02.join();
-                cout << "Thread 2 terminé" << endl;
-                t03.join();
-                cout << "Thread 3 terminé" << endl;
-                t04.join();
-                cout << "Thread 4 terminé" << endl;
-                t05.join();
-                cout << "Thread 5 terminé" << endl;
+        t01.join();
+        cout << "Thread 1 terminé" << endl;
+        t02.join();
+        cout << "Thread 2 terminé" << endl;
+        t03.join();
+        cout << "Thread 3 terminé" << endl;
+        t04.join();
+        cout << "Thread 4 terminé" << endl;
+        t05.join();
+        cout << "Thread 5 terminé" << endl;
         
-                t06.join();
-                cout << "Thread 6 terminé" << endl;
-                t07.join();
-                cout << "Thread 7 terminé" << endl;
-                t08.join();
-                cout << "Thread 8 terminé" << endl;
-                t09.join();
-                cout << "Thread 9 terminé" << endl;
-                t10.join();
-                cout << "Thread 10 terminé" << endl;
+        t06.join();
+        cout << "Thread 6 terminé" << endl;
+        t07.join();
+        cout << "Thread 7 terminé" << endl;
+        t08.join();
+        cout << "Thread 8 terminé" << endl;
+        t09.join();
+        cout << "Thread 9 terminé" << endl;
+        t10.join();
+        cout << "Thread 10 terminé" << endl;
         
         cout << "Série " << i + 1 << " sur " << (_nbImages / 5 / 10) << " terminée" << endl;
     }
@@ -73,21 +73,21 @@ void Scene::GenerateImages(const int firstImage, const int lastImage, Camera& ec
 {
     Light theLight = light;
     cout << "----------" << endl << "theLightPos avant : " << theLight.GetPosition().ToString() << endl;
-        if (!(MoveLightDirection == Vector3(0,0,0)))
+    if (!(MoveLightDirection == Vector3(0,0,0)))
+    {
+        for (Sphere& sphere : *m_spheres)
         {
-            for (Sphere& sphere : *m_spheres)
+            if (EMaterialType::LightType != sphere.GetMaterial().m_materialType)
             {
-                if (EMaterialType::LightType != sphere.GetMaterial().m_materialType)
-                {
-                    continue;
-                }
-                
-                for (int i = 0; i < firstImage; i++)
-                {
-                    MoveLight(theLight, MoveLightDirection, sphere);
-                }
+                continue;
+            }
+            
+            for (int i = 0; i < firstImage; i++)
+            {
+                MoveLight(theLight, MoveLightDirection, sphere);
             }
         }
+    }
     cout << "theLightPos après : " << theLight.GetPosition().ToString() << endl << "----------" << endl;
     
     //    Image image(ecran.GetWidth() * ecran.GetHeight(), Pixel(Vector3(0, 0, 0), Color{0, 0, 0}));
@@ -96,22 +96,20 @@ void Scene::GenerateImages(const int firstImage, const int lastImage, Camera& ec
     
     Image image = ecran.GetImage();
     
+    double dist = DBL_MAX;
+    Sphere sphereTouchee;
+    Intersection result;
     
+    Vector3 pointOnScreen;
+    Vector3 dir;
+    Vector3 focalDir;// = ecran.GetDirection();
     
+    const string source = "/Users/Raph/Desktop/TestSynthese/";
+    string nomImage;
     
     for (int i = firstImage; i < lastImage; i++)
     {
-        //        Image image(ecran.GetWidth() * ecran.GetHeight(), Color{44, 117, 255});
-        
-        double dist = DBL_MAX;
-        Sphere sphereTouchee;
-        Intersection result;
-        
-        Vector3 pointOnScreen;
-        Vector3 dir;
-        Vector3 focalDir = ecran.GetDirection();
-        
-        for (int i = 0; i < ecran.GetHeight() * ecran.GetWidth(); i++)
+        for (int j = 0; j < ecran.GetHeight() * ecran.GetWidth(); j++)
         {
             // Pour un écran de 1000 * 1000
             // 0 * 0  -->  1000 * 1000
@@ -131,12 +129,12 @@ void Scene::GenerateImages(const int firstImage, const int lastImage, Camera& ec
                 //                    const Vector3 pointOnScreen = Vector3(indexX + .0, indexY + .0, ((- ecran.GetDirection().GetX()) * indexX) / (ecran.GetDirection().GetZ()));
                 //                    pointOnScreen.Print();
                 
-                pointOnScreen = image[i].GetPosition();
-//                dir = Vector3{pointOnScreen.GetX(), pointOnScreen.GetY(), 0};
-//                dir = pointOnScreen;
+                pointOnScreen = image[j].GetPosition();
+                //                dir = Vector3{pointOnScreen.GetX(), pointOnScreen.GetY(), 0};
+                //                dir = pointOnScreen;
                 //                const Vector3 pointOnScreen = ecran.GetPosition() + Vector3(indexX + 0., indexY + 0., ecran.GetPosition().GetZ());
-//                const
-                                focalDir = ecran.GetFocalDirection(pointOnScreen);
+                //                const
+                focalDir = ecran.GetFocalDirection(pointOnScreen);
                 
                 const Rayon rayon = Rayon(pointOnScreen, focalDir);
                 //                    const Rayon rayon = Rayon(pointOnScreen, ecran.GetDirection());
@@ -156,33 +154,32 @@ void Scene::GenerateImages(const int firstImage, const int lastImage, Camera& ec
             
             if (DBL_MAX != dist)
             {
-                image[i].SetColor(sphereTouchee.GetMaterial().GetColor());
+                image[j].SetColor(sphereTouchee.GetMaterial().GetColor());
                 
                 const Light lightToUse = theLight;
                 
                 // Vérifier CanSeeLight <-- !!!
                 if (Light::CanSeeLight(result.point, lightToUse, m_spheres))
                 {
-                    Light::SetLightning(result.point, i, lightToUse, image);
+                    Light::SetLightning(result.point, j, lightToUse, image);
                 }
                 else
                 {
-                    image[i].SetColor(image[i].GetColor() * m_facteurLumiere);
-//                    Color col = image[i].GetColor();
-//                    image[i].SetColor(Color(col.GetR() * facteurLumiere, col.GetG() * facteurLumiere, col.GetB() * facteurLumiere));
+//                    image[j].SetColor(Color{255, 192, 203});
+                    image[j].SetColor(image[j].GetColor() * m_facteurLumiere);
                 }
             }
             
             dist = DBL_MAX;
-   
             
-            //            if (y % 10 == 0)
-            //            {
-            ////                const string nomImage = "01Scene" + to_string(i + 1 + y + ecran.GetWidth() / 2) + ".bmp";
-            //                const string nomImage = "image" + to_string(i) + ".bmp";
-            //                const string source = "/Users/Raph/Desktop/TestSynthese/";
-            //                ImageFromArray(image, source, nomImage);
-            //            }
+            
+            //                        if (j % (10 * ecran.GetHeight()) == 0)
+            //                        {
+            //            //                const string nomImage = "01Scene" + to_string(i + 1 + y + ecran.GetWidth() / 2) + ".bmp";
+            //                            const string nomImage = "image" + to_string(i) + ".bmp";
+            //                            const string source = "/Users/Raph/Desktop/TestSynthese/";
+            //                            ImageFromArray(image, source, nomImage, ecran);
+            //                        }
         }
         
         {
@@ -223,26 +220,23 @@ void Scene::GenerateImages(const int firstImage, const int lastImage, Camera& ec
             //        }
         }
         
-        const string nomImage = "image" + to_string(i) + ".bmp";
-        const string source = "/Users/Raph/Desktop/TestSynthese/";
+        nomImage = "image" + to_string(i) + ".bmp";
+        
         ImageFromArray(image, source, nomImage, ecran);
         
-//        Sphere& lightSphere = m_spheres->at(m_spheres->size() - 1);
-        Sphere lightSphere = Sphere(light.GetPosition(), 20, Material(2, Color{255, 0, 0}), "lum");
-        MoveLight(theLight, MoveLightDirection, lightSphere);
-        cout << "*****New theLight pos : " << theLight.GetPosition().ToString() << "*****" << endl;
+//        Sphere lightSphere = Sphere(light.GetPosition(), 20, Material(2, Color{255, 0, 0}), "lum");
+//        MoveLight(theLight, MoveLightDirection, lightSphere);
+//        cout << "*****New theLight pos : " << theLight.GetPosition().ToString() << "*****" << endl;
+//        ClearImage(image, ecran);
         
-        
-        
-////        m_spheres[6].GetCenter() = m_light->GetPosition();
-        ClearImage(image, ecran);
+        ecran.ResetImage();
     }
 }
 
 void Scene::MoveLight (Light& lumiere, const Vector3 direction, Sphere& lightSphere)
 {
-        lumiere.SetPosition(lumiere.GetPosition() + direction);
-        lightSphere.SetCenter(lumiere.GetPosition());
+    lumiere.SetPosition(lumiere.GetPosition() + direction);
+    lightSphere.SetCenter(lumiere.GetPosition());
 }
 
 void Scene::ClearImage (Image& imageArray, const Camera& ecran)

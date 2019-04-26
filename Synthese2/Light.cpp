@@ -12,8 +12,6 @@
 #include <vector>
 
 using std::vector;
-using std::cout;
-using std::endl;
 
 bool Light::CanSeeLight(const Vector3& point, const Light& light, const vector<Sphere>* scene)
 {
@@ -28,20 +26,20 @@ bool Light::CanSeeLight(const Vector3& point, const Light& light, const vector<S
             continue;
         }
         
-        Intersection result;
+        // const Rayon rayon = Rayon(point, dirLampe);
+        // const Rayon rayon = Rayon((point + (dirLampe * .01)), dirLampe); // marche pas vraiment
+        // const Rayon rayon = Rayon((point + (dirLampe * .5)), dirLampe); // marche bien
+        const Rayon rayon = Rayon((point + (dirLampe)), dirLampe); // pas vu de changement par rapport à * .5
         
-//        const Rayon rayon = Rayon((point + (dirLampe * .01)), dirLampe);
-        const Rayon rayon = Rayon((point + (dirLampe * .5)), dirLampe);
-        //        const Rayon rayon = Rayon((point + (dirLampe * .5)), dirLampe);
-        //        const Rayon rayon = Rayon(point, dirLampe);
+        Intersection result;
         Sphere::Intersect(rayon, sphere, result);
         
         if (result.intersect)
         {
-            const double distPI = Vector3::GetDistance(point, result.point);
+            const double distPointToIntersection = Vector3::GetDistance(point, result.point);
             
             // Si l'objet est devant la lumière return false.
-            if (distPI <= distPointToLight)
+            if (distPointToIntersection <= distPointToLight)
             {
                 return false;
             }
