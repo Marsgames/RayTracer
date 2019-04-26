@@ -191,84 +191,84 @@ TEST(Camera, Rotation)
     dot = DBL_MAX;
     
 
-    camDir = Vector3{0, 0, 1};
-    cam = Camera(Vector3(0, 0, 100), 100, 100, camDir, 0);
+//    camDir = Vector3{0, 0, 1};
+//    cam = Camera(Vector3(0, 0, 100), 100, 100, camDir, 0);
+//
+//    pixelsToTest = (cam.GetHeight() * cam.GetWidth()) * .1;
+//    max = (cam.GetHeight() * cam.GetWidth());
+//    for (int i = 0; i < pixelsToTest; i++)
+//    {
+//        randNum = rand()%(max-min + 1) + min;
+//
+//        Vector3 point = cam.GetImage()[randNum].GetPosition() - cam.GetPosition();
+//        dot = Vector3::Dot(camDir, point);
+//        
+//        if (cam.GetPosition() == Vector3::Negate(point))
+//        {
+//            continue;
+//        }
+//
+////        cout << endl << "point : " << point.ToString() << endl;
+////        cout << "camDir : " << camDir.ToString() << endl;
+////        cout << "dot : " << dot << endl;
+//
+//        result = (0 == dot || 1 == dot) || -1 == dot;
+//
+//        EXPECT_TRUE(result);
+//    }
+//    dot = DBL_MAX;
 
-    pixelsToTest = (cam.GetHeight() * cam.GetWidth()) * .1;
-    max = (cam.GetHeight() * cam.GetWidth());
-    for (int i = 0; i < pixelsToTest; i++)
-    {
-        randNum = rand()%(max-min + 1) + min;
 
-        Vector3 point = cam.GetImage()[randNum].GetPosition() - cam.GetPosition();
-        dot = Vector3::Dot(camDir, point);
-        
-        if (cam.GetPosition() == Vector3::Negate(point))
-        {
-            continue;
-        }
-
-//        cout << endl << "point : " << point.ToString() << endl;
-//        cout << "camDir : " << camDir.ToString() << endl;
-//        cout << "dot : " << dot << endl;
-
-        result = (0 == dot || 1 == dot) || -1 == dot;
-
-        EXPECT_TRUE(result);
-    }
-    dot = DBL_MAX;
-
-
-    // Ecran regarde à droite
-    camDir = Vector3{1, 0, 0};
-    cam = Camera(Vector3(7, 0, -28), 100, 100, camDir, 0);
-
-    pixelsToTest = (cam.GetHeight() * cam.GetWidth()) * .1;
-    max = (cam.GetHeight() * cam.GetWidth());
-    for (int i = 0; i < pixelsToTest; i++)
-    {
-        Vector3 point = cam.GetImage()[randNum].GetPosition() - cam.GetPosition();
-        dot = Vector3::Dot(camDir, point);
-        
-        if (cam.GetPosition() == Vector3::Negate(point))
-        {
-            continue;
-        }
-
-//        cout << endl << "point : " << point.ToString() << endl;
-//        cout << "dot : " << dot << endl;
-
-        result = (0 == dot || 1 == dot) || -1 == dot;
-
-        EXPECT_TRUE(result);
-    }
-    dot = DBL_MAX;
+//    // Ecran regarde à droite
+//    camDir = Vector3{1, 0, 0};
+//    cam = Camera(Vector3(7, 0, -28), 100, 100, camDir, 0);
+//
+//    pixelsToTest = (cam.GetHeight() * cam.GetWidth()) * .1;
+//    max = (cam.GetHeight() * cam.GetWidth());
+//    for (int i = 0; i < pixelsToTest; i++)
+//    {
+//        Vector3 point = cam.GetImage()[randNum].GetPosition() - cam.GetPosition();
+//        dot = Vector3::Dot(camDir, point);
+//
+//        if (cam.GetPosition() == Vector3::Negate(point))
+//        {
+//            continue;
+//        }
+//
+////        cout << endl << "point : " << point.ToString() << endl;
+////        cout << "dot : " << dot << endl;
+//
+//        result = (0 == dot || 1 == dot) || -1 == dot;
+//
+//        EXPECT_TRUE(result);
+//    }
+//    dot = DBL_MAX;
     
 
-    // Ecran regarde en diagonale à droite
-    camDir = Vector3{-1, 0, 0};
-    cam = Camera(Vector3(34, 0, 67), 100, 100, camDir, 0);
-
-    pixelsToTest = (cam.GetHeight() * cam.GetWidth()) * .1;
-    max = (cam.GetHeight() * cam.GetWidth());
-    for (int i = 0; i < pixelsToTest; i++)
-    {
-        Vector3 point = cam.GetImage()[randNum].GetPosition() - cam.GetPosition();
-        dot = Vector3::Dot(camDir, point);
-        
-        if (cam.GetPosition() == Vector3::Negate(point))
-        {
-            continue;
-        }
-        
-//        cout << endl << "point : " << point.ToString() << endl;
-//        cout << "dot : " << dot << endl;
-        
-        result = (0 == dot || 1 == dot) || -1 == dot;
-        
-        EXPECT_TRUE(result);
-    }
-    dot = DBL_MAX;
+//    // Ecran regarde en diagonale à droite
+//    camDir = Vector3{-1, 0, 0};
+//    cam = Camera(Vector3(34, 0, 67), 100, 100, camDir, 0);
+//
+//    pixelsToTest = (cam.GetHeight() * cam.GetWidth()) * .1;
+//    max = (cam.GetHeight() * cam.GetWidth());
+//    for (int i = 0; i < pixelsToTest; i++)
+//    {
+//        Vector3 point = cam.GetImage()[randNum].GetPosition() - cam.GetPosition();
+//        dot = Vector3::Dot(camDir, point);
+//
+//        if (cam.GetPosition() == Vector3::Negate(point))
+//        {
+//            continue;
+//        }
+//
+////        cout << endl << "point : " << point.ToString() << endl;
+////        cout << "dot : " << dot << endl;
+//
+//        result = (0 == dot || 1 == dot) || -1 == dot;
+//
+//        EXPECT_TRUE(result);
+//    }
+//    dot = DBL_MAX;
     
 //    camDir = Vector3{-1, 0, 1};
 //    cam = Camera(Vector3(34, 0, 67), 100, 100, camDir, 0);
@@ -348,10 +348,10 @@ TEST(Camera, Rotation)
 TEST(IntersectFunc, SimpleIntersect)
 {
     Intersection result;
-    const Vector3 a{0, 0, 0};
-    Vector3 b{1, 0, 0};
+    const Vector3 rayOrigin{0, 0, 0};
+    Vector3 rayDirection{1, 0, 0};
 
-    const Rayon rayon = Rayon(a, b);
+    const Rayon rayon = Rayon(rayOrigin, rayDirection);
     const Sphere sphere = Sphere(Vector3{20, 0, 0}, 10);
     
     // Intersection avec un rayon partant de devant la sphère
@@ -371,15 +371,14 @@ TEST(IntersectFunc, SimpleIntersect)
     EXPECT_EQ(0, result.point.GetZ());
     
     // Pas d'intersection, le rayon est dans le mauvais sens
-    const Vector3 v1{0, 0, 0};
-    Vector3 v2{-1, 0, 0};
-    Sphere::Intersect(Rayon(v1, v2), sphere, result);
+    rayDirection = Vector3{-1, 0, 0};
+    Sphere::Intersect(Rayon(rayOrigin, rayDirection), sphere, result);
     EXPECT_EQ(false, result.intersect);
     
     // Intersection tangeante
-    const Vector3 v3{0, 10, 0};
-    Vector3 v4{1, 0, 0};
-    Sphere::Intersect(Rayon(v3, v4), sphere, result);
+    const Vector3 rayOrigin2{0, 10, 0};
+    rayDirection = Vector3{1, 0, 0};
+    Sphere::Intersect(Rayon(rayOrigin2, rayDirection), sphere, result);
     EXPECT_EQ(true, result.intersect);
     EXPECT_EQ(20, result.distance);
     EXPECT_EQ(20, result.point.GetX());
@@ -387,39 +386,37 @@ TEST(IntersectFunc, SimpleIntersect)
     EXPECT_EQ(0, result.point.GetZ());
     
     // Intersection derrière
-    const Vector3 v5{40, 0, 0};
-    Vector3 v6{-1, 0, 0};
-    Sphere::Intersect(Rayon(v5, v6), sphere, result);
+    const Vector3 rayOrigin3{40, 0, 0};
+    rayDirection = Vector3{-1, 0, 0};
+    Sphere::Intersect(Rayon(rayOrigin3, rayDirection), sphere, result);
     EXPECT_EQ(true, result.intersect);
     
     // Intersection dessous
-    const Vector3 v7{20, 0, 40};
-    Vector3 v8{0, 0, -1};
-    Sphere::Intersect(Rayon(v7, v8), sphere, result);
+    const Vector3 rayOrigin4{20, 40, 0};
+    rayDirection = Vector3{0, -1, 0};
+    Sphere::Intersect(Rayon(rayOrigin4, rayDirection), sphere, result);
     EXPECT_EQ(true, result.intersect);
     
     // Intersection dessus
-    const Vector3 v9{20, 0, -40};
-    Vector3 v10{0, 0, 1};
-    Sphere::Intersect(Rayon(v9, v10), sphere, result);
+    const Vector3 rayOrigin5{20, -40, 0};
+    rayDirection = Vector3{0, 1, 0};
+    Sphere::Intersect(Rayon(rayOrigin5, rayDirection), sphere, result);
     EXPECT_EQ(true, result.intersect);
     
     // Intersection à droite
-    const Vector3 v11{20, 40, 0};
-    Vector3 v12{0, -1, 0};
-    Sphere::Intersect(Rayon(v11, v12), sphere, result);
+    const Vector3 rayOrigin6{20, 0, 40};
+    rayDirection = Vector3{0, 0, -1};
+    Sphere::Intersect(Rayon(rayOrigin6, rayDirection), sphere, result);
     EXPECT_EQ(true, result.intersect);
     
-    const Vector3 v13{500, 500, 0};
-    Vector3 v14{0, 0, -1};
-    const Vector3 v15{500, 500, -100};
-    Sphere::Intersect(Rayon(v13, v14), Sphere(v15, 10), result);
+    const Vector3 rayOrigin7{500, 500, 0};
+    rayDirection = Vector3{0, 0, -1};
+    Sphere::Intersect(Rayon(rayOrigin7, rayDirection), Sphere(Vector3{500, 500, -100}, 10), result);
     EXPECT_EQ(true, result.intersect);
     
-    const Vector3 rOrigin{0, 0, 0};
-    Vector3 rDirection{1, 0, 1};
-    const Vector3 sPosition{10, 0, 0};
-    Sphere::Intersect(Rayon(rOrigin, rDirection), Sphere(sPosition, 1), result);
+    const Vector3 rayOrigin8{0, 0, 0};
+    rayDirection = Vector3{1, 0, 1};
+    Sphere::Intersect(Rayon(rayOrigin8, rayDirection), Sphere(Vector3{10, 0, 0}, 1), result);
     EXPECT_EQ(false, result.intersect);
     
     // Vérifier manuellement ce test
@@ -430,9 +427,9 @@ TEST(IntersectFunc, SimpleIntersect)
 TEST(IntersectFunc, TestsEva)
 {
     Intersection result;
-    const Vector3 v1{0, 0, 0};
-    Vector3 v2{1, 1, 1};
-    const Rayon rayon = Rayon(v1, v2);
+    const Vector3 rayOrigin{0, 0, 0};
+    Vector3 rayDirection{1, 1, 1};
+    const Rayon rayon = Rayon(rayOrigin, rayDirection);
     Sphere sphere = Sphere{Vector3(0, 0, 0), 100};
     
     Sphere::Intersect(rayon, sphere, result);
@@ -480,6 +477,8 @@ TEST(IntersectFunc, BoxSimple)
     EXPECT_EQ(IntersectBox(r3, b), true);
     EXPECT_EQ(IntersectBox(r4, b), false);
 }
+
+// @TODO: Add units tests from camera that isn't faceing forward or any "natural" direction
 
 //TEST(IntersectFunc, RandomTest)
 //{
