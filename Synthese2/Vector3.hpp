@@ -96,6 +96,10 @@ public:
     
     inline static double GetDistance(const Vector3& pointA, const Vector3& pointB)
     {
+        // @TODO: vérifier ce qui est le plus optimisé entre cette version et l'ancienne version :
+        //            return sqrt(((pointA.GetX() - pointB.GetX()) * (pointA.GetX() - pointB.GetX())) + ((pointA.GetY() - pointB.GetY()) * (pointA.GetY() - pointB.GetY())) + ((pointA.GetZ() - pointB.GetZ()) * (pointA.GetZ() - pointB.GetZ())));
+
+        
         const Vector3 v = (pointA - pointB) * (pointA - pointB);
         const double dist = sqrt(Vector3::GetSum(v));
         
