@@ -10,6 +10,12 @@
 		AE376F5F2158B2C700044A00 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AE376F5E2158B2C700044A00 /* main.cpp */; };
 		AE58E43F216FED1900189557 /* libgtest_main.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE58E43D216FED1900189557 /* libgtest_main.a */; };
 		AE58E440216FED1900189557 /* libgtest.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE58E43E216FED1900189557 /* libgtest.a */; };
+		AE915716229F0E03003C8179 /* Camera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AE915714229F0E03003C8179 /* Camera.cpp */; };
+		AE915719229F1B64003C8179 /* Pixel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AE915717229F1B64003C8179 /* Pixel.cpp */; };
+		AE91571C229F1BB9003C8179 /* Vector3.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AE91571A229F1BB9003C8179 /* Vector3.cpp */; };
+		AE91571F229F1CA9003C8179 /* Color.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AE91571D229F1CA9003C8179 /* Color.cpp */; };
+		AE915722229F3110003C8179 /* Sphere.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AE915720229F3110003C8179 /* Sphere.cpp */; };
+		AE915725229F361B003C8179 /* Ray.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AE915723229F361B003C8179 /* Ray.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -30,6 +36,18 @@
 		AE58E43D216FED1900189557 /* libgtest_main.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libgtest_main.a; path = googletest/build/lib/libgtest_main.a; sourceTree = "<group>"; };
 		AE58E43E216FED1900189557 /* libgtest.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libgtest.a; path = googletest/build/lib/libgtest.a; sourceTree = "<group>"; };
 		AE58E443216FED9400189557 /* UnitsTests.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = UnitsTests.hpp; sourceTree = "<group>"; };
+		AE915714229F0E03003C8179 /* Camera.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Camera.cpp; sourceTree = "<group>"; };
+		AE915715229F0E03003C8179 /* Camera.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Camera.hpp; sourceTree = "<group>"; };
+		AE915717229F1B64003C8179 /* Pixel.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Pixel.cpp; sourceTree = "<group>"; };
+		AE915718229F1B64003C8179 /* Pixel.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Pixel.hpp; sourceTree = "<group>"; };
+		AE91571A229F1BB9003C8179 /* Vector3.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Vector3.cpp; sourceTree = "<group>"; };
+		AE91571B229F1BB9003C8179 /* Vector3.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Vector3.hpp; sourceTree = "<group>"; };
+		AE91571D229F1CA9003C8179 /* Color.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Color.cpp; sourceTree = "<group>"; };
+		AE91571E229F1CA9003C8179 /* Color.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Color.hpp; sourceTree = "<group>"; };
+		AE915720229F3110003C8179 /* Sphere.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Sphere.cpp; sourceTree = "<group>"; };
+		AE915721229F3110003C8179 /* Sphere.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Sphere.hpp; sourceTree = "<group>"; };
+		AE915723229F361B003C8179 /* Ray.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Ray.cpp; sourceTree = "<group>"; };
+		AE915724229F361B003C8179 /* Ray.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Ray.hpp; sourceTree = "<group>"; };
 		AEA8E6352158FF1100E89BCC /* main.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = main.hpp; sourceTree = "<group>"; };
 		AEA8E63621590E1900E89BCC /* bitmap_image.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = bitmap_image.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -71,6 +89,18 @@
 				AE376F652158B2D100044A00 /* Library */,
 				AE376F5E2158B2C700044A00 /* main.cpp */,
 				AEA8E6352158FF1100E89BCC /* main.hpp */,
+				AE915714229F0E03003C8179 /* Camera.cpp */,
+				AE915715229F0E03003C8179 /* Camera.hpp */,
+				AE915717229F1B64003C8179 /* Pixel.cpp */,
+				AE915718229F1B64003C8179 /* Pixel.hpp */,
+				AE91571A229F1BB9003C8179 /* Vector3.cpp */,
+				AE91571B229F1BB9003C8179 /* Vector3.hpp */,
+				AE91571D229F1CA9003C8179 /* Color.cpp */,
+				AE91571E229F1CA9003C8179 /* Color.hpp */,
+				AE915720229F3110003C8179 /* Sphere.cpp */,
+				AE915721229F3110003C8179 /* Sphere.hpp */,
+				AE915723229F361B003C8179 /* Ray.cpp */,
+				AE915724229F361B003C8179 /* Ray.hpp */,
 			);
 			path = Synthese2;
 			sourceTree = "<group>";
@@ -165,6 +195,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AE915719229F1B64003C8179 /* Pixel.cpp in Sources */,
+				AE915716229F0E03003C8179 /* Camera.cpp in Sources */,
+				AE91571F229F1CA9003C8179 /* Color.cpp in Sources */,
+				AE91571C229F1BB9003C8179 /* Vector3.cpp in Sources */,
+				AE915725229F361B003C8179 /* Ray.cpp in Sources */,
+				AE915722229F3110003C8179 /* Sphere.cpp in Sources */,
 				AE376F5F2158B2C700044A00 /* main.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
