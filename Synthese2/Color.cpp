@@ -9,14 +9,14 @@
 #include "Color.hpp"
 
 
-int Color::GetR() const {
+double Color::GetR() const {
     return m_r;
 }
 
-int Color::GetG() const {
+double Color::GetG() const {
     return m_g;
 }
 
-int Color::GetB() const {
+double Color::GetB() const {
     return m_b;
 }

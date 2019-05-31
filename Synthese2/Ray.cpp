@@ -9,12 +9,21 @@
 #include "Ray.hpp"
 #include <Vector3.hpp>
 
-//inline Vector3 GetOrigin() const
-//{
-//    return m_origin;
-//};
-//
-//inline Vector3 GetDirection const
-//{
-//    return m_dir;
-//}
+void Ray::SetOrigin(const Vector3& origin) {
+    m_origin = origin;
+}
+
+Vector3 Ray::GetOrigin() const {
+    return m_origin;
+}
+
+Vector3 Ray::GetDirection() const {
+    return m_direction;
+}
+
+void Ray::SetDirection(const Vector3& direction) {
+    m_direction = direction;
+}
+
+
+

@@ -9,13 +9,32 @@
 #pragma once
 
 #include <Color.hpp>
+#include <Light.hpp>
 #include <Ray.hpp>
+#include <string>
 #include <Vector3.hpp>
+#include <vector>
+
+using std::vector;
+using std::string;
 
 struct Intersection {
     bool intersect;
     double distance;
-    Vector3 pointCoordonate;
+    Vector3 pointCoordonate = Vector3{0, 0, 0};
+    
+    Intersection()
+    {
+        intersect = false;
+        distance = -1;
+        pointCoordonate = Vector3(0, 0, 0);
+    };
+    
+    Intersection(bool theIntersect, double theDistance, Vector3 thePointCoordonate):
+    intersect{theIntersect},
+    distance{theDistance},
+    pointCoordonate{thePointCoordonate}
+    {};
 };
 
 class Sphere
@@ -23,6 +42,7 @@ class Sphere
     Vector3 m_center;
     int m_rayon;
     Color m_color;
+    string m_name = "";
     
 public:
     Sphere(Vector3 position, int rayon, Color color) :
@@ -38,18 +58,27 @@ public:
         m_color = Color{255, 0, 0};
     }
     
-    inline Vector3 GetCenter() const;
+    Sphere(Vector3 position, int rayon, Color color, string name) :
+    m_center{position},
+    m_rayon{rayon},
+    m_color{color},
+    m_name{name}
+    {}
+    
+    Vector3 GetCenter() const;
+    void SetCenter(Vector3 position);
     double GetPositionX() const;
     double GetPositionY() const;
     double GetPositionZ() const;
     
-    inline int GetRayon() const;
+    int GetRayon() const;
     
-    inline Color GetColor() const;
+    Color GetColor() const;
     int GetColorR() const;
     int GetColorG() const;
     int GetColorB() const;
     
     static Intersection IntersectRaySphere(Ray ray, Sphere sphere);
+    static bool CanSeeLight(Vector3 point, Light light, vector<Sphere> spheres);
     
 };

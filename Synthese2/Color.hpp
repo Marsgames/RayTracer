@@ -8,8 +8,13 @@
 
 #pragma once
 
+#include <iostream>
+
+using std::cout;
+using std::endl;
+
 class Color {
-    int m_r, m_g, m_b;
+    double m_r, m_g, m_b;
     
 public:
     Color()
@@ -20,12 +25,22 @@ public:
     }
     
     Color(int r, int g, int b) :
-    m_r{r},
-    m_g{g},
-    m_b{b}
+    m_r{static_cast<double>(r)},
+    m_g{static_cast<double>(g)},
+    m_b{static_cast<double>(b)}
     {}
     
-    int GetR() const;
-    int GetG() const;
-    int GetB() const;
+    double GetR() const;
+    double GetG() const;
+    double GetB() const;
+    
+    inline Color operator*(const double v)
+    {
+        return Color{static_cast<int>(m_r * v), static_cast<int>(m_g * v), static_cast<int>(m_b * v)};
+    }
+    
+    void Print()
+    {
+        cout << "Color(" << m_r << ", " << m_g << ", " << m_b << ")" << endl;
+    }
 };

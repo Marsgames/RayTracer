@@ -10,6 +10,8 @@
 		AE376F5F2158B2C700044A00 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AE376F5E2158B2C700044A00 /* main.cpp */; };
 		AE58E43F216FED1900189557 /* libgtest_main.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE58E43D216FED1900189557 /* libgtest_main.a */; };
 		AE58E440216FED1900189557 /* libgtest.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE58E43E216FED1900189557 /* libgtest.a */; };
+		AE7E853E229FDE9500BB1CEB /* Scene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AE7E853C229FDE9500BB1CEB /* Scene.cpp */; };
+		AE7E8541229FE6C900BB1CEB /* Light.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AE7E853F229FE6C900BB1CEB /* Light.cpp */; };
 		AE915716229F0E03003C8179 /* Camera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AE915714229F0E03003C8179 /* Camera.cpp */; };
 		AE915719229F1B64003C8179 /* Pixel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AE915717229F1B64003C8179 /* Pixel.cpp */; };
 		AE91571C229F1BB9003C8179 /* Vector3.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AE91571A229F1BB9003C8179 /* Vector3.cpp */; };
@@ -36,6 +38,10 @@
 		AE58E43D216FED1900189557 /* libgtest_main.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libgtest_main.a; path = googletest/build/lib/libgtest_main.a; sourceTree = "<group>"; };
 		AE58E43E216FED1900189557 /* libgtest.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libgtest.a; path = googletest/build/lib/libgtest.a; sourceTree = "<group>"; };
 		AE58E443216FED9400189557 /* UnitsTests.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = UnitsTests.hpp; sourceTree = "<group>"; };
+		AE7E853C229FDE9500BB1CEB /* Scene.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Scene.cpp; sourceTree = "<group>"; };
+		AE7E853D229FDE9500BB1CEB /* Scene.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Scene.hpp; sourceTree = "<group>"; };
+		AE7E853F229FE6C900BB1CEB /* Light.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Light.cpp; sourceTree = "<group>"; };
+		AE7E8540229FE6C900BB1CEB /* Light.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Light.hpp; sourceTree = "<group>"; };
 		AE915714229F0E03003C8179 /* Camera.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Camera.cpp; sourceTree = "<group>"; };
 		AE915715229F0E03003C8179 /* Camera.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Camera.hpp; sourceTree = "<group>"; };
 		AE915717229F1B64003C8179 /* Pixel.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Pixel.cpp; sourceTree = "<group>"; };
@@ -101,6 +107,10 @@
 				AE915721229F3110003C8179 /* Sphere.hpp */,
 				AE915723229F361B003C8179 /* Ray.cpp */,
 				AE915724229F361B003C8179 /* Ray.hpp */,
+				AE7E853C229FDE9500BB1CEB /* Scene.cpp */,
+				AE7E853D229FDE9500BB1CEB /* Scene.hpp */,
+				AE7E853F229FE6C900BB1CEB /* Light.cpp */,
+				AE7E8540229FE6C900BB1CEB /* Light.hpp */,
 			);
 			path = Synthese2;
 			sourceTree = "<group>";
@@ -195,6 +205,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AE7E8541229FE6C900BB1CEB /* Light.cpp in Sources */,
+				AE7E853E229FDE9500BB1CEB /* Scene.cpp in Sources */,
 				AE915719229F1B64003C8179 /* Pixel.cpp in Sources */,
 				AE915716229F0E03003C8179 /* Camera.cpp in Sources */,
 				AE91571F229F1CA9003C8179 /* Color.cpp in Sources */,

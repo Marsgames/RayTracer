@@ -9,7 +9,7 @@
 #include "Pixel.hpp"
 
 
-inline Vector3 Pixel::GetPosition() const {
+Vector3 Pixel::GetPosition() const {
     return m_position;
 }
 
@@ -25,7 +25,7 @@ inline Vector3 Pixel::GetPosition() const {
     return m_position.GetZ();
 }
 
-inline Color Pixel::GetColor() const {
+Color Pixel::GetColor() const {
     return m_color;
 }
 
@@ -39,4 +39,9 @@ inline Color Pixel::GetColor() const {
 
  int Pixel::GetColorB() const {
     return m_color.GetB();
+ }
+
+void Pixel::SetColor(Color color) {
+    m_color = color;
 }
+

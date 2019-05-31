@@ -8,8 +8,10 @@
 
 #pragma once
 
+#include <Light.hpp>
 #include <vector>
 #include <Pixel.hpp>
+#include <Sphere.hpp>
 #include <string>
 
 using std::vector;
@@ -23,27 +25,28 @@ enum EImageFormat
 
 class Camera
 {
-    Vector3 m_position, m_dir;
+    Vector3 m_position, m_direction;
     int m_width, m_height, m_focalDist;
     vector<Pixel> m_pixels;
     bool m_useFocal;
     EImageFormat m_imageFormat = EImageFormat::BMP;
     
-    const string source = "/Users/Raph/Desktop/TestSynthese/";
-    const string nomImage = "theImage0";
+    string m_source = "/Users/Raph/Desktop/TestSynthese/";
+    string m_name = "theImage0";
     
     void InitPixelsArray();
-    inline void SaveImageWithFocal();
-    inline void SaveImageWithoutFocal();
     inline void SavePPM();
     inline void SaveBMP();
-    
+    Vector3 GetRayDirection();
+    Vector3 GetRayDirection(const Vector3& toThatPoint) const;
+    void CalculateFocal();
+
 public:
     Camera(const Vector3& position, const int width, const int height, Vector3& direction) :
     m_position{position},
     m_width{width},
     m_height{height},
-    m_dir{direction.Normalize()}
+    m_direction{direction.Normalize()}
     {
         InitPixelsArray();
         m_focalDist = 1000;
@@ -55,7 +58,7 @@ public:
     m_position{position},
     m_width{width},
     m_height{height},
-    m_dir{direction.Normalize()},
+    m_direction{direction.Normalize()},
     m_focalDist{focalDistance}
     {
         InitPixelsArray();
@@ -63,16 +66,20 @@ public:
         m_imageFormat = EImageFormat::BMP;
     }
     
-    Vector3 GetPosition() const;
+//    Vector3 GetPosition() const;
     void SetPosition(Vector3 position);
-    Vector3 GetDirection() const;
+//    Vector3 GetDirection() const;
     void SetDirection(Vector3 direction);
-    inline int GetWidth() const;
-    inline int GetHeight() const;
-    inline int GetFocalDist() const;
+//    inline int GetWidth() const;
+//    inline int GetHeight() const;
+//    inline int GetFocalDist() const;
     void SetUseFocal(bool value);
-    inline void SetFocalDist(int focalDistance);
+    void SetFocalDist(int focalDistance);
     void SetImageFormat(EImageFormat format);
     void SaveImage();
+    void SetImageName(string name);
+    
+    void DrawImage(const vector<Sphere>& spheres, const vector<Light>& lights);
+    
     
 };

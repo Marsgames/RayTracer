@@ -11,20 +11,17 @@
 #include <Vector3.hpp>
 
 class Ray {
-    Vector3 m_origin, m_dir;
+    Vector3 m_origin, m_direction;
     
 public:
     Ray(Vector3 origin, Vector3 direction) :
     m_origin{origin},
-    m_dir{direction.Normalize()}
+    m_direction{direction.Normalize()}
     {};
     
-    inline Vector3 GetOrigin() const
-    {
-        return m_origin;
-    };
-    inline Vector3 GetDirection() const
-    {
-        return m_dir;
-    };
+
+    Vector3 GetOrigin() const;
+    void SetOrigin(const Vector3& origin);
+    Vector3 GetDirection() const;
+    void SetDirection(const Vector3& direction);
 };

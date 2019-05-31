@@ -12,23 +12,27 @@
 #include <Color.hpp>
 
 class Pixel {
-    Vector3 m_position;
-    Color m_color;
+    Vector3 m_position = Vector3{0, 0, 0};
+    Color m_color = Color{0, 0, 0};
     
 public:
+    Pixel() {};
+    
     Pixel(Vector3 position, Color color):
     m_position{position},
     m_color{color}
     {};
     
-    inline Vector3 GetPosition() const;
+    Vector3 GetPosition() const;
     double GetPositionX() const;
     double GetPositionY() const;
     double GetPositionZ() const;
     
-    inline Color GetColor() const;
+    Color GetColor() const;
     int GetColorR() const;
     int GetColorG() const;
     int GetColorB() const;
+    
+    void SetColor(Color color);
     
 };

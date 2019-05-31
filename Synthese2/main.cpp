@@ -10,10 +10,13 @@
 #include <gtests/UnitsTests.hpp>
 #include <iostream>
 #include <main.hpp>
+#include <Scene.hpp>
 #include <Sphere.hpp>
 
 using std::cout;
 using std::endl;
+
+// Image 4K : 4096 * 2160 | focale --> 4000
 
 int main(int argc, char* argv[])
 {
@@ -24,17 +27,55 @@ int main(int argc, char* argv[])
     
     Vector3 mainCameraPosition = Vector3{0, 0, 0};
     Vector3 mainCameraDirection = Vector3{0, 0, 1};
-    Camera mainCamera = Camera(mainCameraPosition, 1920, 1080, mainCameraDirection);
+    Camera mainCamera = Camera(mainCameraPosition, 4096, 2160, mainCameraDirection);
+    mainCamera.SetFocalDist(4000);
 //    mainCamera.SetUseFocal(false);
-//    mainCamera.SaveImage();
-//    mainCamera.SetImageFormat(EImageFormat::PPM);
-//    mainCamera.SaveImage();
-//    
-//    Sphere sp1 = Sphere(Vector3{0, 0, 0}, 10, Color{255, 255, 255});
-//    Ray r1 = Ray(Vector3{-10, 0, 0}, Vector3{10, 0, 0});
-//    Intersection res = Sphere::IntersectRaySphere(r1, sp1);
-//    
-//    cout << "result : " << res.intersect << endl;
+    
+    Sphere sp1 = Sphere(Vector3{0, 0, 2000}, 1000, Color{45, 45, 155});
+//    Sphere sp1 = Sphere(Vector3{0, 0, 2000}, 1000, Color{45, 45, 45});
+//    Sphere sp2 = Sphere(Vector3{0, 0, 25}, 20, Color{255, 0, 255});
+//    Sphere sp3 = Sphere(Vector3{-960, -540, 200}, 300, Color{45, 45, 155});
+    
+    // Enlever un 0 à 7000, 4000 et 15000
+    Sphere leftWall = Sphere(Vector3(-38000., 0., 0.), 4e5,  Color(0, 255, 0), "Vert");
+    Sphere rightWall = Sphere(Vector3(38000., 0., 0.), 4e5, Color(0, 0, 255), "Bleu");
+    Sphere topWall = Sphere(Vector3(0., -4e5 - 4000., 0.), 4e5, Color(255, 0, 255), "Rose");
+    Sphere bottomWall = Sphere(Vector3(0., 4e5 + 4000., 0.), 4e5, Color(255, 255, 255), "Blanc");
+    //    Sphere bottomWall = Sphere(Vector3(0., 4e5 + 4000., -00.), 4e5, Material(EMaterialType::DifuseType, Vector3(255 / 75, 255 / 140, 255 / 225)), "Rouge chelou");
+//    Sphere backWall = Sphere(Vector3(0., 0., 20000.), 4e5, Color(255, 0, 0), "Rouge");
+    Sphere frontWall = Sphere(Vector3(0., 0., 20000.), 4e5, Color(0, 255, 255), "Jaune");
+    
+    
+    // Enlever un 0 à 7000, 4000 et 15000
+//    Sphere leftWall = Sphere(Vector3(-30000 - 5000., 0., 0.), 30000,  Color(0, 255, 0), "Vert");
+//    Sphere rightWall = Sphere(Vector3(30000 + 5000., 0., 0.), 30000,  Color(75, 140, 255), "Rouge chelou");
+//        Sphere topWall = Sphere(Vector3(0., -30000 - 1500., 0.), 30000, Color(0, 0, 255), "Bleu");
+//    Sphere bottomWall = Sphere(Vector3(0., 30000 + 1500., 0.), 30000, Color(255, 255, 255), "Blanc");
+////    //    Sphere bottomWall = Sphere(Vector3(0., 4e5 + 4000., -00.), 4e5, Material(EMaterialType::DifuseType, Vector3(255 / 75, 255 / 140, 255 / 225)), "Rouge chelou");
+////    Sphere backWall = Sphere(Vector3(0., 0., 4e5 + 15000), 4e5, Color(255, 0, 0), "Rouge");
+//    Sphere frontWall = Sphere(Vector3(0., 0., 30000. + 10000), 30000, Color(255, 255, 0), "Jaune");
+    
+    Scene myScene = Scene();
+    myScene.AddCamera(mainCamera);
+    myScene.AddSphere(sp1);
+//    myScene.AddSphere(sp2);
+//    myScene.AddSphere(sp3);
+    
+    myScene.AddSphere(leftWall);
+    myScene.AddSphere(rightWall);
+//    myScene.AddSphere(topWall);
+//    myScene.AddSphere(bottomWall);
+//    myScene.AddSphere(backWall);
+    myScene.AddSphere(frontWall);
+
+    
+//    myScene.AddLight(Light(Vector3(0, 0, 000), 1000));
+//    myScene.AddLight(Light(Vector3(6500, -3000, 10000), 100000));
+    myScene.AddLight(Light(Vector3(5000, -5000, -5000), 10000));
+
+    myScene.DrawImages();
+    
+    myScene.SaveImages();
     
     cout << endl;
     return 0;
