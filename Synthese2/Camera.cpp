@@ -43,20 +43,18 @@ void Camera::InitPixelsArray() {
     //    pointsFile.open ("/Users/Raph/Desktop/TestSynthese/points.txt");
     //    directionsFile.open("/Users/Raph/Desktop/TestSynthese/directions.txt");
     
-    /* // decommenter ça pour refaire la rotation de camera
-     Vector3 baseDirection{0,0,1};
-     const double thetaUnsigned = acos((Vector3::Dot(baseDirection, m_direction)));
-     double thetaSigned;
-     
-     if (m_direction.GetX() >= 0)
-     {
-     thetaSigned = thetaUnsigned;
-     }
-     else
-     {
-     thetaSigned = thetaUnsigned * -1;
-     }
-     */
+    Vector3 baseDirection{0,0,1};
+    const double thetaUnsigned = acos((Vector3::Dot(baseDirection, m_direction)));
+    double thetaSigned;
+    
+    if (m_direction.GetX() >= 0)
+    {
+        thetaSigned = thetaUnsigned;
+    }
+    else
+    {
+        thetaSigned = thetaUnsigned * -1;
+    }
     
     
     
@@ -77,17 +75,14 @@ void Camera::InitPixelsArray() {
         const Vector3 actualPos {indexX, indexY, static_cast<int>(m_position.GetZ())};
         //        const Vector3 newPos = Vector3{cos(thetaSigned) * actualPos.GetX() + sin(thetaSigned) * actualPos.GetZ(), actualPos.GetY(), -sin(thetaSigned) * actualPos.GetX() + cos(thetaSigned) * actualPos.GetZ()};
         
-        /* // Décommenter ici pour refaire la rotation de caméra
-         Vector3 newPos = Vector3{cos(thetaSigned) * actualPos.GetX() + sin(thetaSigned) * 1, actualPos.GetY(), -sin(thetaSigned) * actualPos.GetX() + cos(thetaSigned) * 1};
-         
-         newPos.SetX(newPos.GetX() + m_position.GetX());
-         newPos.SetY(newPos.GetY() + m_position.GetY());
-         newPos.SetZ(newPos.GetZ() + m_position.GetZ());
-         
-         m_pixels.push_back(Pixel(newPos, defaultColor));
-         */
+        Vector3 newPos = Vector3{cos(thetaSigned) * actualPos.GetX() + sin(thetaSigned) * 1, actualPos.GetY(), -sin(thetaSigned) * actualPos.GetX() + cos(thetaSigned) * 1};
         
-        m_pixels.push_back(Pixel(actualPos, defaultColor));
+        newPos.SetX(newPos.GetX() + m_position.GetX());
+        newPos.SetY(newPos.GetY() + m_position.GetY());
+        newPos.SetZ(newPos.GetZ() + m_position.GetZ());
+        
+        m_pixels.push_back(Pixel(newPos, defaultColor));
+        
         
         //        pointsFile << newPos.ToString() << "|";
         //        directionsFile << m_direction.ToString() << "|";
@@ -97,13 +92,13 @@ void Camera::InitPixelsArray() {
     //    directionsFile.close();
 }
 
-//int Camera::GetWidth() const {
-//    return m_width;
-//}
-//
-//int Camera::GetHeight() const {
-//    return m_height;
-//}
+int Camera::GetWidth() const {
+    return m_width;
+}
+
+int Camera::GetHeight() const {
+    return m_height;
+}
 
 //int Camera::GetFocalDist() const {
 //    return m_focalDist;
@@ -249,7 +244,7 @@ void Camera::DrawImage(const vector<Sphere> &spheres, const vector<Light>& light
             for (const Light& light : lights)
             {
                 bool canSeeLight = Sphere::CanSeeLight(pixel.GetPosition(), light, spheres);
-                //                sphereColor.Print();
+                //                                sphereColor.Print();
                 
                 if (canSeeLight)
                 {
@@ -257,12 +252,13 @@ void Camera::DrawImage(const vector<Sphere> &spheres, const vector<Light>& light
                 }
                 else
                 {
-                    m_pixels[index].SetColor(Color{255, 0, 255} * 0.3f);
-                    //                    m_pixels[index].SetColor(sphereColor * 0.2f);
+                    //                    m_pixels[index].SetColor(Color{200, 200, 200} * 0.3f);
+                    m_pixels[index].SetColor(sphereColor * 0.0002);
                 }
             }
         }
         distance = __DBL_MAX__;
+        //        sphereColor = Color{0, 0, 0};
     }
 }
 

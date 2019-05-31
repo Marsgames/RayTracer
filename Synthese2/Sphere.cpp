@@ -72,6 +72,25 @@ Intersection Sphere::IntersectRaySphere(Ray ray, Sphere sphere) {
     
     if (inter1 > 0)
     {
+        myRes.nbIntersect++;
+    }
+    if (inter2 > 0)
+    {
+        myRes.nbIntersect++;
+    }
+    
+//    if (inter1 <= 0 && inter2 <= 0)
+//    {
+//        myRes.nbIntersect = 0;
+//    }
+//    else if (inter1 <= 0 && inter2 > 0)
+//    {
+//        myRes.nbIntersect = 1;
+//    }
+//    else if (inter1 > 0 && inter2 > 0)
+    
+    if (inter1 > 0)
+    {
         myRes.intersect = true;
         myRes.distance = inter1;
     }else if (inter2 > 0)
@@ -87,8 +106,8 @@ Intersection Sphere::IntersectRaySphere(Ray ray, Sphere sphere) {
 
 bool Sphere::CanSeeLight(Vector3 point, Light light, vector<Sphere> spheres) {
     
-    const Vector3 dirLampe = (Vector3::GetDirection(point, light.GetPosition()));
-    const Ray ray = Ray((point + (dirLampe * .1)), dirLampe);
+    const Vector3 dirFromPointToLampe = (Vector3::GetDirection(point, light.GetPosition()));
+    const Ray ray = Ray((point + (dirFromPointToLampe * 0)), dirFromPointToLampe);
     const double distFromPointToLight = Vector3::GetDistance(point, light.GetPosition());
     
 //    point = point + (.5 * Vector3::GetDirection(point, light.GetPosition()));

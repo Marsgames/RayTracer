@@ -39,7 +39,7 @@ class Camera
     inline void SaveBMP();
     Vector3 GetRayDirection();
     Vector3 GetRayDirection(const Vector3& toThatPoint) const;
-    void CalculateFocal();
+//    void CalculateFocal();
 
 public:
     Camera(const Vector3& position, const int width, const int height, Vector3& direction) :
@@ -70,8 +70,8 @@ public:
     void SetPosition(Vector3 position);
 //    Vector3 GetDirection() const;
     void SetDirection(Vector3 direction);
-//    inline int GetWidth() const;
-//    inline int GetHeight() const;
+    int GetWidth() const;
+    int GetHeight() const;
 //    inline int GetFocalDist() const;
     void SetUseFocal(bool value);
     void SetFocalDist(int focalDistance);

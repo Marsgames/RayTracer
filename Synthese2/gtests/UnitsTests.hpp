@@ -497,40 +497,40 @@ TEST(IntersectFunc, TestsEva)
 ////        }
 ////    }
 ////}
+
+//TEST(IntersectFunc, TestScene)
+//{
+//    Scene spheres;
+//    InitSpheres(spheres);
+//    Intersection result;
+//    const Ray r = Ray(Vector3(150, 500, 500), Vector3(0, 1, 1));
 //
-////TEST(IntersectFunc, TestScene)
-////{
-////    Scene spheres;
-////    InitSpheres(spheres);
-////    Intersection result;
-////    const Ray r = Ray(Vector3(150, 500, 500), Vector3(0, 1, 1));
-////
-////    Intersect(r, spheres[0], result);
+//    Intersect(r, spheres[0], result);
+//    EXPECT_EQ(true, result.intersect);
+//    EXPECT_EQ(75, result.distance);
+//    EXPECT_EQ(150, result.point.x);
+//    EXPECT_DOUBLE_EQ(553.03300858899104, result.point.y);
+//    EXPECT_DOUBLE_EQ(553.03300858899104, result.point.z);
+//
+////    const Ray r1 = Ray(Vector3(0, 500, 500), Vector3(845, 541, 398));
+////    cout << "direction : (" << r1.direction.x << ", " << r1.direction.y << ", " << r1.direction.z << ")" << endl;
+////    Intersect(r1, spheres[0], result);
 ////    EXPECT_EQ(true, result.intersect);
 ////    EXPECT_EQ(75, result.distance);
-////    EXPECT_EQ(150, result.point.x);
-////    EXPECT_DOUBLE_EQ(553.03300858899104, result.point.y);
-////    EXPECT_DOUBLE_EQ(553.03300858899104, result.point.z);
-////    
-//////    const Ray r1 = Ray(Vector3(0, 500, 500), Vector3(845, 541, 398));
-//////    cout << "direction : (" << r1.direction.x << ", " << r1.direction.y << ", " << r1.direction.z << ")" << endl;
-//////    Intersect(r1, spheres[0], result);
-//////    EXPECT_EQ(true, result.intersect);
-//////    EXPECT_EQ(75, result.distance);
-//////    EXPECT_EQ(75, result.point.x);
-//////    EXPECT_EQ(575, result.point.y);
-//////    EXPECT_EQ(500, result.point.z);
-////
-//////    Intersect(Ray(Vector3{300, -200, 600}, Vector3{-1, 1, 1}), spheres[1], result);
-//////    EXPECT_EQ(true, result.intersect);
-//////    EXPECT_DOUBLE_EQ(139.67221921331486, result.distance);
-//////    EXPECT_DOUBLE_EQ(160.32778078668514, result.point.x);
-//////    EXPECT_DOUBLE_EQ(-60.327780786685139, result.point.y);
-//////    EXPECT_DOUBLE_EQ(739.67221921331486, result.point.z);
-////
-//////    DebugIntersect(result);
-////}
+////    EXPECT_EQ(75, result.point.x);
+////    EXPECT_EQ(575, result.point.y);
+////    EXPECT_EQ(500, result.point.z);
 //
+////    Intersect(Ray(Vector3{300, -200, 600}, Vector3{-1, 1, 1}), spheres[1], result);
+////    EXPECT_EQ(true, result.intersect);
+////    EXPECT_DOUBLE_EQ(139.67221921331486, result.distance);
+////    EXPECT_DOUBLE_EQ(160.32778078668514, result.point.x);
+////    EXPECT_DOUBLE_EQ(-60.327780786685139, result.point.y);
+////    EXPECT_DOUBLE_EQ(739.67221921331486, result.point.z);
+//
+////    DebugIntersect(result);
+//}
+
 TEST(CanSeeLightFunc, SimpleTest)
 {
     vector<Sphere> scene;

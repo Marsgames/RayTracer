@@ -55,7 +55,8 @@ public:
 //        cout << endl;
             if (newColor.GetR() == 0 && newColor.GetG() == 0 && newColor.GetB() == 0)
             {
-                return Color{0, 255, 255} * .2;
+                cout << "Trop loin : noir" << endl;
+                return Color{200, 200, 200} * 1;
             }
             
         return newColor;
