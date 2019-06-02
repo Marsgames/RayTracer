@@ -46,6 +46,7 @@ public:
     void SetB(double value);
     
     Color operator*(const double other) const;
+    bool operator==(const Color& other) const;
     
     void Print() const;
     void SetColorName();

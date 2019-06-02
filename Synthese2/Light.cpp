@@ -7,7 +7,9 @@
 //
 
 #include "Light.hpp"
+#include <Sphere.hpp>
 #include <Vector3.hpp>
+#include <vector>
 
 Vector3 Light::GetPosition() const
 {
@@ -17,6 +19,40 @@ Vector3 Light::GetPosition() const
 double Light::GetPower() const
 {
     return m_power;
+}
+
+bool Light::CanSeeLight(const Vector3& point, const Light& light, const vector<Sphere>& spheres) {
+    
+    const Vector3 dirFromPointToLampe = (Vector3::GetDirection(point, light.GetPosition()));
+    const Ray ray = Ray((point + (dirFromPointToLampe * 0)), dirFromPointToLampe);
+    const double distFromPointToLight = Vector3::GetDistance(point, light.GetPosition());
+    
+    //    point = point + (.5 * Vector3::GetDirection(point, light.GetPosition()));
+    
+    //    dirLampe.Print();
+    
+    Intersection intersection;
+    
+    for (const Sphere& sphere : spheres)
+    {
+        intersection = Sphere::IntersectRaySphere(ray, sphere);
+        
+        if (intersection.intersect)
+        {
+            double distFromPointToIntersect = Vector3::GetDistance(point, intersection.pointCoordonate);
+            if (distFromPointToIntersect < distFromPointToLight)
+            {
+                return false;
+            }
+            //            double distFromPointToIntersect = Vector3::GetDistance(point, intersection.pointCoordonate);
+            //            cout << "distFromPointToIntersect : " << distFromPointToIntersect << endl;
+            //            cout << "intersection.distance : " << intersection.distance << endl << endl;
+            //            cout << "distFromPointToLight : " << distFromPointToLight << endl << endl;
+            
+        }
+    }
+    
+    return true;
 }
 
 Color Light::GetLightning(const Light& light, const Color& color, const double distance)

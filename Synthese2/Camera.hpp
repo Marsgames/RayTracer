@@ -54,7 +54,7 @@ public:
         m_imageFormat = EImageFormat::BMP;
     }
     
-    Camera(const Vector3& position, const int width, const int height, Vector3& direction, const int focalDistance) :
+    Camera(const Vector3& position, const int width, const int height, Vector3 direction, const int focalDistance) :
     m_position{position},
     m_width{width},
     m_height{height},
@@ -62,19 +62,25 @@ public:
     m_focalDist{focalDistance}
     {
         InitPixelsArray();
-        m_useFocal = false;
+        m_useFocal = true;
         m_imageFormat = EImageFormat::BMP;
     }
     
-//    Vector3 GetPosition() const;
+    Vector3 GetPosition() const;
     void SetPosition(Vector3 position);
-//    Vector3 GetDirection() const;
+    
+    Vector3 GetDirection() const;
     void SetDirection(Vector3 direction);
+    
     int GetWidth() const;
     int GetHeight() const;
-//    inline int GetFocalDist() const;
-    void SetUseFocal(bool value);
+    
+    int GetFocalDist() const;
     void SetFocalDist(int focalDistance);
+
+    bool GetUseFocal();
+    void SetUseFocal(bool value);
+    
     void SetImageFormat(EImageFormat format);
     void SaveImage();
     void SetImageName(string name);

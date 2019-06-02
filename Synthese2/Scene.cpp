@@ -66,3 +66,4 @@ void Scene::SaveImages() {
         index++;
     }
 }
+

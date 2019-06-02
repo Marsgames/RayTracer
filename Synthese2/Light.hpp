@@ -10,10 +10,14 @@
 
 #include <Color.hpp>
 #include <iostream>
+//#include <Sphere.hpp>
+#include <Sphere.hpp>
 #include <Vector3.hpp>
+#include <vector>
 
 using std::cout;
 using std::endl;
+using std::vector;
 
 class Light {
     Vector3 m_position;
@@ -37,5 +41,6 @@ public:
     double GetPower() const;
 //    Color GetColor() const;
     
-    static Color GetLightning(const Light& light, const Color& color, const double distance);    
+    static bool CanSeeLight(const Vector3& point, const Light& light, const vector<Sphere>& spheres);
+    static Color GetLightning(const Light& light, const Color& color, const double distance);
 };

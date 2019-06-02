@@ -100,9 +100,9 @@ int Camera::GetHeight() const {
     return m_height;
 }
 
-//int Camera::GetFocalDist() const {
-//    return m_focalDist;
-//}
+int Camera::GetFocalDist() const {
+    return m_focalDist;
+}
 
 void Camera::SetUseFocal(bool value) { 
     m_useFocal = value;
@@ -132,17 +132,17 @@ void Camera::SaveImage() {
     }
 }
 
-//Vector3 Camera::GetPosition() const {
-//    return m_position;
-//}
+Vector3 Camera::GetPosition() const {
+    return m_position;
+}
 
 void Camera::SetPosition(Vector3 position) {
     m_position = position;
 }
 
-//Vector3 Camera::GetDirection() const {
-//    return m_direction;
-//}
+Vector3 Camera::GetDirection() const {
+    return m_direction;
+}
 
 void Camera::SetDirection(Vector3 direction) {
     m_direction = direction;
@@ -243,7 +243,7 @@ void Camera::DrawImage(const vector<Sphere> &spheres, const vector<Light>& light
         {
             for (const Light& light : lights)
             {
-                bool canSeeLight = Sphere::CanSeeLight(pixel.GetPosition(), light, spheres);
+                bool canSeeLight = Light::CanSeeLight(pixel.GetPosition(), light, spheres);
                 //                                sphereColor.Print();
                 
                 if (canSeeLight)
@@ -285,3 +285,8 @@ Vector3 Camera::GetRayDirection(const Vector3& toThatPoint) const {
 void Camera::SetImageName(string name) {
     m_name = name;
 }
+
+bool Camera::GetUseFocal() {
+    return m_useFocal;
+}
+

@@ -32,12 +32,23 @@ public:
     m_z{z}
     {};
     
-    Vector3(const Vector3& vector)
-    {
-        m_x = vector.m_x;
-        m_y = vector.m_y;
-        m_z = vector.m_z;
-    }
+    Vector3(const Vector3& vector):
+    m_x{vector.m_x},
+    m_y{vector.m_y},
+    m_z{vector.m_z}
+    {};
+    
+    Vector3(const double number):
+    m_x{number},
+    m_y{number},
+    m_z{number}
+    {};
+    
+    Vector3(const int number):
+    m_x{static_cast<double>(number)},
+    m_y{static_cast<double>(number)},
+    m_z{static_cast<double>(number)}
+    {};
         
     double GetX() const;
     double GetY() const;
@@ -52,8 +63,8 @@ public:
     //         Operator         //
     //////////////////////////////
     // Repris de l'ancienne version
-    Vector3 operator*=(const Vector3& other) const;
-    Vector3 operator+=(const Vector3& other) const;
+//    Vector3 operator*=(const Vector3& other) const;
+//    Vector3 operator+=(const Vector3& other) const;
     Vector3 operator+(const Vector3& other) const;
     Vector3 operator*(const Vector3& other) const;
     Vector3 operator*(const double other) const;

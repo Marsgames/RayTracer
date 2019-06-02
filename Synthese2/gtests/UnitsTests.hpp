@@ -8,11 +8,12 @@
 
 #pragma once
 
+#include <Camera.hpp>
+#include <Color.hpp>
 #include <gtest/gtest.h>
-//#include <main.hpp>
+#include <Light.hpp>
 #include "Ray.hpp"
 #include "Sphere.hpp"
-//#include "Box.hpp"
 #include <math.h>
 #include <Vector3.hpp>
 
@@ -31,6 +32,27 @@ TEST(Vector3, SimpleTests)
     
     const Vector3 v4 = Vector3::Negate(v3);
     EXPECT_EQ(Vector3(-60, -56, 0), v4);
+}
+TEST(Vector3, Operator)
+{
+    const Vector3 v0 = Vector3{0, 0, 0};
+    const Vector3 v1 = Vector3{1, 1, 1};
+    const Vector3 v2 = Vector3{2, 2, 2};
+    const Vector3 v5 = Vector3{5, 5, 5};
+    
+    const Vector3 res1p0 = v1 + v0;
+    const Vector3 res2x5 = v2 * v5;
+    const Vector3 res5m2 = v5 - v2;
+    const Vector3 res10d2 = res2x5 * 2;
+    
+    EXPECT_EQ(Vector3(1, 1, 1), res1p0);
+    EXPECT_EQ(Vector3(10, 10, 10), res2x5);
+    EXPECT_EQ(Vector3(3, 3, 3), res5m2);
+    EXPECT_EQ(Vector3(20, 20, 20), res10d2);
+    
+    EXPECT_TRUE(v1 == Vector3(1, 1, 1));
+    EXPECT_TRUE(v1 < v2);
+    EXPECT_TRUE(v5 > v0);
 }
 TEST(Vector3, NormalizeFunc)
 {
@@ -106,6 +128,90 @@ TEST(Vector3, Distance)
     EXPECT_EQ(sqrt(8), Vector3::GetDistance(Vector3(1, 2, 3), Vector3(3, 2, 1)));
     EXPECT_EQ(sqrt(27), Vector3::GetDistance(Vector3(4, 5, 6), Vector3(7, 8, 9)));
     EXPECT_EQ(sqrt(120000), Vector3::GetDistance(Vector3(100, 100, 100), Vector3(-100, -100, -100)));
+}
+TEST(Vector3, Direction)
+{
+    const Vector3 pA = Vector3{0, 0, 0};
+    const Vector3 pB = Vector3{10, 10, 10};
+    
+    EXPECT_EQ(Vector3(-10).Normalize(), Vector3::GetDirection(pB, pA));
+    EXPECT_EQ(Vector3(10).Normalize(), Vector3::GetDirection(pA, pB));
+}
+
+TEST(Light, SimpleTest)
+{
+    const Light light = Light(Vector3(10, 10, 10), 1000);
+    const Color black = Color(0, 0, 0);
+    
+    EXPECT_EQ(Vector3(10, 10, 10), light.GetPosition());
+    EXPECT_EQ(1000, light.GetPower());
+        
+    EXPECT_TRUE(Color::GetColor(EColor::Black) ==  Light::GetLightning(light, black, 1000000));
+}
+
+TEST(Color, SimpleTest)
+{
+    const Color noir = Color(0, 0, 0);
+    const Color blanc = Color(255, 255, 255);
+    
+    EXPECT_EQ(Color::GetColor(EColor::Black), noir);
+    EXPECT_EQ(Color::GetColor(EColor::White), blanc);
+    EXPECT_EQ(Color(0, 0, 0), blanc * 0);
+}
+
+TEST(Ray, SimpleTest)
+{
+    Ray rayon = Ray(Vector3(0, 0, 0), Vector3(0, 0, 100));
+    
+    EXPECT_EQ(Vector3(0, 0, 1), rayon.GetDirection());
+    
+    rayon.SetOrigin(Vector3(10, 1, 2));
+    rayon.SetDirection(Vector3(0, 0, -1));
+    
+    EXPECT_EQ(Vector3(10, 1, 2), rayon.GetOrigin());
+    EXPECT_EQ(Vector3(0, 0, -1), rayon.GetDirection());
+}
+
+TEST(Sphere, SimpleTest)
+{
+    Sphere sphere = Sphere(Vector3(10, 0, 0), 10, Color(255, 0, 0));
+    sphere.SetCenter(0, 0, 0);
+    
+    EXPECT_EQ(Vector3(0, 0, 0), sphere.GetCenter());
+    EXPECT_EQ(Color::GetColor(EColor::Red), sphere.GetColor());
+    EXPECT_EQ(10, sphere.GetRayon());
+}
+
+TEST(Pixel, SimpleTest)
+{
+    const Pixel deadPixel = Pixel(Vector3(0, 0, 0), Color(0, 0, 0));
+    
+    EXPECT_EQ(Vector3(0, 0, 0), deadPixel.GetPosition());
+    EXPECT_EQ(Color(0, 0, 0), deadPixel.GetColor());
+}
+
+TEST(Camera, SimpleTest)
+{
+    const Vector3 camPos = Vector3(0, 0, 0);
+    const Vector3 camDir = Vector3(0, 0, 100);
+    Camera cam = Camera(camPos, 1920, 1080, camDir, 800);
+    
+    EXPECT_EQ(1920, cam.GetWidth());
+    EXPECT_EQ(1080, cam.GetHeight());
+    EXPECT_EQ(800, cam.GetFocalDist());
+    EXPECT_EQ(Vector3(0, 0, 1), cam.GetDirection());
+    EXPECT_EQ(Vector3(0, 0, 0), cam.GetPosition());
+    EXPECT_EQ(true, cam.GetUseFocal());
+    
+    cam.SetFocalDist(1000);
+    cam.SetDirection(Vector3(0, 0, -1));
+    cam.SetPosition(Vector3(0, 0, 10));
+    cam.SetUseFocal(false);
+    
+    EXPECT_EQ(1000, cam.GetFocalDist());
+    EXPECT_EQ(Vector3(0, 0, -1), cam.GetDirection());
+    EXPECT_EQ(Vector3(0, 0, 10), cam.GetPosition());
+    EXPECT_EQ(false, cam.GetUseFocal());
 }
 //
 //TEST(Camera, Rotation)
@@ -350,7 +456,7 @@ TEST(Vector3, Distance)
 TEST(IntersectFunc, SimpleIntersect)
 {
     Intersection result;
-    Vector3 rayOrigin{0, 0, 0};
+    const Vector3 rayOrigin{0, 0, 0};
     Vector3 rayDirection{1, 0, 0};
 
     Ray ray = Ray(rayOrigin, rayDirection);
@@ -430,8 +536,8 @@ TEST(IntersectFunc, TestsEva)
 {
     Intersection result;
     const Vector3 rayOrigin{0, 0, 0};
-    Vector3 rayDirection{1, 1, 1};
-    Ray ray = Ray(rayOrigin, rayDirection);
+    const Vector3 rayDirection{1, 1, 1};
+    const Ray ray = Ray(rayOrigin, rayDirection);
     Sphere sphere = Sphere{Vector3(0, 0, 0), 100};
     
     result = Sphere::IntersectRaySphere(ray, sphere);
@@ -534,52 +640,61 @@ TEST(IntersectFunc, TestsEva)
 TEST(CanSeeLightFunc, SimpleTest)
 {
     vector<Sphere> scene;
-    Sphere sp1 = Sphere{Vector3{0, 0, 0}, 10};
-    Light lum = Light{Vector3{20, 0, 0}, 1000};
+    const Sphere sp1 = Sphere{Vector3{0, 0, 0}, 10};
+    const Light lum = Light{Vector3{20, 0, 0}, 1000};
     scene.push_back(sp1);
     
     
     // Le Ray est intersepté par une sphère
-    Vector3 point1 = Vector3{-20, 0, 0};
-    EXPECT_EQ(false, Sphere::CanSeeLight(point1, lum, scene));
+    const Vector3 point1 = Vector3{-20, 0, 0};
+    EXPECT_EQ(false, Light::CanSeeLight(point1, lum, scene));
 
     // le Ray n'est pas intersepté par la sphère
-    Vector3 point2 = Vector3{15, 0, 0};
-    EXPECT_EQ(true, Sphere::CanSeeLight(point2, lum, scene));
+    const Vector3 point2 = Vector3{15, 0, 0};
+    EXPECT_EQ(true, Light::CanSeeLight(point2, lum, scene));
     
     // Le Ray part de l'intérieur de la sphère
-    Vector3 point3 = Vector3{0, 0, 0};
-    EXPECT_EQ(false, Sphere::CanSeeLight(point3, lum, scene));
+    const Vector3 point3 = Vector3{0, 0, 0};
+    EXPECT_EQ(false, Light::CanSeeLight(point3, lum, scene));
     
     // La lumière est dans la sphère, le Ray non
     const Light& lightInsideSphere = Light{Vector3(0, 0, 0), 1000};
-    EXPECT_EQ(false, Sphere::CanSeeLight(point1, lightInsideSphere, scene));
+    EXPECT_EQ(false, Light::CanSeeLight(point1, lightInsideSphere, scene));
 
     // La lumière est dans la sphère, le Ray aussi
-    Vector3 point4 = Vector3(2, 0, 0);
+    const Vector3 point4 = Vector3(2, 0, 0);
     const Light& lightInsideSphere2 = Light{Vector3(8, 0, 0), 1000};
-    EXPECT_EQ(true, Sphere::CanSeeLight(point4, lightInsideSphere2, scene));
+    EXPECT_EQ(true, Light::CanSeeLight(point4, lightInsideSphere2, scene));
 
     // Le point est après la lumière
-    Vector3 point5 = Vector3(30, 0, 0);
-    EXPECT_EQ(true, Sphere::CanSeeLight(point5, lum, scene));
+    const Vector3 point5 = Vector3(30, 0, 0);
+    EXPECT_EQ(true, Light::CanSeeLight(point5, lum, scene));
+    
+    
+    
+    const Vector3 point6 = Vector3(0, 0, 1000);
+    const Light light = Light(Vector3(0, 0, 0), 1000);
+    vector<Sphere> sp2;
+    sp2.push_back(Sphere(Vector3(0, 0, 500), 300, Color(0, 0, 0)));
+    
+    EXPECT_EQ(false, Light::CanSeeLight(point6, light, sp2));
 }
 
 TEST(CanSeeLightFunc, ComplexeTest)
 {
     vector<Sphere> scene;
-    Sphere sp1 = Sphere{Vector3(21, 36, -28), 20};
-    Light lum = Light{Vector3(57, 13, 100), 0};
+    const Sphere sp1 = Sphere{Vector3(21, 36, -28), 20};
+    const Light lum = Light{Vector3(57, 13, 100), 0};
     scene.push_back(sp1);
     
     Vector3 p1 = Vector3(0, 0, 0);
-    EXPECT_EQ(true, Sphere::CanSeeLight(p1, lum, scene));
+    EXPECT_EQ(true, Light::CanSeeLight(p1, lum, scene));
     p1 = Vector3(76, 54, -48);
-    EXPECT_EQ(true, Sphere::CanSeeLight(p1, lum, scene));
+    EXPECT_EQ(true, Light::CanSeeLight(p1, lum, scene));
     p1 = Vector3(11, 40, -70);
-    EXPECT_EQ(false, Sphere::CanSeeLight(p1, lum, scene));
+    EXPECT_EQ(false, Light::CanSeeLight(p1, lum, scene));
     p1 = Vector3(-100, 40, -27);
-    EXPECT_EQ(true, Sphere::CanSeeLight(p1, lum, scene));
+    EXPECT_EQ(true, Light::CanSeeLight(p1, lum, scene));
     
     //    scene.push_back(Sphere(Vector3(21, 36, -28), 25));
     //

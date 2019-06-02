@@ -34,6 +34,9 @@ Color Color::operator*(const double other) const
 {
     return Color{static_cast<int>(m_r * other), static_cast<int>(m_g * other), static_cast<int>(m_b * other)};
 }
+bool Color::operator==(const Color &other) const {
+    return m_r == other.m_r && m_g == other.m_g && m_b == other.m_b;
+}
 
 void Color::SetColorName() {
     if (0 == m_r && 0 == m_g && 0 == m_b)

@@ -82,6 +82,11 @@ double Vector3::GetDistance(const Vector3 &pointA, const Vector3 &pointB) {
 
     const Vector3 v = (pointA - pointB) * (pointA - pointB);
     const double dist = sqrt(Vector3::GetSum(v));
+    
+//    const double oldDist = sqrt(((pointA.GetX() - pointB.GetX()) * (pointA.GetX() - pointB.GetX())) + ((pointA.GetY() - pointB.GetY()) * (pointA.GetY() - pointB.GetY())) + ((pointA.GetZ() - pointB.GetZ()) * (pointA.GetZ() - pointB.GetZ())));
+    
+//    cout << "dist nouvelle methode : " << dist << endl;
+//    cout << "dist ancienne methode : " << oldDist << endl << endl;
 
     if (dist < 0)
     {
@@ -111,14 +116,14 @@ string Vector3::ToString() const
 //         Operator         //
 //////////////////////////////
 // Repris de l'ancienne version
-Vector3 Vector3::operator*=(const Vector3 &other) const
-{
-    return Vector3{m_x * other.m_x, m_y * other.m_y, m_z * other.m_z};
-}
-Vector3 Vector3::operator+=(const Vector3 &other) const
-{
-    return Vector3{m_x + other.m_x, m_y + other.m_y, m_z + other.m_z};
-}
+//Vector3 Vector3::operator*=(const Vector3 &other) const
+//{
+//    return Vector3{m_x * other.m_x, m_y * other.m_y, m_z * other.m_z};
+//}
+//Vector3 Vector3::operator+=(const Vector3 &other) const
+//{
+//    return Vector3{m_x + other.m_x, m_y + other.m_y, m_z + other.m_z};
+//}
 Vector3 Vector3::operator+(const Vector3& other) const
 {
     return Vector3{m_x + other.m_x, m_y + other.m_y, m_z + other.m_z};;

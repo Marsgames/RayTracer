@@ -122,40 +122,14 @@ Intersection Sphere::IntersectRaySphere(Ray ray, Sphere sphere) {
     return myRes;
 }
 
-bool Sphere::CanSeeLight(Vector3 point, Light light, vector<Sphere> spheres) {
-    
-    const Vector3 dirFromPointToLampe = (Vector3::GetDirection(point, light.GetPosition()));
-    const Ray ray = Ray((point + (dirFromPointToLampe * 0)), dirFromPointToLampe);
-    const double distFromPointToLight = Vector3::GetDistance(point, light.GetPosition());
-    
-//    point = point + (.5 * Vector3::GetDirection(point, light.GetPosition()));
-    
-//    dirLampe.Print();
 
-    Intersection intersection;
 
-    for (const Sphere& sphere : spheres)
-    {
-        intersection = Sphere::IntersectRaySphere(ray, sphere);
-        
-        if (intersection.intersect)
-        {
-            double distFromPointToIntersect = Vector3::GetDistance(point, intersection.pointCoordonate);
-            if (distFromPointToIntersect < distFromPointToLight)
-            {
-                return false;
-            }
-//            double distFromPointToIntersect = Vector3::GetDistance(point, intersection.pointCoordonate);
-//            cout << "distFromPointToIntersect : " << distFromPointToIntersect << endl;
-//            cout << "intersection.distance : " << intersection.distance << endl << endl;
-//            cout << "distFromPointToLight : " << distFromPointToLight << endl << endl;
-            
-        }
-    }
-
-    return true;
-}
 
 void Sphere::SetCenter(Vector3 position) {
     m_center = position;
 }
+
+void Sphere::SetCenter(int x, int y, int z) {
+    m_center = Vector3(x, y, z);
+}
+

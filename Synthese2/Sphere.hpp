@@ -9,13 +9,13 @@
 #pragma once
 
 #include <Color.hpp>
-#include <Light.hpp>
+//#include <Light.hpp>
 #include <Ray.hpp>
 #include <string>
 #include <Vector3.hpp>
-#include <vector>
+//#include <vector>
 
-using std::vector;
+//using std::vector;
 using std::string;
 
 struct Intersection {
@@ -65,6 +65,7 @@ public:
     
     Vector3 GetCenter() const;
     void SetCenter(Vector3 position);
+    void SetCenter(int x, int y, int z);
     double GetPositionX() const;
     double GetPositionY() const;
     double GetPositionZ() const;
@@ -77,6 +78,4 @@ public:
     int GetColorB() const;
     
     static Intersection IntersectRaySphere(Ray ray, Sphere sphere);
-    static bool CanSeeLight(Vector3 point, Light light, vector<Sphere> spheres);
-    
 };
