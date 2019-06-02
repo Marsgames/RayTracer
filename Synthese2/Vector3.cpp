@@ -17,8 +17,9 @@ using std::string;
 using std::to_string;
 
 // Repris de l'ancienne version
-Vector3 Vector3::Normalize() {
-    double norme = sqrt(Dot(*this, *this));
+Vector3 Vector3::Normalize() const
+{
+    const double norme = sqrt(Dot(*this, *this));
     return Vector3(m_x / norme, m_y / norme, m_z / norme);
 }
 
@@ -34,22 +35,22 @@ double Vector3::GetZ() const {
     return m_z;
 }
 
-void Vector3::SetX(double x) {
+void Vector3::SetX(const double x) {
     m_x = x;
 }
 
-void Vector3::SetY(double y) {
+void Vector3::SetY(const double y) {
     m_y = y;
 }
 
-void Vector3::SetZ(double z) {
+void Vector3::SetZ(const double z) {
     m_z = z;
 }
 
 // Repris de l'ancienne version
 double Vector3::Dot(const Vector3& pA, const Vector3& pB)
 {
-    return pA.GetX() * pB.GetX() + pA.GetY() * pB.GetY() + pA.GetZ() * pB.GetZ();
+    return pA.m_x * pB.m_x + pA.m_y * pB.m_y + pA.m_z * pB.m_z;
 }
 
 // Repris de l'ancienne version
@@ -60,16 +61,17 @@ double Vector3::Dist2(const Vector3& pA)
 
 Vector3 Vector3::Negate(const Vector3& v)
 {
-    return Vector3{-v.GetX(), -v.GetY(), -v.GetZ()};
+    return Vector3{-v.m_x, -v.m_y, -v.m_z};
 }
-void Vector3::Negate()
-{
-    m_x = -m_x;
-    m_y = -m_y;
-    m_z = -m_z;
-}
+//void Vector3::Negate()
+//{
+//    m_x = -m_x;
+//    m_y = -m_y;
+//    m_z = -m_z;
+//}
 
-Vector3 Vector3::GetDirection(const Vector3 &from, const Vector3 &to) {
+Vector3 Vector3::GetDirection(const Vector3 &from, const Vector3 &to)
+{
     return (to - from).Normalize();
 }
 
@@ -90,8 +92,9 @@ double Vector3::GetDistance(const Vector3 &pointA, const Vector3 &pointB) {
     return dist;
 }
 
-double Vector3::GetSum(const Vector3 vector) {
-    return vector.GetX() + vector.GetY() + vector.GetZ();
+double Vector3::GetSum(const Vector3 vector)
+{
+    return vector.m_x + vector.m_y + vector.m_z;
 }
 
 void Vector3::Print() const
@@ -99,10 +102,49 @@ void Vector3::Print() const
     cout << "Vector3(" << m_x << ", " << m_y << ", " << m_z << ")" << endl;
 }
 
-string Vector3::ToString()
+string Vector3::ToString() const
 {
     return "Vector3(" + to_string(m_x) + ", " + to_string(m_y) + ", " + to_string(m_z) + ")";
 }
 
-
-
+//////////////////////////////
+//         Operator         //
+//////////////////////////////
+// Repris de l'ancienne version
+Vector3 Vector3::operator*=(const Vector3 &other) const
+{
+    return Vector3{m_x * other.m_x, m_y * other.m_y, m_z * other.m_z};
+}
+Vector3 Vector3::operator+=(const Vector3 &other) const
+{
+    return Vector3{m_x + other.m_x, m_y + other.m_y, m_z + other.m_z};
+}
+Vector3 Vector3::operator+(const Vector3& other) const
+{
+    return Vector3{m_x + other.m_x, m_y + other.m_y, m_z + other.m_z};;
+}
+Vector3 Vector3::operator*(const Vector3& other) const
+{
+    return Vector3{m_x * other.m_x, m_y * other.m_y, m_z * other.m_z};
+}
+Vector3 Vector3::operator*(const double other) const
+{
+    return Vector3{m_x * other, m_y * other, m_z * other};
+}
+Vector3 Vector3::operator-(const Vector3& other) const
+{
+    return Vector3{m_x - other.m_x, m_y - other.m_y, m_z - other.m_z};
+}
+bool Vector3::operator<(const Vector3& other) const
+{
+    return (m_x + m_y + m_z) < (other.m_x + other.m_y + other.m_z);
+}
+bool Vector3::operator>(const Vector3& other) const
+{
+    return (m_x + m_y + m_z) > (other.m_x + other.m_y + other.m_z);
+}
+bool Vector3::operator==(const Vector3& other) const
+{
+    return (m_x == other.m_x && m_y == other.m_y && m_z == other.m_z);
+}
+//////////////////////////////

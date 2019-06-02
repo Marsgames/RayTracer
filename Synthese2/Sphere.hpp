@@ -32,24 +32,7 @@ struct Intersection {
     pointCoordonate{thePointCoordonate}
     {};
     
-    void PrintSphereState() const
-    {
-        switch(nbIntersect)
-        {
-            case 0:
-                cout << "Pas d'intersection" << endl;
-                break;
-            case 1:
-                cout << "1 intersection, on est dans la sphère" << endl;
-                break;
-            case 2:
-                cout << "2 intersections, la sphère est devant le rayon" << endl;
-                break;
-                
-            default:
-                cout << "erreur" << endl;
-        }
-    }
+    void PrintSphereState() const;
 };
 
 class Sphere

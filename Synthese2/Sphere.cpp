@@ -13,6 +13,24 @@
 using std::cout;
 using std::endl;
 
+void Intersection::PrintSphereState() const {
+    switch(nbIntersect)
+    {
+        case 0:
+            cout << "Pas d'intersection" << endl;
+            break;
+        case 1:
+            cout << "1 intersection, on est dans la sphère" << endl;
+            break;
+        case 2:
+            cout << "2 intersections, la sphère est devant le rayon" << endl;
+            break;
+            
+        default:
+            cout << "erreur" << endl;
+    }
+}
+
 Vector3 Sphere::GetCenter() const {
     return  m_center;
 }
@@ -141,5 +159,3 @@ bool Sphere::CanSeeLight(Vector3 point, Light light, vector<Sphere> spheres) {
 void Sphere::SetCenter(Vector3 position) {
     m_center = position;
 }
-
-

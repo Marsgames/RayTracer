@@ -21,13 +21,13 @@ class Light {
     Color m_color;
     
 public:
-    Light(Vector3 position, double power):
+    Light(const Vector3& position, const double power):
     m_position{position},
     m_power{power},
     m_color{Color{255, 255, 255}}
     {};
     
-    Light(Vector3 position, double power, Color color):
+    Light(const Vector3& position, const double power, const Color& color):
     m_position{position},
     m_power{power},
     m_color{color}
@@ -37,31 +37,5 @@ public:
     double GetPower() const;
 //    Color GetColor() const;
     
-    static Color GetLightning(const Light& light, Color& color, const double distance)
-    {        
-//        cout << "affichons RGB : ";
-//        color.Print();
-        
-        if (color.GetR() != 0 || color.GetG() != 0 ||  color.GetB() != 0)
-        {
-//        cout << "color : (" << color.GetR() << ", " << color.GetG() << ",  " << color.GetB() << ")" << endl;
-//        cout << "light power : " << light.GetPower() << endl;
-        double puissance = light.GetPower() * (1 / distance);
-//        cout << "puissance : " << puissance << endl;
-        
-        Color newColor = color * puissance;
-//        cout << "new color : (" << newColor.GetR() << ", " << newColor.GetG() << ",  " << newColor.GetB() << ")" << endl;
-        
-//        cout << endl;
-            if (newColor.GetR() == 0 && newColor.GetG() == 0 && newColor.GetB() == 0)
-            {
-                cout << "Trop loin : noir" << endl;
-                return Color{200, 200, 200} * 1;
-            }
-            
-        return newColor;
-        }
-        
-        return color;
-    }
+    static Color GetLightning(const Light& light, const Color& color, const double distance);    
 };

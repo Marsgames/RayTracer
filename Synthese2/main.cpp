@@ -39,14 +39,13 @@ int main(int argc, char* argv[])
 ////    Sphere sp3 = Sphere(Vector3{-960, -540, 200}, 300, Color{45, 45, 155});
 //
 ////    // Enlever un 0 à 7000, 4000 et 15000
-    Sphere leftWall = Sphere(Vector3(-widthOffset, 0., 0.), 3e4,  Color(0, 255, 0), "Vert");
-    Sphere rightWall = Sphere(Vector3(widthOffset, 0., 0.), 3e4, Color(0, 0, 255), "Bleu");
-    Sphere topWall = Sphere(Vector3(0., -heightOffset, 0.), 3e4, Color(255, 0, 255), "Rose");
-    Sphere bottomWall = Sphere(Vector3(0., heightOffset, 0.), 3e4, Color(255, 255, 255), "Blanc");
+    Sphere leftWall = Sphere(Vector3(-widthOffset, 0., 0.), 3e4,  Color::GetColor(EColor::Green), "Vert");
+    Sphere rightWall = Sphere(Vector3(widthOffset, 0., 0.), 3e4, Color::GetColor(EColor::Blue), "Bleu");
+    Sphere topWall = Sphere(Vector3(0., -heightOffset, 0.), 3e4, Color::GetColor(EColor::Pink), "Rose");
+    Sphere bottomWall = Sphere(Vector3(0., heightOffset, 0.), 3e4, Color::GetColor(EColor::White), "Blanc");
 ////    //    Sphere bottomWall = Sphere(Vector3(0., 4e5 + 4000., -00.), 4e5, Material(EMaterialType::DifuseType, Vector3(255 / 75, 255 / 140, 255 / 225)), "Rouge chelou");
 //////    Sphere backWall = Sphere(Vector3(0., 0., 20000.), 4e5, Color(255, 0, 0), "Rouge");
-    Sphere frontWall = Sphere(Vector3(0., 0., 3e4 + 1000), 3e4, Color(255, 255, 0), "Jaune");
-    
+    Sphere frontWall = Sphere(Vector3(0., 0., 3e4 + 1000), 3e4, Color::GetColor(EColor::Yellow), "Jaune");
     
     
     
@@ -90,7 +89,7 @@ int main(int argc, char* argv[])
 
     
 //    myScene.AddLight(Light(Vector3(0, 0, 0), 500));
-    myScene.AddLight(Light(Vector3(000, -1000, 999), 1000));
+    myScene.AddLight(Light(Vector3(2000, -1000, 999), 10000));
 //    myScene.AddLight(Light(Vector3(6500, -3000, 10000), 100000));
 //    myScene.AddLight(Light(Vector3(5000, -5000, -5000), 10000));
 

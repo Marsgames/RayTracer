@@ -8,39 +8,47 @@
 
 #pragma once
 
-#include <iostream>
-
-using std::cout;
-using std::endl;
+enum EColor
+{
+    Black,
+    Red,
+    Green,
+    Blue,
+    White,
+    Other,
+    Pink,
+    Yellow
+};
 
 class Color {
     double m_r, m_g, m_b;
     
+    EColor m_colorName;
+    
 public:
-    Color()
-    {
-//        m_r = 0;
-//        m_g = 0;
-//        m_b = 0;
-    }
+    Color() {
+        SetColorName();
+    };
     
     Color(int r, int g, int b) :
     m_r{static_cast<double>(r)},
     m_g{static_cast<double>(g)},
     m_b{static_cast<double>(b)}
-    {}
+    {
+        SetColorName();
+    };
     
     double GetR() const;
     double GetG() const;
     double GetB() const;
+    void SetR(double value);
+    void SetG(double value);
+    void SetB(double value);
     
-    inline Color operator*(const double v)
-    {
-        return Color{static_cast<int>(m_r * v), static_cast<int>(m_g * v), static_cast<int>(m_b * v)};
-    }
+    Color operator*(const double other) const;
     
-    void Print()
-    {
-        cout << "Color(" << m_r << ", " << m_g << ", " << m_b << ")" << endl;
-    }
+    void Print() const;
+    void SetColorName();
+    EColor GetColorName() const;
+    static Color GetColor(EColor colorName);
 };
