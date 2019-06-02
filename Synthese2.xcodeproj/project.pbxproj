@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		AE1625F722A485C800D0A45C /* Material.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AE1625F522A485C800D0A45C /* Material.cpp */; };
 		AE376F5F2158B2C700044A00 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AE376F5E2158B2C700044A00 /* main.cpp */; };
 		AE58E43F216FED1900189557 /* libgtest_main.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE58E43D216FED1900189557 /* libgtest_main.a */; };
 		AE58E440216FED1900189557 /* libgtest.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE58E43E216FED1900189557 /* libgtest.a */; };
@@ -33,6 +34,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		AE1625F522A485C800D0A45C /* Material.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Material.cpp; sourceTree = "<group>"; };
+		AE1625F622A485C800D0A45C /* Material.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Material.hpp; sourceTree = "<group>"; };
 		AE376F5B2158B2C700044A00 /* Synthese2 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Synthese2; sourceTree = BUILT_PRODUCTS_DIR; };
 		AE376F5E2158B2C700044A00 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		AE58E43D216FED1900189557 /* libgtest_main.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libgtest_main.a; path = googletest/build/lib/libgtest_main.a; sourceTree = "<group>"; };
@@ -111,6 +114,8 @@
 				AE7E853D229FDE9500BB1CEB /* Scene.hpp */,
 				AE7E853F229FE6C900BB1CEB /* Light.cpp */,
 				AE7E8540229FE6C900BB1CEB /* Light.hpp */,
+				AE1625F522A485C800D0A45C /* Material.cpp */,
+				AE1625F622A485C800D0A45C /* Material.hpp */,
 			);
 			path = Synthese2;
 			sourceTree = "<group>";
@@ -213,6 +218,7 @@
 				AE91571C229F1BB9003C8179 /* Vector3.cpp in Sources */,
 				AE915725229F361B003C8179 /* Ray.cpp in Sources */,
 				AE915722229F3110003C8179 /* Sphere.cpp in Sources */,
+				AE1625F722A485C800D0A45C /* Material.cpp in Sources */,
 				AE376F5F2158B2C700044A00 /* main.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

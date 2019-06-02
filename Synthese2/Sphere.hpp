@@ -10,6 +10,7 @@
 
 #include <Color.hpp>
 //#include <Light.hpp>
+#include <Material.hpp>
 #include <Ray.hpp>
 #include <string>
 #include <Vector3.hpp>
@@ -43,11 +44,13 @@ class Sphere
     string m_name = "";
     
 public:
-    Sphere(Vector3 position, int rayon, Color color) :
+    Sphere() = delete;
+    
+    Sphere(Vector3 position, int rayon, Material material) :
     m_center{position},
     m_rayon{rayon},
-    m_color{color}
-    {}
+    m_color{material.GetColor()}
+    {};
     
     Sphere(Vector3 position, int rayon) :
     m_center{position},
@@ -56,10 +59,10 @@ public:
         m_color = Color{255, 0, 0};
     }
     
-    Sphere(Vector3 position, int rayon, Color color, string name) :
+    Sphere(Vector3 position, int rayon, Material material, string name) :
     m_center{position},
     m_rayon{rayon},
-    m_color{color},
+    m_color{material.GetColor()},
     m_name{name}
     {}
     

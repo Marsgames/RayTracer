@@ -174,7 +174,7 @@ TEST(Ray, SimpleTest)
 
 TEST(Sphere, SimpleTest)
 {
-    Sphere sphere = Sphere(Vector3(10, 0, 0), 10, Color(255, 0, 0));
+    Sphere sphere = Sphere(Vector3(10, 0, 0), 10, Material(Color(255, 0, 0), EMaterials::DarkFloor));
     sphere.SetCenter(0, 0, 0);
     
     EXPECT_EQ(Vector3(0, 0, 0), sphere.GetCenter());
@@ -679,7 +679,7 @@ TEST(CanSeeLightFunc, SimpleTest)
 
     const Light light = Light(Vector3(0, 0, 0), 1000);
     vector<Sphere> sp2;
-    sp2.push_back(Sphere(Vector3(0, 0, 500), 300, Color(0, 0, 0)));
+    sp2.push_back(Sphere(Vector3(0, 0, 500), 300, Material(Color(0, 0, 0), EMaterials::DarkFloor)));
     
     EXPECT_EQ(false, Light::CanSeeLight(point6, light, sp2));
     EXPECT_EQ(false, Light::CanSeeLight(point7, light, sp2));
