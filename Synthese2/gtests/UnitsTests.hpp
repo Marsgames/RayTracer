@@ -673,11 +673,18 @@ TEST(CanSeeLightFunc, SimpleTest)
     
     
     const Vector3 point6 = Vector3(0, 0, 1000);
+    const Vector3 point7 = Vector3(0, 600, 1000);
+    const Vector3 point8 = Vector3(0, 750, 1000);
+    const Vector3 point9 = Vector3(0, 751, 1000);
+
     const Light light = Light(Vector3(0, 0, 0), 1000);
     vector<Sphere> sp2;
     sp2.push_back(Sphere(Vector3(0, 0, 500), 300, Color(0, 0, 0)));
     
     EXPECT_EQ(false, Light::CanSeeLight(point6, light, sp2));
+    EXPECT_EQ(false, Light::CanSeeLight(point7, light, sp2));
+    EXPECT_EQ(false, Light::CanSeeLight(point8, light, sp2));
+    EXPECT_EQ(true, Light::CanSeeLight(point9, light, sp2));
 }
 
 TEST(CanSeeLightFunc, ComplexeTest)

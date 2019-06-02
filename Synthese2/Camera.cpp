@@ -243,7 +243,7 @@ void Camera::DrawImage(const vector<Sphere> &spheres, const vector<Light>& light
         {
             for (const Light& light : lights)
             {
-                bool canSeeLight = Light::CanSeeLight(pixel.GetPosition(), light, spheres);
+                bool canSeeLight = Light::CanSeeLight(pointOnSphere, light, spheres);
                 //                                sphereColor.Print();
                 
                 if (canSeeLight)
@@ -253,7 +253,7 @@ void Camera::DrawImage(const vector<Sphere> &spheres, const vector<Light>& light
                 else
                 {
                     //                    m_pixels[index].SetColor(Color{200, 200, 200} * 0.3f);
-                    m_pixels[index].SetColor(sphereColor * 0.0002);
+                    m_pixels[index].SetColor(sphereColor * 0.000002);
                 }
             }
         }

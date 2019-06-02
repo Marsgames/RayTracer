@@ -24,7 +24,7 @@ double Light::GetPower() const
 bool Light::CanSeeLight(const Vector3& point, const Light& light, const vector<Sphere>& spheres) {
     
     const Vector3 dirFromPointToLampe = (Vector3::GetDirection(point, light.GetPosition()));
-    const Ray ray = Ray((point + (dirFromPointToLampe * 0)), dirFromPointToLampe);
+    const Ray ray = Ray((point + (dirFromPointToLampe * 0.5)), dirFromPointToLampe);
     const double distFromPointToLight = Vector3::GetDistance(point, light.GetPosition());
     
     //    point = point + (.5 * Vector3::GetDirection(point, light.GetPosition()));
@@ -35,22 +35,30 @@ bool Light::CanSeeLight(const Vector3& point, const Light& light, const vector<S
     
     for (const Sphere& sphere : spheres)
     {
+//        cout << "sphere " << sphere.GetName() << endl;
+//        cout << "point : " << point.ToString() << endl;
+//        cout << "rayOrigin : " << ray.GetOrigin().ToString() << endl;
+//        cout << "rayDirection : " << ray.GetDirection().ToString() << endl;
         intersection = Sphere::IntersectRaySphere(ray, sphere);
+//        cout << "intersection : " << intersection.intersect << endl << endl;
+        
         
         if (intersection.intersect)
         {
             double distFromPointToIntersect = Vector3::GetDistance(point, intersection.pointCoordonate);
+            
+//            cout << "distFromPointToIntersect : " << distFromPointToIntersect << endl;
+//            cout << "distFromPointToLight : " << distFromPointToLight << endl << endl;
+            
             if (distFromPointToIntersect < distFromPointToLight)
             {
+//                cout << "y'a intersection" << endl;
                 return false;
             }
-            //            double distFromPointToIntersect = Vector3::GetDistance(point, intersection.pointCoordonate);
-            //            cout << "distFromPointToIntersect : " << distFromPointToIntersect << endl;
-            //            cout << "intersection.distance : " << intersection.distance << endl << endl;
-            //            cout << "distFromPointToLight : " << distFromPointToLight << endl << endl;
             
         }
     }
+//    cout << endl << endl;
     
     return true;
 }

@@ -77,5 +77,7 @@ public:
     int GetColorG() const;
     int GetColorB() const;
     
+    string GetName() const;
+    
     static Intersection IntersectRaySphere(Ray ray, Sphere sphere);
 };

@@ -12,6 +12,7 @@
 
 using std::cout;
 using std::endl;
+using std::string;
 
 void Intersection::PrintSphereState() const {
     switch(nbIntersect)
@@ -132,4 +133,9 @@ void Sphere::SetCenter(Vector3 position) {
 void Sphere::SetCenter(int x, int y, int z) {
     m_center = Vector3(x, y, z);
 }
+
+string Sphere::GetName() const {
+    return m_name;
+}
+
 
