@@ -8,6 +8,7 @@
 
 #pragma once
 
+#include <Sphere.hpp>
 #include <Vector3.hpp>
 
 class Ray {
@@ -24,4 +25,5 @@ public:
     void SetOrigin(const Vector3& origin);
     Vector3 GetDirection() const;
     void SetDirection(const Vector3& direction);
+    static Ray GetReflectDirection(const Ray& ray, const class Intersection& intersection, const class Sphere& sphere);
 };

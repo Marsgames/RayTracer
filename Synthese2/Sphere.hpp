@@ -9,14 +9,11 @@
 #pragma once
 
 #include <Color.hpp>
-//#include <Light.hpp>
 #include <Material.hpp>
 #include <Ray.hpp>
 #include <string>
 #include <Vector3.hpp>
-//#include <vector>
 
-//using std::vector;
 using std::string;
 
 struct Intersection {
@@ -40,7 +37,7 @@ class Sphere
 {
     Vector3 m_center;
     int m_rayon;
-    Color m_color;
+    Material m_material;
     string m_name = "";
     
 public:
@@ -49,22 +46,21 @@ public:
     Sphere(Vector3 position, int rayon, Material material) :
     m_center{position},
     m_rayon{rayon},
-    m_color{material.GetColor()}
+    m_material{material}
     {};
     
     Sphere(Vector3 position, int rayon) :
     m_center{position},
-    m_rayon{rayon}
-    {
-        m_color = Color{255, 0, 0};
-    }
+    m_rayon{rayon},
+    m_material{Material(Color{255, 0, 0}, EMaterials::DarkFloor)}
+    {};
     
     Sphere(Vector3 position, int rayon, Material material, string name) :
     m_center{position},
     m_rayon{rayon},
-    m_color{material.GetColor()},
+    m_material{material},
     m_name{name}
-    {}
+    {};
     
     Vector3 GetCenter() const;
     void SetCenter(Vector3 position);
@@ -75,12 +71,14 @@ public:
     
     int GetRayon() const;
     
-    Color GetColor() const;
+    Material GetMaterial() const;
     int GetColorR() const;
     int GetColorG() const;
     int GetColorB() const;
     
+    Vector3 GetNormal(Vector3 point) const;
+    
     string GetName() const;
     
-    static Intersection IntersectRaySphere(Ray ray, Sphere sphere);
+    static Intersection IntersectRaySphere(class Ray ray, Sphere sphere);
 };

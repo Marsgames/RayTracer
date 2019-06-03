@@ -6,7 +6,8 @@
 //  Copyright © 2019 Marsgames. All rights reserved.
 //
 
-#include "Ray.hpp"
+#include <Ray.hpp>
+//#include <Sphere.hpp>
 #include <Vector3.hpp>
 
 void Ray::SetOrigin(const Vector3& origin) {
@@ -24,6 +25,17 @@ Vector3 Ray::GetDirection() const {
 void Ray::SetDirection(const Vector3& direction) {
     m_direction = direction;
 }
+
+Ray Ray::GetReflectDirection(const Ray& ray, const Intersection& intersection, const Sphere& sphere) {
+    const Vector3 normal = sphere.GetNormal(intersection.pointCoordonate);
+    const Vector3 dotProduct = Vector3::Dot(ray.GetDirection(), normal);
+//    float reflet = (ray.GetDirection() * normal) * 2;
+    
+    const Vector3 newDirection = Vector3(ray.GetDirection() - (dotProduct * normal * 2));
+    
+    return Ray(intersection.pointCoordonate, newDirection);
+}
+
 
 
 

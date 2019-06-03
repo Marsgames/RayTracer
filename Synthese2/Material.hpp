@@ -29,9 +29,10 @@ public:
     
     Material(Color color, EMaterials material) :
     m_color{color},
-    m_albedo{static_cast<double>((material / 100))}
+    m_albedo{(material / 100.)}
     {};
     
     Color GetColor() const;
+    double GetAlbedo() const;
     
 };

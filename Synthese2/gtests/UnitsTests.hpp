@@ -12,8 +12,9 @@
 #include <Color.hpp>
 #include <gtest/gtest.h>
 #include <Light.hpp>
-#include "Ray.hpp"
-#include "Sphere.hpp"
+#include <Material.hpp>
+#include <Ray.hpp>
+#include <Sphere.hpp>
 #include <math.h>
 #include <Vector3.hpp>
 
@@ -153,10 +154,15 @@ TEST(Color, SimpleTest)
 {
     const Color noir = Color(0, 0, 0);
     const Color blanc = Color(255, 255, 255);
+    Color autre = Color(90, 90, 90);
+    autre += Color(10, 10, 10);
+    const Color autre2 = autre / 10;
     
     EXPECT_EQ(Color::GetColor(EColor::Black), noir);
     EXPECT_EQ(Color::GetColor(EColor::White), blanc);
     EXPECT_EQ(Color(0, 0, 0), blanc * 0);
+    EXPECT_EQ(Color(100, 100, 100), autre);
+    EXPECT_EQ(Color(10, 10, 10), autre2);
 }
 
 TEST(Ray, SimpleTest)
@@ -171,6 +177,16 @@ TEST(Ray, SimpleTest)
     EXPECT_EQ(Vector3(10, 1, 2), rayon.GetOrigin());
     EXPECT_EQ(Vector3(0, 0, -1), rayon.GetDirection());
 }
+TEST(Ray, Reflexion)
+{
+    const Ray ray1 = Ray(Vector3(-10, -10, 0), Vector3(10, 10, 0));
+    const Intersection intersect = Intersection(true, Vector3::GetDistance(ray1.GetOrigin(), Vector3(0, 0, 0)), Vector3(0, 0, 0));
+    const Ray ray2 = Ray::GetReflectDirection(ray1, intersect, Sphere(Vector3(0, 10, 0), 10, Material(Color(0, 0, 0), EMaterials::DarkFloor)));
+    
+    const Vector3 res = Vector3(10, 10, 0).Normalize();
+    
+    EXPECT_EQ(res.ToString(), ray2.GetDirection().ToString());
+}
 
 TEST(Sphere, SimpleTest)
 {
@@ -178,13 +194,13 @@ TEST(Sphere, SimpleTest)
     sphere.SetCenter(0, 0, 0);
     
     EXPECT_EQ(Vector3(0, 0, 0), sphere.GetCenter());
-    EXPECT_EQ(Color::GetColor(EColor::Red), sphere.GetColor());
+    EXPECT_EQ(Color::GetColor(EColor::Red), sphere.GetMaterial().GetColor());
     EXPECT_EQ(10, sphere.GetRayon());
 }
 
 TEST(Pixel, SimpleTest)
 {
-    const Pixel deadPixel = Pixel(Vector3(0, 0, 0), Color(0, 0, 0));
+    const Pixel deadPixel = Pixel(Vector3(0, 0, 0), Color(0, 0, 0), 0);
     
     EXPECT_EQ(Vector3(0, 0, 0), deadPixel.GetPosition());
     EXPECT_EQ(Color(0, 0, 0), deadPixel.GetColor());

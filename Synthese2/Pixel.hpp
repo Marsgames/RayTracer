@@ -16,11 +16,14 @@ class Pixel {
     Color m_color = Color{0, 0, 0};
     
 public:
+    int index;
+    
     Pixel() {};
     
-    Pixel(Vector3 position, Color color):
+    Pixel(const Vector3& position, const Color& color, const int index):
     m_position{position},
-    m_color{color}
+    m_color{color},
+    index{index}
     {};
     
     Vector3 GetPosition() const;

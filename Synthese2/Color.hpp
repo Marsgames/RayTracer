@@ -8,6 +8,10 @@
 
 #pragma once
 
+#include <string>
+
+using std::string;
+
 enum EColor
 {
     Black,
@@ -47,8 +51,11 @@ public:
     
     Color operator*(const double other) const;
     bool operator==(const Color& other) const;
+    void operator+=(const Color& other);
+    Color operator/(const int value) const;
     
     void Print() const;
+    string ToString() const;
     void SetColorName();
     EColor GetColorName() const;
     static Color GetColor(EColor colorName);

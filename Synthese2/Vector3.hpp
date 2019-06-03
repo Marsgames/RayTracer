@@ -20,6 +20,12 @@ private:
     double m_x, m_y, m_z;
     
 public:
+    Vector3() :
+    m_x{0},
+    m_y{0},
+    m_z{0}
+    {};
+    
     Vector3(int x, int y, int z) :
     m_x{static_cast<double>(x)},
     m_y{static_cast<double>(y)},

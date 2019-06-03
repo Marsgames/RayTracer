@@ -26,7 +26,7 @@ enum EImageFormat
 class Camera
 {
     Vector3 m_position, m_direction;
-    int m_width, m_height, m_focalDist;
+    int m_width, m_height, m_focalDist, m_maxBounce;
     vector<Pixel> m_pixels;
     bool m_useFocal;
     EImageFormat m_imageFormat = EImageFormat::BMP;
@@ -39,6 +39,7 @@ class Camera
     inline void SaveBMP();
     Vector3 GetRayDirection();
     Vector3 GetRayDirection(const Vector3& toThatPoint) const;
+    Color GetColor(const vector<Sphere> spheres, const Ray& ray, const vector<Light> lights) const;
 //    void CalculateFocal();
 
 public:
@@ -52,6 +53,7 @@ public:
         m_focalDist = 1000;
         m_useFocal = true;
         m_imageFormat = EImageFormat::BMP;
+        m_maxBounce = 10;
     }
     
     Camera(const Vector3& position, const int width, const int height, Vector3 direction, const int focalDistance) :
@@ -64,6 +66,7 @@ public:
         InitPixelsArray();
         m_useFocal = true;
         m_imageFormat = EImageFormat::BMP;
+        m_maxBounce = 10;
     }
     
     Vector3 GetPosition() const;

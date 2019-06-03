@@ -13,3 +13,8 @@ Color Material::GetColor() const
 {
     return m_color;
 }
+
+double Material::GetAlbedo() const
+{
+    return m_albedo;
+}

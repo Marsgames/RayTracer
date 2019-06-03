@@ -8,10 +8,12 @@
 
 #include "Color.hpp"
 #include <iostream>
+#include <string>
 
 using std::cout;
 using std::endl;
-
+using std::string;
+using std::to_string;
 
 double Color::GetR() const {
     return m_r;
@@ -28,6 +30,11 @@ double Color::GetB() const {
 void Color::Print() const
 {
     cout << "Color(" << m_r << ", " << m_g << ", " << m_b << ")" << endl;
+}
+
+string Color::ToString() const
+{
+    return "Color(" + to_string(m_r) + ", " + to_string(m_g) + ", " + to_string(m_b) + ")";
 }
 
 Color Color::operator*(const double other) const
@@ -110,3 +117,15 @@ void Color::SetG(double value) {
 void Color::SetB(double value) {
     m_b = value;
 }
+
+void Color::operator+=(const Color &other) {
+    m_r += other.m_r;
+    m_g += other.m_g;
+    m_b += other.m_b;
+}
+
+Color Color::operator/(const int value) const {
+    return Color(m_r / value, m_g / value, m_b / value);
+}
+
+

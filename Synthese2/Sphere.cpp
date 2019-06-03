@@ -7,8 +7,11 @@
 //
 
 #include <iostream>
+#include <Material.hpp>
 #include <math.h>
-#include "Sphere.hpp"
+#include <Sphere.hpp>
+#include <string>
+#include <Vector3.hpp>
 
 using std::cout;
 using std::endl;
@@ -52,20 +55,9 @@ int Sphere::GetRayon() const {
     return m_rayon;
 }
 
-Color Sphere::GetColor() const {
-    return m_color;
-}
-
-int Sphere::GetColorR() const {
-    return m_color.GetR();
-}
-
-int Sphere::GetColorG() const {
-    return m_color.GetG();
-}
-
-int Sphere::GetColorB() const {
-    return m_color.GetB();
+Material Sphere::GetMaterial() const
+{
+    return m_material;
 }
 
 // Repris de l'ancien code
@@ -123,9 +115,6 @@ Intersection Sphere::IntersectRaySphere(Ray ray, Sphere sphere) {
     return myRes;
 }
 
-
-
-
 void Sphere::SetCenter(Vector3 position) {
     m_center = position;
 }
@@ -137,5 +126,11 @@ void Sphere::SetCenter(int x, int y, int z) {
 string Sphere::GetName() const {
     return m_name;
 }
+
+// Faire des tests unitaires la dessus
+Vector3 Sphere::GetNormal(Vector3 point) const {
+    return (point - m_center) * (-1 / m_rayon);
+}
+
 
 
