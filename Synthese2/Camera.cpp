@@ -214,97 +214,146 @@ inline void Camera::SaveBMP() {
     //    }
 }
 
+//void Camera::DrawImage(const vector<Sphere> &spheres, const vector<Light>& lights) {
+//
+//    const Vector3 rayDirection = GetRayDirection();
+//    Ray ray = Ray(Vector3{0, 0, 0}, rayDirection);
+//    double distance = __DBL_MAX__;
+//    Material sphereMaterial = Material(Color(0, 0, 0), EMaterials::DarkFloor);
+//    Vector3 pointOnSphere = Vector3(0, 0, 0);
+//    Pixel pixel = Pixel();
+//
+//    for (int index = 0; index < m_height * m_width; index++)
+//    {
+//        pixel = m_pixels[index];
+//
+//        ray.SetOrigin(m_pixels[index].GetPosition());
+//        if (m_useFocal)
+//        {
+//            ray.SetDirection(GetRayDirection(pixel.GetPosition()));
+//        }
+//
+//        for (Sphere sphere : spheres)
+//        {
+//            Intersection intersection = Sphere::IntersectRaySphere(ray, sphere);
+//
+//            if (intersection.intersect && intersection.distance <= distance)
+//            {
+//                distance = intersection.distance;
+//                sphereMaterial = sphere.GetMaterial();
+//                pointOnSphere = intersection.pointCoordonate;
+//            }
+//        }
+//
+//        if (distance < __DBL_MAX__)
+//        {
+//            for (const Light& light : lights)
+//            {
+//                cout << "index : " << index << endl;
+//                int nbBounce = 0;
+//                Color finalColor;
+//                Color gotColor;
+//                do
+//                {
+////                    cout << "albedo : " << sphereMaterial.GetAlbedo() << endl;
+//                    bool canSeeLight = Light::CanSeeLight(pointOnSphere, light, spheres);
+//                    if (canSeeLight)
+//                    {
+//                        gotColor = Light::GetLightning(light, sphereMaterial.GetColor(), Vector3::GetDistance(pointOnSphere, light.GetPosition()));
+//                        gotColor = gotColor * (1 - sphereMaterial.GetAlbedo());
+//
+//
+//
+////                        cout << "gotColor : " << gotColor.ToString() << endl;
+//
+//                        finalColor += gotColor;
+//                    }
+//                    else
+//                    {
+//                        finalColor += Color(0, 0, 0);
+//                    }
+//
+//
+//                    nbBounce++;
+//                }while (nbBounce < 10 && 0 != sphereMaterial.GetAlbedo());
+//
+////                cout << "finalColor : " << finalColor.ToString() << endl << endl;
+//
+//                m_pixels[index].SetColor(finalColor / nbBounce);
+//                finalColor = Color(0, 0, 0);
+//
+//
+//                //                                sphereColor.Print();
+//
+////                if (canSeeLight)
+////                {
+////                    Color newColor = Light::GetLightning(light, sphereMaterial.GetColor(), Vector3::GetDistance(pointOnSphere, light.GetPosition()));
+////                    newColor = newColor * (1 - sphereMaterial.GetAlbedo());
+//////                    newColor = newColor +
+////
+////                    m_pixels[index].SetColor(newColor);
+////                }
+////                else
+////                {
+////                    //                    m_pixels[index].SetColor(Color{200, 200, 200} * 0.3f);
+////                    m_pixels[index].SetColor(sphereMaterial.GetColor() * 0.000002);
+////                }
+//            }
+//        }
+//        distance = __DBL_MAX__;
+//        //        sphereColor = Color{0, 0, 0};
+//    }
+//}
+
+
 void Camera::DrawImage(const vector<Sphere> &spheres, const vector<Light>& lights) {
     
     const Vector3 rayDirection = GetRayDirection();
     Ray ray = Ray(Vector3{0, 0, 0}, rayDirection);
-    double distance = __DBL_MAX__;
-    Material sphereMaterial = Material(Color(0, 0, 0), EMaterials::DarkFloor);
-    Vector3 pointOnSphere = Vector3(0, 0, 0);
-    Pixel pixel = Pixel();
+    // double distance = __DBL_MAX__;
+    // Material sphereMaterial = Material(Color(0, 0, 0), EMaterials::DarkFloor);
+    // Vector3 pointOnSphere = Vector3(0, 0, 0);
     
-    for (int index = 0; index < m_height * m_width; index++)
+    for (Pixel& pixel : m_pixels)
     {
-        pixel = m_pixels[index];
-        
-        ray.SetOrigin(m_pixels[index].GetPosition());
+        ray.SetOrigin(pixel.GetPosition());
         if (m_useFocal)
         {
             ray.SetDirection(GetRayDirection(pixel.GetPosition()));
         }
-        
-        for (Sphere sphere : spheres)
-        {
-            Intersection intersection = Sphere::IntersectRaySphere(ray, sphere);
-            
-            if (intersection.intersect && intersection.distance <= distance)
-            {
-                distance = intersection.distance;
-                sphereMaterial = sphere.GetMaterial();
-                pointOnSphere = intersection.pointCoordonate;
-            }
-        }
-        
-        if (distance < __DBL_MAX__)
-        {
-            for (const Light& light : lights)
-            {
-                cout << "index : " << index << endl;
-                int nbBounce = 0;
-                Color finalColor;
-                Color gotColor;
-                do
-                {
-//                    cout << "albedo : " << sphereMaterial.GetAlbedo() << endl;
-                    bool canSeeLight = Light::CanSeeLight(pointOnSphere, light, spheres);
-                    if (canSeeLight)
-                    {
-                        gotColor = Light::GetLightning(light, sphereMaterial.GetColor(), Vector3::GetDistance(pointOnSphere, light.GetPosition()));
-                        gotColor = gotColor * (1 - sphereMaterial.GetAlbedo());
-                        
-                        
-                        
-//                        cout << "gotColor : " << gotColor.ToString() << endl;
-                        
-                        finalColor += gotColor;
-                    }
-                    else
-                    {
-                        finalColor += Color(0, 0, 0);
-                    }
-                    
-                    
-                    nbBounce++;
-                }while (nbBounce < 10 && 0 != sphereMaterial.GetAlbedo());
 
-//                cout << "finalColor : " << finalColor.ToString() << endl << endl;
-                
-                m_pixels[index].SetColor(finalColor / nbBounce);
-                finalColor = Color(0, 0, 0);
-                
-                
-                //                                sphereColor.Print();
-                
-//                if (canSeeLight)
-//                {
-//                    Color newColor = Light::GetLightning(light, sphereMaterial.GetColor(), Vector3::GetDistance(pointOnSphere, light.GetPosition()));
-//                    newColor = newColor * (1 - sphereMaterial.GetAlbedo());
-////                    newColor = newColor +
-//                    
-//                    m_pixels[index].SetColor(newColor);
-//                }
-//                else
-//                {
-//                    //                    m_pixels[index].SetColor(Color{200, 200, 200} * 0.3f);
-//                    m_pixels[index].SetColor(sphereMaterial.GetColor() * 0.000002);
-//                }
-            }
-        }
-        distance = __DBL_MAX__;
-        //        sphereColor = Color{0, 0, 0};
+        cout << "index : " << pixel.index << endl;
+//        int nbBounce = 0;
+        Color pixelColor;
+//        Reflexion reflexion;
+////        Material mat = Material(Color(), EMaterials::DarkFloor);
+//        do
+//        {
+            pixelColor = GetColor(spheres, ray, lights, m_maxBounce);
+//            reflexion = GetMaterial(spheres, ray, lights);
+////            mat = reflexion.material;
+////            pixelColor += reflexion.material.GetColor();
+//
+//            pixelColor += reflexion.material.GetColor();
+//
+//            ray = Ray::GetReflectDirection(ray, reflexion.intersection, reflexion.sphere);
+//
+////            cout << "pixel" << pixelColor.ToString() << endl;
+////            cout << "get" << reflexion.material.GetColor().ToString() << endl;
+//
+//            nbBounce++;
+//        }while(nbBounce <= m_maxBounce && 0 != reflexion.material.GetAlbedo());
+//        cout << endl;
+
+//            pixelColor = pixelColor / nbBounce;
+
+        pixel.SetColor(pixelColor);
+        
+        
+//        pixel.SetColor(GetColor(spheres, ray, lights));
+        
     }
 }
-
 
 
 Vector3 Camera::GetRayDirection() {
@@ -333,11 +382,63 @@ bool Camera::GetUseFocal() {
     return m_useFocal;
 }
 
-Color Camera::GetColor(const vector<Sphere> spheres, const Ray &ray, const vector<Light> lights) const {
+//Reflexion Camera::GetMaterial(const vector<Sphere> spheres, const Ray &ray, const vector<Light> lights) const {
+//
+//    Intersection intersection;
+//    double distanceIntersection = __DBL_MAX__;
+//    Sphere nearestSphere = Sphere(Vector3(0, 0, 0), 0, Material(Color(), EMaterials::DarkFloor));
+//    Vector3 pointOnSphere;
+//
+//    for (const Sphere& sphere : spheres)
+//    {
+//        intersection = Sphere::IntersectRaySphere(ray, sphere);
+//
+//        if (intersection.intersect && intersection.distance <= distanceIntersection)
+//        {
+//            distanceIntersection = intersection.distance;
+//            nearestSphere = sphere;
+//            pointOnSphere = intersection.pointCoordonate;
+//        }
+//    }
+//
+//    if (distanceIntersection < __DBL_MAX__)
+//    {
+////        for (const Light& light : lights)
+////        {
+//        const Light light = lights[0];
+//
+//            const bool canSeeLight = Light::CanSeeLight(pointOnSphere, light, spheres);
+//
+////        cout << "pointOnSphere : " << pointOnSphere.ToString() << endl;
+//
+//            if (canSeeLight)
+//            {
+//                Color returnedColor = Light::GetLightning(light, nearestSphere.GetMaterial().GetColor(), Vector3::GetDistance(pointOnSphere, light.GetPosition()));
+//                returnedColor = returnedColor * (1 -  nearestSphere.GetMaterial().GetAlbedo());
+//
+////                cout << "see light" << endl;
+//
+//                return Reflexion(Material(returnedColor, nearestSphere.GetMaterial().GetMaterialType()), Intersection(true, distanceIntersection, pointOnSphere), nearestSphere);
+//            }
+//            else
+//            {
+//                cout << "cannot see light" << endl;
+//                return Reflexion(Material(Color(), nearestSphere.GetMaterial().GetMaterialType()), Intersection(false, -1, Vector3(0)), nearestSphere);
+//            }
+//        }
+////    }
+//
+//    cout << "distanceIntersection >= __DBL_MAX__" << endl;
+//
+//        return Reflexion(Material(Color(), nearestSphere.GetMaterial().GetMaterialType()), Intersection(false, -1, Vector3(0)), nearestSphere);
+//}
+
+Color Camera::GetColor(const vector<Sphere> &spheres, const Ray &ray, const vector<Light> &lights, int bounce) const {
     Intersection intersection;
+    Intersection goodIntersection;
     double distanceIntersection = __DBL_MAX__;
-    Sphere nearestSphere = Sphere(Vector3(0, 0, 0), 0, Material(Color(), EMaterials::DarkFloor));
-    Vector3 pointOnSphere;
+    Sphere nearestSphere = Sphere(Vector3(0), -1, Material(Color(0, 0, 0), EMaterials::Wall));
+//    Vector3 pointOnSphere;
     
     for (const Sphere& sphere : spheres)
     {
@@ -345,35 +446,53 @@ Color Camera::GetColor(const vector<Sphere> spheres, const Ray &ray, const vecto
         
         if (intersection.intersect && intersection.distance <= distanceIntersection)
         {
+            
             distanceIntersection = intersection.distance;
             nearestSphere = sphere;
-            pointOnSphere = intersection.pointCoordonate;
+//            pointOnSphere = intersection.pointCoordonate;
+            goodIntersection = intersection;
         }
     }
-    
+    Color returnedColor;
     if (distanceIntersection < __DBL_MAX__)
     {
-//        for (const Light& light : lights)
+//        if (nearestSphere.GetMaterial().GetAlbedo() < 1)
 //        {
-        const Light light = lights[0];
+//            if (bounce > 0)
+//            {
+//                const Ray newRay = Ray::GetReflectDirection(ray, goodIntersection, nearestSphere);
+//
+//                returnedColor = (GetColor(spheres, newRay, lights, --bounce));
+//            }
+////            else
+////            {
+////                return returnedColor;
+////            }
+//        }
+//        else
+//        {
+            for (const Light& light : lights)
+            {
+                const bool canSeeLight = Light::CanSeeLight(goodIntersection.pointCoordonate, light, spheres);
+                
+                if (canSeeLight)
+                {
+                    returnedColor = Light::GetLightning(light, nearestSphere.GetMaterial().GetColor(), Vector3::GetDistance(goodIntersection.pointCoordonate, light.GetPosition()));
+                    //                                returnedColor = returnedColor * nearestSphere.GetMaterial().GetAlbedo();
+                    
+                    return returnedColor;
+                }
+            }
+//        }
         
-            const bool canSeeLight = Light::CanSeeLight(pointOnSphere, light, spheres);
-            
-            if (canSeeLight)
-            {
-                Color returnedColor = Light::GetLightning(light, nearestSphere.GetMaterial().GetColor(), Vector3::GetDistance(pointOnSphere, light.GetPosition()));
-                returnedColor = returnedColor * nearestSphere.GetMaterial().GetAlbedo();
-                return returnedColor;
-            }
-            else
-            {
-                return Color(0, 0, 0);
-            }
-        }
+        
+    }
+    return returnedColor;
+//    else
+//    {
+//        return Color(0, 0, 0);
 //    }
     
-        return Color(0, 0, 0);
+//        return Color(0, 0, 0);
 }
-
-
 

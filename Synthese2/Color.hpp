@@ -30,7 +30,11 @@ class Color {
     EColor m_colorName;
     
 public:
-    Color() {
+    Color() :
+    m_r{0},
+    m_g{0},
+    m_b{0}
+    {
         SetColorName();
     };
     

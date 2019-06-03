@@ -16,11 +16,13 @@ using std::string;
 enum EMaterials
 {
     Mirror = 100,
+    Wall = 0,
     DarkFloor = 15
 };
 
 class Material {
     Color m_color;
+    EMaterials m_material;
     double m_albedo;
     string m_name;
     
@@ -29,10 +31,11 @@ public:
     
     Material(Color color, EMaterials material) :
     m_color{color},
-    m_albedo{(material / 100.)}
+    m_albedo{(material / 100.)},
+    m_material{material}
     {};
     
     Color GetColor() const;
     double GetAlbedo() const;
-    
+    EMaterials GetMaterialType() const;
 };

@@ -18,3 +18,9 @@ double Material::GetAlbedo() const
 {
     return m_albedo;
 }
+
+EMaterials Material::GetMaterialType() const {
+    return  m_material;
+}
+
+

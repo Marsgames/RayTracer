@@ -23,6 +23,22 @@ enum EImageFormat
     PPM
 };
 
+struct Reflexion
+{
+    Material material = Material(Color(), EMaterials::Wall);
+    Intersection intersection = Intersection(false, -1, Vector3(0));
+    Sphere sphere = Sphere(Vector3(0), -1, material);
+    
+    Reflexion(){};
+    Reflexion(const Material& mat, const Intersection& inter, const Sphere& sph)
+    {
+        material = mat;
+        intersection = inter;
+        sphere = sph;
+    };
+    
+};
+
 class Camera
 {
     Vector3 m_position, m_direction;
@@ -39,7 +55,8 @@ class Camera
     inline void SaveBMP();
     Vector3 GetRayDirection();
     Vector3 GetRayDirection(const Vector3& toThatPoint) const;
-    Color GetColor(const vector<Sphere> spheres, const Ray& ray, const vector<Light> lights) const;
+    Reflexion GetMaterial(const vector<Sphere> spheres, const Ray& ray, const vector<Light> lights) const;
+    Color GetColor(const vector<Sphere>& spheres, const Ray& ray, const vector<Light>& lights, int bounce) const;
 //    void CalculateFocal();
 
 public:
