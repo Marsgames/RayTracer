@@ -128,9 +128,4 @@ Color Color::operator/(const int value) const {
     return Color(m_r / value, m_g / value, m_b / value);
 }
 
-Color Color::operator+(const Color &other) const {
-    return Color(m_r + other.m_r, m_g + other.m_g, m_b + other.m_b);
-}
-
-
 

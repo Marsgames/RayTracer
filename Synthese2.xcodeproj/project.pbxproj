@@ -179,7 +179,7 @@
 		AE376F532158B2C700044A00 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 1000;
+				LastUpgradeCheck = 1100;
 				ORGANIZATIONNAME = Marsgames;
 				TargetAttributes = {
 					AE376F5A2158B2C700044A00 = {
@@ -340,6 +340,7 @@
 		AE376F632158B2C700044A00 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 7RA755DD97;
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
@@ -357,6 +358,7 @@
 		AE376F642158B2C700044A00 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 7RA755DD97;
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;

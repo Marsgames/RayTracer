@@ -129,8 +129,8 @@ string Sphere::GetName() const {
 
 // Faire des tests unitaires la dessus
 Vector3 Sphere::GetNormal(Vector3 point) const {
-//    return Vector3::GetDirection(m_center, point);
-    return (point - m_center) * (-1 / m_rayon);
+    return Vector3::GetDirection(m_center, point);
+//    return (point - m_center) * (-1 / m_rayon);
 }
 
 

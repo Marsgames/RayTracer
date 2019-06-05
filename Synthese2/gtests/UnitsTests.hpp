@@ -181,7 +181,7 @@ TEST(Ray, Reflexion)
 {
     const Ray ray1 = Ray(Vector3(-10, -10, 0), Vector3(10, 10, 0));
     const Intersection intersect = Intersection(true, Vector3::GetDistance(ray1.GetOrigin(), Vector3(0, 0, 0)), Vector3(0, 0, 0));
-    const Ray ray2 = Ray::GetReflectDirection(ray1, intersect, Sphere(Vector3(0, 10, 0), 10, Material(Color(0, 0, 0), EMaterials::DarkFloor)));
+    const Ray ray2 = Ray::GetReflectDirection(ray1, intersect, Sphere(Vector3(0, 10, 0), 10, Material(Color(0, 0, 0))));
     
     const Vector3 res = Vector3(10, 10, 0).Normalize();
     
@@ -190,11 +190,11 @@ TEST(Ray, Reflexion)
 
 TEST(Sphere, SimpleTest)
 {
-    Sphere sphere = Sphere(Vector3(10, 0, 0), 10, Material(Color(255, 0, 0), EMaterials::DarkFloor));
+    Sphere sphere = Sphere(Vector3(10, 0, 0), 10, Material(Color(255, 0, 0)));
     sphere.SetCenter(0, 0, 0);
     
     EXPECT_EQ(Vector3(0, 0, 0), sphere.GetCenter());
-    EXPECT_EQ(Color::GetColor(EColor::Red), sphere.GetMaterial().GetColor());
+    EXPECT_EQ(Color::GetColor(EColor::Red), sphere.GetMaterial().GetDiffuseColor());
     EXPECT_EQ(10, sphere.GetRayon());
 }
 
@@ -695,7 +695,7 @@ TEST(CanSeeLightFunc, SimpleTest)
 
     const Light light = Light(Vector3(0, 0, 0), 1000);
     vector<Sphere> sp2;
-    sp2.push_back(Sphere(Vector3(0, 0, 500), 300, Material(Color(0, 0, 0), EMaterials::DarkFloor)));
+    sp2.push_back(Sphere(Vector3(0, 0, 500), 300, Material(Color(0, 0, 0))));
     
     EXPECT_EQ(false, Light::CanSeeLight(point6, light, sp2));
     EXPECT_EQ(false, Light::CanSeeLight(point7, light, sp2));

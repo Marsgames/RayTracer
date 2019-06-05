@@ -25,7 +25,7 @@ enum EImageFormat
 
 struct Reflexion
 {
-    Material material = Material(Color(), EMaterials::Wall);
+    Material material = Material(Color());
     Intersection intersection = Intersection(false, -1, Vector3(0));
     Sphere sphere = Sphere(Vector3(0), -1, material);
     

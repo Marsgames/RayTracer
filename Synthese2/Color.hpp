@@ -46,6 +46,14 @@ public:
         SetColorName();
     };
     
+    Color(double r, double g, double b) :
+    m_r{r},
+    m_g{g},
+    m_b{b}
+    {
+        SetColorName();
+    };
+    
     double GetR() const;
     double GetG() const;
     double GetB() const;
@@ -57,6 +65,7 @@ public:
     bool operator==(const Color& other) const;
     void operator+=(const Color& other);
     Color operator/(const int value) const;
+    Color operator+(const Color& other) const;
     
     void Print() const;
     string ToString() const;

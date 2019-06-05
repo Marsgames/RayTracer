@@ -13,29 +13,60 @@
 
 using std::string;
 
-enum EMaterials
-{
-    Mirror = 100,
-    Wall = 0,
-    DarkFloor = 15
-};
+//enum EMaterials
+//{
+//    Mirror = 100,
+//    Wall = 0,
+//    DarkFloor = 15
+//};
 
 class Material {
-    Color m_color;
-    EMaterials m_material;
-    double m_albedo;
     string m_name;
+//    Color m_specularColor; // voila voila
+    Color m_diffuseColor; // Couleur de base de l'objet
+//    Color m_ambiantColor; // couleur de l'éclairage ambiant
+//    Color m_selfIlluminColor; // Couleur de la lumière émise
+//    double m_shininess; // brillance
+//    double m_shineStrength; // puissance de brillance
+//    double m_transmittivity; // coéfficient de transmission (réfraction)
+//    double m_reflectivity; // coéf de reflexion
+//    bool m_permanent; // Permet de savoir si le material doit rester en memoire ou est temporaire.
+    
+//    Color m_color;
+//    EMaterials m_material;
+//    double m_albedo;
+//    string m_name;
     
 public:
     Material() = delete;
     
-    Material(Color color, EMaterials material) :
-    m_color{color},
-    m_albedo{(material / 100.)},
-    m_material{material}
+    Material(Color diffuseColor) :
+    m_diffuseColor{diffuseColor}
     {};
     
-    Color GetColor() const;
+    Material(string name, Color diffuseColor) :
+    m_name{name},
+    m_diffuseColor{diffuseColor}
+    {};
+    
+//    Material(Color color, EMaterials material) :
+//    m_color{color},
+//    m_albedo{(material / 100.)},
+//    m_material{material}
+//    {};
+    
+    Color GetDiffuseColor() const;
     double GetAlbedo() const;
-    EMaterials GetMaterialType() const;
+//    EMaterials GetMaterialType() const;
+};
+
+struct MaterialList
+{
+    static const Material RougeMat;
+    static const Material VertMat;
+    static const Material BleuMat;
+    static const Material BlancMat;
+    static const Material RoseMat;
+    static const Material JauneMat;
+    static const Material BleuCielMat;
 };

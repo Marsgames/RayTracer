@@ -28,11 +28,15 @@ void Ray::SetDirection(const Vector3& direction) {
 
 Ray Ray::GetReflectDirection(const Ray& ray, const Intersection& intersection, const Sphere& sphere) {
     const Vector3 normal = sphere.GetNormal(intersection.pointCoordonate);
-    const Vector3 dotProduct = Vector3::Dot(ray.GetDirection(), normal);
-//    float reflet = (ray.GetDirection() * normal) * 2;
+//    const Vector3 dotProduct = Vector3::Dot(ray.GetDirection(), normal);
+////    float reflet = (ray.GetDirection() * normal) * 2;
+//
+//    const Vector3 newDirection = Vector3(ray.GetDirection() - (dotProduct * normal * 2));
+//
+//    return Ray(intersection.pointCoordonate, newDirection);
+
     
-    const Vector3 newDirection = Vector3(ray.GetDirection() - (dotProduct * normal * 2));
-    
+    const Vector3 newDirection = ray.GetDirection() - (ray.GetDirection() * normal) * 2 * normal;
     return Ray(intersection.pointCoordonate, newDirection);
 }
 
