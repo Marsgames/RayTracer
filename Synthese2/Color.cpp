@@ -37,6 +37,10 @@ string Color::ToString() const
     return "Color(" + to_string(m_r) + ", " + to_string(m_g) + ", " + to_string(m_b) + ")";
 }
 
+Color Color::operator*(const Color& other) const
+{
+    return Color{m_r * other.m_r, m_g * other.m_g, m_b * other.m_b};
+}
 Color Color::operator*(const double other) const
 {
     return Color{static_cast<int>(m_r * other), static_cast<int>(m_g * other), static_cast<int>(m_b * other)};

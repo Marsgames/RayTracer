@@ -61,6 +61,7 @@ public:
     void SetG(double value);
     void SetB(double value);
     
+    Color operator*(const Color& other) const;
     Color operator*(const double other) const;
     bool operator==(const Color& other) const;
     void operator+=(const Color& other);

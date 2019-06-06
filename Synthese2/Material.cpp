@@ -14,18 +14,23 @@ Color Material::GetDiffuseColor() const
     return m_diffuseColor;
 }
 
+Color Material::GetSelfIlluminColor() const {
+    return m_selfIlluminColor;
+}
+
 double Material::GetAlbedo() const
 {
 //    return m_albedo;
     return 0;
 }
 
+
 //EMaterials Material::GetMaterialType() const {
 //    return  m_material;
 //}
 
 
-
+const Material MaterialList::NoirMat = Material("Noir mat", Color(0, 0, 0));
 const Material MaterialList::RougeMat = Material("Rouge mat", Color(255, 0, 0));
 const Material MaterialList::VertMat = Material("Vert mat", Color(0, 255, 0));
 const Material MaterialList::BleuMat = Material("Bleu mat", Color(0, 0, 255));

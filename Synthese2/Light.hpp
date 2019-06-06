@@ -23,24 +23,29 @@ class Light {
     Vector3 m_position;
     double m_power;
     Color m_color;
+    Material m_material;
     
 public:
     Light(const Vector3& position, const double power):
     m_position{position},
     m_power{power},
-    m_color{Color{255, 255, 255}}
+    m_material{MaterialList::BlancMat}
+//    m_color{Color{255, 255, 255}}
     {};
     
-    Light(const Vector3& position, const double power, const Color& color):
+    Light(const Vector3& position, const double power, const Material material):
     m_position{position},
     m_power{power},
-    m_color{color}
+//    m_color{color}
+    m_material{material}
     {};
     
     Vector3 GetPosition() const;
     double GetPower() const;
 //    Color GetColor() const;
+    Material GetMaterial() const;
     
     static bool CanSeeLight(const Vector3& point, const Light& light, const vector<Sphere>& spheres);
     static Color GetLightning(const Light& light, const Color& color, const double distance);
+//    static Color GetLightning(const Light& light, const Intersection& intersection, const Sphere& actualSphere);
 };

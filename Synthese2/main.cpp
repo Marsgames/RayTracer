@@ -74,7 +74,8 @@ int main(int argc, char* argv[])
     myScene.AddSphere(frontWall);
 
     //        myScene.AddLight(Light(Vector3(2000, -900, 900), 500));
-            myScene.AddLight(Light(Vector3(0, 500, 500), 500));
+//    myScene.AddLight(Light(Vector3(0, 500, 0), 500, Material(Color(255, 255, 255), Color(255, 0, 0))));
+    myScene.AddLight(Light(Vector3(-0, 500, 0), 500));
 //    myScene.AddLight(Light(Vector3(-2000, 0, 0), 500));
 //    myScene.AddLight(Light(Vector3(1600, -800, 0), 500));
 //    myScene.AddLight(Light(Vector3(2800, 0, 0), 3000));

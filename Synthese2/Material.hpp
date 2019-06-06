@@ -25,7 +25,7 @@ class Material {
 //    Color m_specularColor; // voila voila
     Color m_diffuseColor; // Couleur de base de l'objet
 //    Color m_ambiantColor; // couleur de l'éclairage ambiant
-//    Color m_selfIlluminColor; // Couleur de la lumière émise
+    Color m_selfIlluminColor; // Couleur de la lumière émise
 //    double m_shininess; // brillance
 //    double m_shineStrength; // puissance de brillance
 //    double m_transmittivity; // coéfficient de transmission (réfraction)
@@ -40,13 +40,15 @@ class Material {
 public:
     Material() = delete;
     
-    Material(Color diffuseColor) :
-    m_diffuseColor{diffuseColor}
+    Material(Color diffuseColor, const Color& selfIlluminColor = Color(255, 255, 255)) :
+    m_diffuseColor{diffuseColor},
+    m_selfIlluminColor{selfIlluminColor}
     {};
     
-    Material(string name, Color diffuseColor) :
+    Material(const string name, const Color& diffuseColor, const Color& selfIlluminColor = Color(255, 255, 255)) :
     m_name{name},
-    m_diffuseColor{diffuseColor}
+    m_diffuseColor{diffuseColor},
+    m_selfIlluminColor{selfIlluminColor}
     {};
     
 //    Material(Color color, EMaterials material) :
@@ -56,12 +58,14 @@ public:
 //    {};
     
     Color GetDiffuseColor() const;
+    Color GetSelfIlluminColor() const;
     double GetAlbedo() const;
 //    EMaterials GetMaterialType() const;
 };
 
 struct MaterialList
 {
+    static const Material NoirMat;
     static const Material RougeMat;
     static const Material VertMat;
     static const Material BleuMat;

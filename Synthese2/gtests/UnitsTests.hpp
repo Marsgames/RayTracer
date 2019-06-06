@@ -146,8 +146,8 @@ TEST(Light, SimpleTest)
     
     EXPECT_EQ(Vector3(10, 10, 10), light.GetPosition());
     EXPECT_EQ(1000, light.GetPower());
-        
-    EXPECT_TRUE(Color::GetColor(EColor::Black) ==  Light::GetLightning(light, black, 1000000));
+    
+    EXPECT_TRUE(Color::GetColor(EColor::Black) == Light::GetLightning(light, black, 1000000000));
 }
 
 TEST(Color, SimpleTest)

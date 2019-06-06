@@ -535,10 +535,10 @@ Color Camera::GetColor(const vector<Sphere> &spheres, const Ray &ray, const vect
                     returnedColor += Light::GetLightning(light, nearestSphere.GetMaterial().GetDiffuseColor(), Vector3::GetDistance(nearestIntersection.pointCoordonate, light.GetPosition()));
                     
                     
-                    if (returnedColor.GetR() > 255 || returnedColor.GetG() > 255 || returnedColor.GetB() > 255)
-                    {
-                        returnedColor.Print();
-                    }
+//                    if (returnedColor.GetR() > 255 || returnedColor.GetG() > 255 || returnedColor.GetB() > 255)
+//                    {
+//                        returnedColor.Print();
+//                    }
                     //                                returnedColor = returnedColor * nearestSphere.GetMaterial().GetAlbedo();
                     
                     //                    return returnedColor;
