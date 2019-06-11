@@ -20,12 +20,8 @@ Color Material::GetSelfIlluminColor() const {
 
 double Material::GetAlbedo() const
 {
-    return m_albedo;
-//    return 0;
-}
-void Material::SetAlbedo(const double value)
-{
-    m_albedo = value;
+//    return m_albedo;
+    return 0;
 }
 
 

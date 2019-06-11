@@ -11,6 +11,7 @@
 #include <Light.hpp>
 #include <vector>
 #include <Pixel.hpp>
+#include <Scene.hpp>
 #include <Sphere.hpp>
 #include <string>
 
@@ -46,6 +47,7 @@ class Camera
     vector<Pixel> m_pixels;
     bool m_useFocal;
     EImageFormat m_imageFormat = EImageFormat::BMP;
+    class Scene* m_scene = nullptr;
     
     string m_source = "/Users/Raph/Desktop/TestSynthese/";
     string m_name = "theImage0";
@@ -56,8 +58,12 @@ class Camera
     Vector3 GetRayDirection();
     Vector3 GetRayDirection(const Vector3& toThatPoint) const;
     Reflexion GetMaterial(const vector<Sphere> spheres, const Ray& ray, const vector<Light> lights) const;
-    Color GetColor(const vector<Sphere>& spheres, const Ray& ray, const vector<Light>& lights, int bounce) const;
-//    void CalculateFocal();
+//    Color GetColor(const vector<Sphere>& spheres, const Ray& ray, const vector<Light>& lights, int bounce) const;
+//    Color SendRay(const Ray &ray, const Sphere& sphere, int nbRay, const vector<Sphere>& spheres, const vector<Light>& lights, int bounce);
+//    Color GetIndirectLightning(const Vector3& point, const Vector3& direction, const Sphere& sphere, const int nbRay, const vector<Sphere>& spheres, const vector<Light>& lights, int bounce);
+    
+    Color GetColor(const Intersection& intersection) const;
+    Intersection GetNearestIntersection(const Ray& ray) const;
 
 public:
     Camera(const Vector3& position, const int width, const int height, Vector3& direction) :
@@ -105,7 +111,9 @@ public:
     void SaveImage();
     void SetImageName(string name);
     
-    void DrawImage(const vector<Sphere>& spheres, const vector<Light>& lights);
+    void DrawImage();
+    
+    void SetScene(Scene* scene);
     
     
 };

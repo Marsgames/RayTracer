@@ -49,7 +49,7 @@ void Scene::AddCamera(const vector<Camera> &cameras) {
 void Scene::DrawImages() {
     for (Camera& camera : m_cameras)
     {
-        camera.DrawImage();
+        camera.DrawImage(m_spheres, m_lights);
     }
 }
 
@@ -67,13 +67,3 @@ void Scene::SaveImages() {
     }
 }
 
-
-
-vector<Light> Scene::GetLights() const {
-    return m_lights;
-}
-
-
-vector<Sphere> Scene::GetSpheres() const {
-    return m_spheres;
-}

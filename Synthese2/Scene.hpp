@@ -16,21 +16,24 @@
 using std::vector;
 
 class Scene {
-    vector<Camera> m_cameras;
+    vector<class Camera> m_cameras;
     vector<Light> m_lights;
     vector<Sphere> m_spheres;
     
 public:
     Scene(){};
     
-    void AddCamera(const Camera& camera);
-    void AddCamera(const vector<Camera>& cameras);
+    void AddCamera(const class Camera& camera);
+    void AddCamera(const vector<class Camera>& cameras);
     
     void AddLight(const Light& light);
     void AddLight(const vector<Light>& lights);
     
     void AddSphere(const Sphere& sphere);
     void AddSphere(const vector<Sphere>& spheres);
+    
+    vector<Light> GetLights() const;
+    vector<Sphere> GetSpheres() const;
     
     void DrawImages();
     void SaveImages();

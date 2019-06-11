@@ -34,7 +34,7 @@ class Material {
     
 //    Color m_color;
 //    EMaterials m_material;
-//    double m_albedo;
+    double m_albedo;
 //    string m_name;
     
 public:
@@ -60,6 +60,7 @@ public:
     Color GetDiffuseColor() const;
     Color GetSelfIlluminColor() const;
     double GetAlbedo() const;
+    void SetAlbedo(const double value);
 //    EMaterials GetMaterialType() const;
 };
 

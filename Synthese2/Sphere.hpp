@@ -16,23 +16,6 @@
 
 using std::string;
 
-struct Intersection {
-    bool intersect = false;
-    double distance = -1;
-    Vector3 pointCoordonate = Vector3{0, 0, 0};
-    int nbIntersect = 0;
-    
-    Intersection() {};
-    
-    Intersection(bool theIntersect, double theDistance, Vector3 thePointCoordonate):
-    intersect{theIntersect},
-    distance{theDistance},
-    pointCoordonate{thePointCoordonate}
-    {};
-    
-    void PrintSphereState() const;
-};
-
 class Sphere
 {
     Vector3 m_center;
@@ -80,5 +63,23 @@ public:
     
     string GetName() const;
     
-    static Intersection IntersectRaySphere(class Ray ray, Sphere sphere);
+    static class Intersection IntersectRaySphere(class Ray ray, Sphere sphere);
+};
+
+struct Intersection {
+    bool intersect = false;
+    double distance = -1;
+    Vector3 pointCoordonate = Vector3{0, 0, 0};
+    int nbIntersect = 0;
+    class Sphere touchedSphere = Sphere(Vector3(0), -1);
+    
+    Intersection() {};
+    
+    Intersection(bool theIntersect, double theDistance, Vector3 thePointCoordonate):
+    intersect{theIntersect},
+    distance{theDistance},
+    pointCoordonate{thePointCoordonate}
+    {};
+    
+    void PrintSphereState() const;
 };
