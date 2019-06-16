@@ -51,6 +51,12 @@ public:
     m_selfIlluminColor{selfIlluminColor}
     {};
     
+    Material(const string name, const Color& diffuseColor, const double albedo) :
+    m_name{name},
+    m_diffuseColor{diffuseColor},
+    m_albedo{albedo}
+    {};
+    
 //    Material(Color color, EMaterials material) :
 //    m_color{color},
 //    m_albedo{(material / 100.)},
@@ -74,4 +80,5 @@ struct MaterialList
     static const Material RoseMat;
     static const Material JauneMat;
     static const Material BleuCielMat;
+    static const Material Miroir;
 };

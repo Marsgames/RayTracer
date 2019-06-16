@@ -152,4 +152,13 @@ bool Vector3::operator==(const Vector3& other) const
 {
     return (m_x == other.m_x && m_y == other.m_y && m_z == other.m_z);
 }
+
+Vector3 Vector3::CrossProduct(const Vector3 &vA, const Vector3 &vB) {
+        double x = vA.m_y * vB.m_z - vA.m_z * vB.m_y ;
+        double y = vA.m_z * vB.m_x - vA.m_x * vB.m_z ;
+        double z = vA.m_x * vB.m_y - vA.m_y * vB.m_x ;
+
+    return Vector3(x, y, z);
+}
+
 //////////////////////////////

@@ -34,8 +34,8 @@ int main(int argc, char* argv[])
     double heightOffset = 30000 + (10 * (0.1 * (mainCamera.GetHeight() / 2)));
 //    Sphere sp1 = Sphere(Vector3{-400., -400., 200.}, 180, Material(Color(45, 45, 155)));
 //    Sphere sp1 = Sphere(Vector3{-400., -400., 200.}, 400, Material(Color{45, 45, 155}, EMaterials::Wall)); // TESTER AVEC CETTE SPHERE QUAND TOUT MARCHERA
-    Sphere sp1 = Sphere(Vector3(0, 0, 500), 200, MaterialList::BlancMat);
-    sp1.GetMaterial().SetAlbedo(1);
+    Sphere sp1 = Sphere(Vector3(-300, -300, 500), 200, MaterialList::BlancMat);
+    
 //////    Sphere sp1 = Sphere(Vector3{0, 0, 2000}, 1000, Color{45, 45, 45});
 //////    Sphere sp2 = Sphere(Vector3{0, 0, 25}, 20, Color{255, 0, 255});
 //////    Sphere sp3 = Sphere(Vector3{-960, -540, 200}, 300, Color{45, 45, 155});
@@ -46,7 +46,7 @@ int main(int argc, char* argv[])
     Sphere topWall = Sphere(Vector3(0., -heightOffset, 0.), 3e4, MaterialList::RoseMat, "Rose");
     Sphere bottomWall = Sphere(Vector3(0., heightOffset, 0.), 3e4, MaterialList::BlancMat, "Blanc");
 ////    //    Sphere bottomWall = Sphere(Vector3(0., 4e5 + 4000., -00.), 4e5, Material(EMaterialType::DifuseType, Vector3(255 / 75, 255 / 140, 255 / 225)), "Rouge chelou");
-//////    Sphere backWall = Sphere(Vector3(0., 0., 20000.), 4e5, Color(255, 0, 0), "Rouge");
+Sphere backWall = Sphere(Vector3(0., 0., -3e4 - 1000), 3e4, MaterialList::BleuCielMat, "Bleu ciel");
     Sphere frontWall = Sphere(Vector3(0., 0., 3e4 + 1000), 3e4, MaterialList::JauneMat, "Jaune");
     
     leftWall.GetMaterial().SetAlbedo(0);
@@ -79,7 +79,7 @@ int main(int argc, char* argv[])
     myScene.AddSphere(rightWall);
     myScene.AddSphere(topWall);
     myScene.AddSphere(bottomWall);
-////////    myScene.AddSphere(backWall);
+    myScene.AddSphere(backWall);
     myScene.AddSphere(frontWall);
 
     //        myScene.AddLight(Light(Vector3(2000, -900, 900), 500));

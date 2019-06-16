@@ -83,6 +83,8 @@ public:
     static double Dot(const Vector3& pA, const Vector3& pB);
     static double Dist2(const Vector3& pA);
     
+    static Vector3 CrossProduct(const Vector3& vA, const Vector3& vB);
+    
     static Vector3 Negate(const Vector3& v);
 //    inline void Negate();
     

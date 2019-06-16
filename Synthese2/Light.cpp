@@ -69,7 +69,8 @@ bool Light::CanSeeLight(const Vector3& point, const Light& light, const vector<S
 
 Color Light::GetLightning(const Light& light, const Color& color, const double distance)
 {
-        const double puissance = light.GetPower() * (1 / distance);
+//    const double puissance = light.GetPower() * (1 / (distance * distance));
+    const double puissance = light.GetPower() * (1 / (distance));
     const Color lightColor = light.GetMaterial().GetSelfIlluminColor() * puissance;
     Color newColor = (color + lightColor) / 2;// light.GetMaterial().GetSelfIlluminColor();
     
@@ -114,7 +115,7 @@ Color Light::GetLightning(const Light& light, const Color& color, const double d
     if (newColor.GetR() <= 1 && newColor.GetG() <= 1 && newColor.GetB() <= 1)
         {
             cout << "Trop loin : noir" << endl;
-            return Color{200, 200, 200} * 1;
+            return Color{255, 200, 255} * 1;
         }
 
         return newColor;

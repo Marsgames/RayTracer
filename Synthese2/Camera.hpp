@@ -62,8 +62,10 @@ class Camera
 //    Color SendRay(const Ray &ray, const Sphere& sphere, int nbRay, const vector<Sphere>& spheres, const vector<Light>& lights, int bounce);
 //    Color GetIndirectLightning(const Vector3& point, const Vector3& direction, const Sphere& sphere, const int nbRay, const vector<Sphere>& spheres, const vector<Light>& lights, int bounce);
     
-    Color GetColor(const Intersection& intersection) const;
+    Color GetColor(const Intersection& intersection, const Ray& ray, int remainingBounce = 1, bool mainGetColor = true) const;
     Intersection GetNearestIntersection(const Ray& ray) const;
+    Vector3 GetRandomDirection(const Vector3& point) const;
+    double GetRandomDouble(double min = 0, double max = 1000) const;
 
 public:
     Camera(const Vector3& position, const int width, const int height, Vector3& direction) :

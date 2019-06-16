@@ -445,6 +445,9 @@ Color Camera::GetColor(const Intersection& intersection, const Ray& ray, int rem
         {
             if (mainGetColor)
             {
+                const Ray newRay = Ray(intersection.pointCoordonate, GetRandomDirection(intersection.pointCoordonate));
+                const Intersection newIntersection = GetNearestIntersection(newRay);
+
                 for (const Light& light : lights)
                 {
                     const bool canSeeLight = Light::CanSeeLight(intersection.pointCoordonate, light, spheres);
@@ -457,9 +460,6 @@ Color Camera::GetColor(const Intersection& intersection, const Ray& ray, int rem
 
                 for (int i = 0; i < 1; i++)
                 {
-                    const Ray newRay = Ray(intersection.pointCoordonate, GetRandomDirection(intersection.pointCoordonate));
-                    const Intersection newIntersection = GetNearestIntersection(newRay);
-                    
                     returnedColor = GetColor(newIntersection, newRay, remainingBounce, false);
                 }
 

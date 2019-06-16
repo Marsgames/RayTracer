@@ -42,3 +42,4 @@ const Material MaterialList::BlancMat = Material("Blanc mat", Color(255, 255, 25
 const Material MaterialList::RoseMat = Material("Rose mat", Color(255, 000, 255));
 const Material MaterialList::JauneMat = Material("Jaune mat", Color(255, 255, 000));
 const Material MaterialList::BleuCielMat = Material("Bleu ciel mat", Color(000, 255, 255));
+const Material MaterialList::Miroir = Material("Miroir", Color(100, 100, 100), 1);
