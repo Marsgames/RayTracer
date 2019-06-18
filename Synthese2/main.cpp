@@ -47,7 +47,7 @@ int main(int argc, char* argv[])
     Sphere bottomWall = Sphere(Vector3(0., heightOffset, 0.), 3e4, MaterialList::BlancMat, "Blanc");
 ////    //    Sphere bottomWall = Sphere(Vector3(0., 4e5 + 4000., -00.), 4e5, Material(EMaterialType::DifuseType, Vector3(255 / 75, 255 / 140, 255 / 225)), "Rouge chelou");
 Sphere backWall = Sphere(Vector3(0., 0., -3e4 - 1000), 3e4, MaterialList::BleuCielMat, "Bleu ciel");
-    Sphere frontWall = Sphere(Vector3(0., 0., 3e4 + 1000), 3e4, MaterialList::JauneMat, "Jaune");
+    Sphere frontWall = Sphere(Vector3(0., 0., 3e4 + 1000), 3e4, MaterialList::Miroir, "Jaune");
     
     leftWall.GetMaterial().SetAlbedo(0);
     rightWall.GetMaterial().SetAlbedo(0);
@@ -62,8 +62,24 @@ Sphere backWall = Sphere(Vector3(0., 0., -3e4 - 1000), 3e4, MaterialList::BleuCi
 //    Sphere sp4 = Sphere(Vector3(0, 0, 3000), 400, Color(255, 210, 255), "devant");
 //    Sphere sp5 = Sphere(Vector3(0, 0, 6000), 200, Color(210, 210, 255), "derrière");
     
+    /*
+     angle 90 : 0
+     angle < 90 : 1
+     angle > 90 : -1
+     */
     
-    
+//    Vector3 v1 = Vector3(1 , 1, 0);
+//    Vector3 v2 = Vector3(1, -1, 0);
+//
+//    cout << "angle 90 : " << Vector3::Dot(v1, v2) << endl;
+//
+//    Vector3 v3 = Vector3(2., 1.8, 0.);
+//
+//    cout << "angle < 90 : " << Vector3::Dot(v1, v3) << endl;
+//
+//    Vector3 v4 = Vector3(17., -3.14, 1.);
+//
+//    cout << "angle > 90 : " << Vector3::Dot(v1, v4) << endl;
     
     
     Scene myScene = Scene();
@@ -87,6 +103,7 @@ Sphere backWall = Sphere(Vector3(0., 0., -3e4 - 1000), 3e4, MaterialList::BleuCi
     
     
     
+//    myScene.AddLight(Light(Vector3(-0, 0, 0), 500));
     myScene.AddLight(Light(Vector3(-0, 500, 0), 500));
 //    myScene.AddLight(Light(Vector3(-700, 500, 0), 1000, Material(Color(255, 255, 255), Color(0, 0, 255))));
 //    myScene.AddLight(Light(Vector3(700, 500, 0), 1000, Material(Color(255, 255, 255), Color(255, 0, 0))));

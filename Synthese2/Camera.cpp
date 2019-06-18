@@ -343,7 +343,7 @@ void Camera::DrawImage() {
         
         
         Intersection intersection = GetNearestIntersection(ray);
-        pixelColor = GetColor(intersection, ray, m_maxBounce);//, m_maxBounce);
+        pixelColor = GetColor(intersection, ray, m_maxMirrorBounce);//, m_maxBounce);
         
         
         
@@ -422,16 +422,16 @@ Color Camera::GetColor(const Intersection& intersection, const Ray& ray, int rem
         // Si la sphère est un miroir
         if (intersection.touchedSphere.GetMaterial().GetAlbedo() == 1)
         {
-            if (remainingBounce > 0)
+            if (remainingBounce >= 0)
             {
                 remainingBounce--;
                 
-                cout << "hop hop mirror" << endl;
+//                cout << "hop hop mirror" << endl;
                 
                 const Ray newRay = Ray::GetReflectDirection(ray, intersection, intersection.touchedSphere);
                 const Intersection newIntersection = GetNearestIntersection(newRay);
                 
-                returnedColor = returnedColor + GetColor(newIntersection, newRay, remainingBounce, false);
+                returnedColor += GetColor(newIntersection, newRay, remainingBounce, true);
             }
             
             return returnedColor;
@@ -440,44 +440,46 @@ Color Camera::GetColor(const Intersection& intersection, const Ray& ray, int rem
         else if (intersection.touchedSphere.GetMaterial().GetAlbedo() > 0)
         {
             // blabla
-        }
-        else
-        {
             if (mainGetColor)
             {
-                for (const Light& light : lights)
+                
+                returnedColor += GetDirectLightning(intersection);
+                
+                if (returnedColor.GetR() <= 1 && returnedColor.GetG() <= 1 && returnedColor.GetB() <= 1)
                 {
-                    const bool canSeeLight = Light::CanSeeLight(intersection.pointCoordonate, light, spheres);
-
-                    if (canSeeLight)
-                    {
-                        returnedColor += Light::GetLightning(light, intersection.touchedSphere.GetMaterial().GetDiffuseColor(), Vector3::GetDistance(intersection.pointCoordonate, light.GetPosition()));
-                    }
+                    cout << "miroir caché" << endl;
+                    returnedColor = Color(255, 255, 0);
                 }
-
-                for (int i = 0; i < 1; i++)
+//                for (const Light& light : lights)
+//                {
+//                    const bool canSeeLight = Light::CanSeeLight(intersection.pointCoordonate, light, spheres);
+//
+//                    if (canSeeLight)
+//                    {
+//                        returnedColor += Light::GetLightning(light, intersection.touchedSphere.GetMaterial().GetDiffuseColor(), Vector3::GetDistance(intersection.pointCoordonate, light.GetPosition()));
+//                    }
+//                }
+                
+                for (int i = 0; i < m_maxBounce; i++)
                 {
-                    const Ray newRay = Ray(intersection.pointCoordonate, GetRandomDirection(intersection.pointCoordonate));
+                    const Ray newRay = Ray(intersection.pointCoordonate, GetRandomDirection(intersection.touchedSphere.GetNormal(intersection.pointCoordonate)));
                     const Intersection newIntersection = GetNearestIntersection(newRay);
                     
                     returnedColor = GetColor(newIntersection, newRay, remainingBounce, false);
                 }
-
-                return returnedColor / 1;
+                
+                return returnedColor / (m_maxBounce + 1);
             }
             
-            for (const Light& light : lights)
-            {
-                const bool canSeeLight = Light::CanSeeLight(intersection.pointCoordonate, light, spheres);
-
-                if (canSeeLight)
-                {
-                    return Light::GetLightning(light, intersection.touchedSphere.GetMaterial().GetDiffuseColor(), Vector3::GetDistance(intersection.pointCoordonate, light.GetPosition()));
-                }
-            }
-
-            return Color(0, 0, 0);
-
+            return GetDirectLightning(intersection);
+            
+            //            return intersection.touchedSphere.GetMaterial().GetDiffuseColor();
+            
+            //            return Color(0, 255, 255);
+        }
+        else
+        {
+            return GetDirectLightning(intersection);
         }
     }
     
@@ -730,31 +732,28 @@ Intersection Camera::GetNearestIntersection(const Ray &ray) const {
 //    return SendRay(mirrorRay, sphere, nbRay, spheres, lights, bounce) * sphere.GetMaterial().GetAlbedo();
 //}
 
-Vector3 Camera::GetRandomDirection(const Vector3& point) const {
-    double r1 = GetRandomDouble();
-    double r2 = GetRandomDouble();
-    
-    //On créé une direction aléatoire
-    double X = static_cast<double>((cos(2 * M_PI * r1) * sqrt(1 - r2)));
-    double Y = static_cast<double>((sin(2 * M_PI * r1) * sqrt(1 - r2)));
-    double Z = static_cast<double>(sqrt(r2));
-    
-    Vector3 randomVector(GetRandomDouble(), GetRandomDouble(), GetRandomDouble());
-    
-    Vector3 xBase = (Vector3::CrossProduct(point, randomVector)).Normalize();
-    Vector3 yBase = Vector3::CrossProduct(xBase, point);
-    Vector3 zBase = point;
-    
-    return ((xBase * X) + (yBase * Y)) + (zBase * Z);
-}
+
+
+//Vector3 Camera::GetRandomDirection(const Vector3& point) const {
+//    double r1 = GetRandomDouble();
+//    double r2 = GetRandomDouble();
+//
+//    //On créé une direction aléatoire
+//    double X = static_cast<double>((cos(2 * M_PI * r1) * sqrt(1 - r2)));
+//    double Y = static_cast<double>((sin(2 * M_PI * r1) * sqrt(1 - r2)));
+//    double Z = static_cast<double>(sqrt(r2));
+//
+//    Vector3 randomVector(GetRandomDouble(), GetRandomDouble(), GetRandomDouble());
+//
+//    Vector3 xBase = (Vector3::CrossProduct(point, randomVector)).Normalize();
+//    Vector3 yBase = Vector3::CrossProduct(xBase, point);
+//    Vector3 zBase = point;
+//
+//    return ((xBase * X) + (yBase * Y)) + (zBase * Z);
+//}
 
 double Camera::GetRandomDouble(double min, double max) const {
-    const double f = rand();
-    
-//    const double random = min + f * (max - min);
-    
-//    cout << "random : " << f << endl;
-    return f;
+    return ((float(rand()) / float(RAND_MAX)) * (max - min)) + min;
 }
 
 
@@ -768,3 +767,34 @@ void Camera::SetScene(Scene* scene) {
 
 
 
+
+
+Vector3 Camera::GetRandomDirection(const Vector3 &normal) const {
+    double result = -1;
+    Vector3 v1;
+    do
+    {
+        v1 = Vector3(GetRandomDouble(-1, 1), GetRandomDouble(-1, 1), GetRandomDouble(-1, 1));
+        result = Vector3::Dot(normal, v1);
+//        cout << "RandomDirection < 0 : " << result << endl;
+    }while (result < 0);
+    
+//    cout << endl;
+    
+    return v1;
+}
+
+
+Color Camera::GetDirectLightning(const Intersection &intersection) const {
+    for (const Light& light : m_scene->GetLights())
+    {
+        const bool canSeeLight = Light::CanSeeLight(intersection.pointCoordonate, light, m_scene->GetSpheres());
+        
+        if (canSeeLight)
+        {
+            return Light::GetLightning(light, intersection.touchedSphere.GetMaterial().GetDiffuseColor(), Vector3::GetDistance(intersection.pointCoordonate, light.GetPosition()));
+        }
+    }
+    
+    return Color(0, 0, 0);// GetIndirectLight(intersection);
+}

@@ -43,7 +43,7 @@ struct Reflexion
 class Camera
 {
     Vector3 m_position, m_direction;
-    int m_width, m_height, m_focalDist, m_maxBounce;
+    int m_width, m_height, m_focalDist, m_maxBounce, m_maxMirrorBounce;
     vector<Pixel> m_pixels;
     bool m_useFocal;
     EImageFormat m_imageFormat = EImageFormat::BMP;
@@ -64,8 +64,10 @@ class Camera
     
     Color GetColor(const Intersection& intersection, const Ray& ray, int remainingBounce = 1, bool mainGetColor = true) const;
     Intersection GetNearestIntersection(const Ray& ray) const;
-    Vector3 GetRandomDirection(const Vector3& point) const;
-    double GetRandomDouble(double min = 0, double max = 1000) const;
+//    Vector3 GetRandomDirection(const Vector3& point) const;
+    Vector3 GetRandomDirection(const Vector3& normal) const;
+    double GetRandomDouble(double min = -1, double max = 1) const;
+    Color GetDirectLightning(const Intersection& intersection) const;
 
 public:
     Camera(const Vector3& position, const int width, const int height, Vector3& direction) :
@@ -78,7 +80,9 @@ public:
         m_focalDist = 1000;
         m_useFocal = true;
         m_imageFormat = EImageFormat::BMP;
-        m_maxBounce = 10;
+        m_maxBounce = 0;
+        m_maxMirrorBounce = 30;
+        
     }
     
     Camera(const Vector3& position, const int width, const int height, Vector3 direction, const int focalDistance) :
@@ -91,7 +95,8 @@ public:
         InitPixelsArray();
         m_useFocal = true;
         m_imageFormat = EImageFormat::BMP;
-        m_maxBounce = 10;
+        m_maxBounce = 0;
+        m_maxMirrorBounce = 30;
     }
     
     Vector3 GetPosition() const;

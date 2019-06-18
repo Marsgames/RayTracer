@@ -28,7 +28,7 @@ Material Light::GetMaterial() const {
 bool Light::CanSeeLight(const Vector3& point, const Light& light, const vector<Sphere>& spheres) {
     
     const Vector3 dirFromPointToLampe = (Vector3::GetDirection(point, light.GetPosition()));
-    const Ray ray = Ray((point + (dirFromPointToLampe * 0.5)), dirFromPointToLampe);
+    const Ray ray = Ray((point + (dirFromPointToLampe * 1.5)), dirFromPointToLampe);
     const double distFromPointToLight = Vector3::GetDistance(point, light.GetPosition());
     
     //    point = point + (.5 * Vector3::GetDirection(point, light.GetPosition()));
@@ -115,7 +115,8 @@ Color Light::GetLightning(const Light& light, const Color& color, const double d
     if (newColor.GetR() <= 1 && newColor.GetG() <= 1 && newColor.GetB() <= 1)
         {
             cout << "Trop loin : noir" << endl;
-            return Color{255, 200, 255} * 1;
+//            return Color{255, 200, 255} * 1;
+            return Color{0, 0, 0} * 1;
         }
 
         return newColor;
