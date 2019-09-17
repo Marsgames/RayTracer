@@ -33,13 +33,10 @@ int main(int argc, char* argv[])
     
     double widthOffset = 30000 + (10 * (0.1 * (mainCamera.GetWidth() / 2)));
     double heightOffset = 30000 + (10 * (0.1 * (mainCamera.GetHeight() / 2)));
-//    Sphere sp1 = Sphere(Vector3{-400., -400., 200.}, 180, Material(Color(45, 45, 155)));
-//    Sphere sp1 = Sphere(Vector3{-400., -400., 200.}, 400, Material(Color{45, 45, 155}, EMaterials::Wall)); // TESTER AVEC CETTE SPHERE QUAND TOUT MARCHERA
-    Sphere sp1 = Sphere(Vector3(-300, -300, 500), 200, MaterialList::BlancDiffus);
+//    Sphere sp1 = Sphere(Vector3(-300, -300, 500), 200, MaterialList::BlancDiffus);
     
-//////    Sphere sp1 = Sphere(Vector3{0, 0, 2000}, 1000, Color{45, 45, 45});
-//////    Sphere sp2 = Sphere(Vector3{0, 0, 25}, 20, Color{255, 0, 255});
-//////    Sphere sp3 = Sphere(Vector3{-960, -540, 200}, 300, Color{45, 45, 155});
+    Sphere sp1 = Sphere(Vector3(0, 0, 500), 200, MaterialList::BlancDiffus);
+    
 
 ////    // Enlever un 0 à 7000, 4000 et 15000
     Sphere leftWall = Sphere(Vector3(-widthOffset, 0., 0.), 3e4,  MaterialList::VertDiffus, "Vert");
@@ -105,9 +102,12 @@ Sphere backWall = Sphere(Vector3(0., 0., -3e4 - 1000), 3e4, MaterialList::BleuCi
     
     
 //    myScene.AddLight(Light(Vector3(-0, 0, 0), 500));
-    myScene.AddLight(Light(Vector3(-0, 500, 0), 1000));
+//    myScene.AddLight(Light(Vector3(-0, 500, 0), 1000));
 //    myScene.AddLight(Light(Vector3(-700, 500, 0), 1000, Material(Color(255, 255, 255), Color(0, 0, 255))));
 //    myScene.AddLight(Light(Vector3(700, 500, 0), 1000, Material(Color(255, 255, 255), Color(255, 0, 0))));
+    
+    myScene.AddLight(Light(Vector3(-300, 100, 0), 1000, Material(Color(255, 0, 0), Color(255, 0, 0))));
+    myScene.AddLight(Light(Vector3(300, 100, 0), 1000, Material(Color(0, 0, 255), Color(0, 0, 255))));
 
     
     
