@@ -10,6 +10,7 @@
 		AE1625F722A485C800D0A45C /* Material.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AE1625F522A485C800D0A45C /* Material.cpp */; };
 		AE2573152330DF4C00E322A3 /* libgtest_main.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE2573132330DF4600E322A3 /* libgtest_main.a */; };
 		AE2573162330DF4C00E322A3 /* libgtest.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE2573142330DF4600E322A3 /* libgtest.a */; };
+		AE25731D2331051F00E322A3 /* Toolbox.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AE25731B2331051F00E322A3 /* Toolbox.cpp */; };
 		AE376F5F2158B2C700044A00 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AE376F5E2158B2C700044A00 /* main.cpp */; };
 		AE7E853E229FDE9500BB1CEB /* Scene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AE7E853C229FDE9500BB1CEB /* Scene.cpp */; };
 		AE7E8541229FE6C900BB1CEB /* Light.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AE7E853F229FE6C900BB1CEB /* Light.cpp */; };
@@ -40,6 +41,8 @@
 		AE25730E2330D20E00E322A3 /* libgtest_main.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libgtest_main.a; path = ../../../../../../usr/local/lib/libgtest_main.a; sourceTree = "<group>"; };
 		AE2573132330DF4600E322A3 /* libgtest_main.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libgtest_main.a; path = googletest/googletest/build/lib/libgtest_main.a; sourceTree = "<group>"; };
 		AE2573142330DF4600E322A3 /* libgtest.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libgtest.a; path = googletest/googletest/build/lib/libgtest.a; sourceTree = "<group>"; };
+		AE25731B2331051F00E322A3 /* Toolbox.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Toolbox.cpp; sourceTree = "<group>"; };
+		AE25731C2331051F00E322A3 /* Toolbox.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Toolbox.hpp; sourceTree = "<group>"; };
 		AE376F5B2158B2C700044A00 /* Synthese2 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Synthese2; sourceTree = BUILT_PRODUCTS_DIR; };
 		AE376F5E2158B2C700044A00 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		AE58E43D216FED1900189557 /* libgtest_main.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libgtest_main.a; path = googletest/build/lib/libgtest_main.a; sourceTree = "<group>"; };
@@ -120,6 +123,8 @@
 				AE7E8540229FE6C900BB1CEB /* Light.hpp */,
 				AE1625F522A485C800D0A45C /* Material.cpp */,
 				AE1625F622A485C800D0A45C /* Material.hpp */,
+				AE25731B2331051F00E322A3 /* Toolbox.cpp */,
+				AE25731C2331051F00E322A3 /* Toolbox.hpp */,
 			);
 			path = Synthese2;
 			sourceTree = "<group>";
@@ -222,6 +227,7 @@
 				AE7E853E229FDE9500BB1CEB /* Scene.cpp in Sources */,
 				AE915719229F1B64003C8179 /* Pixel.cpp in Sources */,
 				AE915716229F0E03003C8179 /* Camera.cpp in Sources */,
+				AE25731D2331051F00E322A3 /* Toolbox.cpp in Sources */,
 				AE91571F229F1CA9003C8179 /* Color.cpp in Sources */,
 				AE91571C229F1BB9003C8179 /* Vector3.cpp in Sources */,
 				AE915725229F361B003C8179 /* Ray.cpp in Sources */,

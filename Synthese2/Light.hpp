@@ -10,7 +10,8 @@
 
 #include <Color.hpp>
 #include <iostream>
-//#include <Sphere.hpp>
+#include <Material.hpp>
+#include <Sphere.hpp>
 #include <Sphere.hpp>
 #include <Vector3.hpp>
 #include <vector>
@@ -24,6 +25,8 @@ class Light {
     double m_power;
     Color m_color;
     Material m_material;
+    
+    
     
 public:
     Light(const Vector3& position, const double power):
@@ -45,7 +48,7 @@ public:
 //    Color GetColor() const;
     Material GetMaterial() const;
     
-    static bool CanSeeLight(const Vector3& point, const Light& light, const vector<Sphere>& spheres);
+    
     static Color GetLightning(const Light& light, const Color& color, const double distance);
 //    static Color GetLightning(const Light& light, const Intersection& intersection, const Sphere& actualSphere);
 };

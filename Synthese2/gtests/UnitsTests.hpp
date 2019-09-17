@@ -13,9 +13,10 @@
 #include <gtest/gtest.h>
 #include <Light.hpp>
 #include <Material.hpp>
+#include <math.h>
 #include <Ray.hpp>
 #include <Sphere.hpp>
-#include <math.h>
+#include <Toolbox.hpp>
 #include <Vector3.hpp>
 
 TEST(Vector3, SimpleTests)
@@ -663,28 +664,28 @@ TEST(CanSeeLightFunc, SimpleTest)
     
     // Le Ray est intersepté par une sphère
     const Vector3 point1 = Vector3{-20, 0, 0};
-    EXPECT_EQ(false, Light::CanSeeLight(point1, lum, scene));
+    EXPECT_EQ(false, Toolbox::CanSeeLight(point1, lum, scene));
 
     // le Ray n'est pas intersepté par la sphère
     const Vector3 point2 = Vector3{15, 0, 0};
-    EXPECT_EQ(true, Light::CanSeeLight(point2, lum, scene));
+    EXPECT_EQ(true, Toolbox::CanSeeLight(point2, lum, scene));
     
     // Le Ray part de l'intérieur de la sphère
     const Vector3 point3 = Vector3{0, 0, 0};
-    EXPECT_EQ(false, Light::CanSeeLight(point3, lum, scene));
+    EXPECT_EQ(false, Toolbox::CanSeeLight(point3, lum, scene));
     
     // La lumière est dans la sphère, le Ray non
     const Light& lightInsideSphere = Light{Vector3(0, 0, 0), 1000};
-    EXPECT_EQ(false, Light::CanSeeLight(point1, lightInsideSphere, scene));
+    EXPECT_EQ(false, Toolbox::CanSeeLight(point1, lightInsideSphere, scene));
 
     // La lumière est dans la sphère, le Ray aussi
     const Vector3 point4 = Vector3(2, 0, 0);
     const Light& lightInsideSphere2 = Light{Vector3(8, 0, 0), 1000};
-    EXPECT_EQ(true, Light::CanSeeLight(point4, lightInsideSphere2, scene));
+    EXPECT_EQ(true, Toolbox::CanSeeLight(point4, lightInsideSphere2, scene));
 
     // Le point est après la lumière
     const Vector3 point5 = Vector3(30, 0, 0);
-    EXPECT_EQ(true, Light::CanSeeLight(point5, lum, scene));
+    EXPECT_EQ(true, Toolbox::CanSeeLight(point5, lum, scene));
     
     
     
@@ -697,10 +698,10 @@ TEST(CanSeeLightFunc, SimpleTest)
     vector<Sphere> sp2;
     sp2.push_back(Sphere(Vector3(0, 0, 500), 300, Material(Color(0, 0, 0))));
     
-    EXPECT_EQ(false, Light::CanSeeLight(point6, light, sp2));
-    EXPECT_EQ(false, Light::CanSeeLight(point7, light, sp2));
-    EXPECT_EQ(false, Light::CanSeeLight(point8, light, sp2));
-    EXPECT_EQ(true, Light::CanSeeLight(point9, light, sp2));
+    EXPECT_EQ(false, Toolbox::CanSeeLight(point6, light, sp2));
+    EXPECT_EQ(false, Toolbox::CanSeeLight(point7, light, sp2));
+    EXPECT_EQ(false, Toolbox::CanSeeLight(point8, light, sp2));
+    EXPECT_EQ(true, Toolbox::CanSeeLight(point9, light, sp2));
 }
 
 TEST(CanSeeLightFunc, ComplexeTest)
@@ -711,13 +712,13 @@ TEST(CanSeeLightFunc, ComplexeTest)
     scene.push_back(sp1);
     
     Vector3 p1 = Vector3(0, 0, 0);
-    EXPECT_EQ(true, Light::CanSeeLight(p1, lum, scene));
+    EXPECT_EQ(true, Toolbox::CanSeeLight(p1, lum, scene));
     p1 = Vector3(76, 54, -48);
-    EXPECT_EQ(true, Light::CanSeeLight(p1, lum, scene));
+    EXPECT_EQ(true, Toolbox::CanSeeLight(p1, lum, scene));
     p1 = Vector3(11, 40, -70);
-    EXPECT_EQ(false, Light::CanSeeLight(p1, lum, scene));
+    EXPECT_EQ(false, Toolbox::CanSeeLight(p1, lum, scene));
     p1 = Vector3(-100, 40, -27);
-    EXPECT_EQ(true, Light::CanSeeLight(p1, lum, scene));
+    EXPECT_EQ(true, Toolbox::CanSeeLight(p1, lum, scene));
     
     //    scene.push_back(Sphere(Vector3(21, 36, -28), 25));
     //

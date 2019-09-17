@@ -6,11 +6,12 @@
 //  Copyright © 2019 Marsgames. All rights reserved.
 //
 
+#include <Camera.hpp>
+#include <fstream>
+#include <iostream>
 #include <Library/Bitmap/bitmap_image.hpp>
 #include <Light.hpp>
-#include <Camera.hpp>
-#include <iostream>
-#include <fstream>
+#include <Toolbox.hpp>
 #include <Vector3.hpp>
 #include <vector>
 
@@ -331,7 +332,7 @@ void Camera::DrawImage() {
             ray.SetDirection(GetRayDirection(pixel.GetPosition()));
         }
         
-        if (pixel.index % 10000 == 0)
+        if (pixel.index % 100000 == 0)
         cout << "index : " << pixel.index << endl;
         //        int nbBounce = 0;
         //        Reflexion reflexion;
@@ -788,7 +789,7 @@ Vector3 Camera::GetRandomDirection(const Vector3 &normal) const {
 Color Camera::GetDirectLightning(const Intersection &intersection) const {
     for (const Light& light : m_scene->GetLights())
     {
-        const bool canSeeLight = Light::CanSeeLight(intersection.pointCoordonate, light, m_scene->GetSpheres());
+        const bool canSeeLight = Toolbox::CanSeeLight(intersection.pointCoordonate, light, m_scene->GetSpheres());
         
         if (canSeeLight)
         {

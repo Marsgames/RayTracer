@@ -12,6 +12,7 @@
 #include <main.hpp>
 #include <Scene.hpp>
 #include <Sphere.hpp>
+#include <Toolbox.hpp>
 
 using std::cout;
 using std::endl;
@@ -47,7 +48,7 @@ int main(int argc, char* argv[])
     Sphere bottomWall = Sphere(Vector3(0., heightOffset, 0.), 3e4, MaterialList::BlancMat, "Blanc");
 ////    //    Sphere bottomWall = Sphere(Vector3(0., 4e5 + 4000., -00.), 4e5, Material(EMaterialType::DifuseType, Vector3(255 / 75, 255 / 140, 255 / 225)), "Rouge chelou");
 Sphere backWall = Sphere(Vector3(0., 0., -3e4 - 1000), 3e4, MaterialList::BleuCielMat, "Bleu ciel");
-    Sphere frontWall = Sphere(Vector3(0., 0., 3e4 + 1000), 3e4, MaterialList::Miroir, "Jaune");
+    Sphere frontWall = Sphere(Vector3(0., 0., 3e4 + 1000), 3e4, MaterialList::JauneMat, "Jaune");
     
     leftWall.GetMaterial().SetAlbedo(0);
     rightWall.GetMaterial().SetAlbedo(0);
@@ -95,7 +96,7 @@ Sphere backWall = Sphere(Vector3(0., 0., -3e4 - 1000), 3e4, MaterialList::BleuCi
     myScene.AddSphere(rightWall);
     myScene.AddSphere(topWall);
     myScene.AddSphere(bottomWall);
-//    myScene.AddSphere(backWall);
+    myScene.AddSphere(backWall);
     myScene.AddSphere(frontWall);
 
     //        myScene.AddLight(Light(Vector3(2000, -900, 900), 500));
@@ -120,7 +121,7 @@ Sphere backWall = Sphere(Vector3(0., 0., -3e4 - 1000), 3e4, MaterialList::BleuCi
     myScene.DrawImages();
     
     myScene.SaveImages();
-    
+        
     cout << endl;
     return 0;
 }

@@ -7,9 +7,13 @@
 //
 
 #include "Light.hpp"
+#include <random>
 #include <Sphere.hpp>
 #include <Vector3.hpp>
 #include <vector>
+
+using std::cout;
+using std::endl;
 
 Vector3 Light::GetPosition() const
 {
@@ -23,48 +27,6 @@ double Light::GetPower() const
 
 Material Light::GetMaterial() const {
     return m_material;
-}
-
-bool Light::CanSeeLight(const Vector3& point, const Light& light, const vector<Sphere>& spheres) {
-    
-    const Vector3 dirFromPointToLampe = (Vector3::GetDirection(point, light.GetPosition()));
-    const Ray ray = Ray((point + (dirFromPointToLampe * 1.5)), dirFromPointToLampe);
-    const double distFromPointToLight = Vector3::GetDistance(point, light.GetPosition());
-    
-    //    point = point + (.5 * Vector3::GetDirection(point, light.GetPosition()));
-    
-    //    dirLampe.Print();
-    
-    Intersection intersection;
-    
-    for (const Sphere& sphere : spheres)
-    {
-//        cout << "sphere " << sphere.GetName() << endl;
-//        cout << "point : " << point.ToString() << endl;
-//        cout << "rayOrigin : " << ray.GetOrigin().ToString() << endl;
-//        cout << "rayDirection : " << ray.GetDirection().ToString() << endl;
-        intersection = Sphere::IntersectRaySphere(ray, sphere);
-//        cout << "intersection : " << intersection.intersect << endl << endl;
-        
-        
-        if (intersection.intersect)
-        {
-            double distFromPointToIntersect = Vector3::GetDistance(point, intersection.pointCoordonate);
-            
-//            cout << "distFromPointToIntersect : " << distFromPointToIntersect << endl;
-//            cout << "distFromPointToLight : " << distFromPointToLight << endl << endl;
-            
-            if (distFromPointToIntersect < distFromPointToLight)
-            {
-//                cout << "y'a intersection" << endl;
-                return false;
-            }
-            
-        }
-    }
-//    cout << endl << endl;
-    
-    return true;
 }
 
 Color Light::GetLightning(const Light& light, const Color& color, const double distance)
@@ -122,6 +84,11 @@ Color Light::GetLightning(const Light& light, const Color& color, const double d
         return newColor;
 }
 
+
+
+
+
+
 //Color Light::GetLightning(const Light& light, const Intersection& intersection, const Sphere& actualSphere)
 //{
 //    const Vector3 lightDirection = Vector3::GetDirection(light.GetPosition(), intersection.pointCoordonate);
@@ -148,3 +115,5 @@ Color Light::GetLightning(const Light& light, const Color& color, const double d
 //     */
 //
 //}
+
+
