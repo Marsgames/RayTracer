@@ -49,6 +49,10 @@ Vector3 Toolbox::GetRandomDirectionOnHemisphere(const Vector3 origin) {
     return Vector3(x, y, random2);
 }
 
+/// Return true if a point is lighted by the light
+/// @param point Point we want to test
+/// @param light Light that have to enlight the point
+/// @param spheres Spheres prensents in the scene
 bool Toolbox::CanSeeLight(const Vector3& point, const Light& light, const vector<Sphere>& spheres) {
     
     const Vector3 dirFromPointToLampe = (Vector3::GetDirection(point, light.GetPosition()));

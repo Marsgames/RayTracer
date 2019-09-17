@@ -7,6 +7,7 @@
 //
 
 #include <Color.hpp>
+#include <iostream>
 #include "Material.hpp"
 
 Color Material::GetDiffuseColor() const
@@ -21,7 +22,6 @@ Color Material::GetSelfIlluminColor() const {
 double Material::GetAlbedo() const
 {
     return m_albedo;
-//    return 0;
 }
 void Material::SetAlbedo(const double value)
 {
@@ -36,9 +36,12 @@ void Material::SetAlbedo(const double value)
 
 const Material MaterialList::NoirMat = Material("Noir mat", Color(0, 0, 0));
 const Material MaterialList::RougeMat = Material("Rouge mat", Color(255, 0, 0));
+const Material MaterialList::RougeDiffus = Material("Rouge diffus", Color(255, 0, 0), .5);
 const Material MaterialList::VertMat = Material("Vert mat", Color(0, 255, 0));
+const Material MaterialList::VertDiffus = Material("Vert diffus", Color(0, 255, 0), .5);
 const Material MaterialList::BleuMat = Material("Bleu mat", Color(0, 0, 255));
 const Material MaterialList::BlancMat = Material("Blanc mat", Color(255, 255, 255));
+const Material MaterialList::BlancDiffus = Material("Blanc diffus", Color(255, 255, 255), .5);
 const Material MaterialList::RoseMat = Material("Rose mat", Color(255, 000, 255));
 const Material MaterialList::JauneMat = Material("Jaune mat", Color(255, 255, 000));
 const Material MaterialList::BleuCielMat = Material("Bleu ciel mat", Color(000, 255, 255));

@@ -74,9 +74,12 @@ struct MaterialList
 {
     static const Material NoirMat;
     static const Material RougeMat;
+    static const Material RougeDiffus;
     static const Material VertMat;
+    static const Material VertDiffus;
     static const Material BleuMat;
     static const Material BlancMat;
+    static const Material BlancDiffus;
     static const Material RoseMat;
     static const Material JauneMat;
     static const Material BleuCielMat;

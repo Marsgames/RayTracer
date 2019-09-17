@@ -35,14 +35,14 @@ int main(int argc, char* argv[])
     double heightOffset = 30000 + (10 * (0.1 * (mainCamera.GetHeight() / 2)));
 //    Sphere sp1 = Sphere(Vector3{-400., -400., 200.}, 180, Material(Color(45, 45, 155)));
 //    Sphere sp1 = Sphere(Vector3{-400., -400., 200.}, 400, Material(Color{45, 45, 155}, EMaterials::Wall)); // TESTER AVEC CETTE SPHERE QUAND TOUT MARCHERA
-    Sphere sp1 = Sphere(Vector3(-300, -300, 500), 200, MaterialList::BlancMat);
+    Sphere sp1 = Sphere(Vector3(-300, -300, 500), 200, MaterialList::BlancDiffus);
     
 //////    Sphere sp1 = Sphere(Vector3{0, 0, 2000}, 1000, Color{45, 45, 45});
 //////    Sphere sp2 = Sphere(Vector3{0, 0, 25}, 20, Color{255, 0, 255});
 //////    Sphere sp3 = Sphere(Vector3{-960, -540, 200}, 300, Color{45, 45, 155});
 
 ////    // Enlever un 0 à 7000, 4000 et 15000
-    Sphere leftWall = Sphere(Vector3(-widthOffset, 0., 0.), 3e4,  MaterialList::VertMat, "Vert");
+    Sphere leftWall = Sphere(Vector3(-widthOffset, 0., 0.), 3e4,  MaterialList::VertDiffus, "Vert");
     Sphere rightWall = Sphere(Vector3(widthOffset, 0., 0.), 3e4, MaterialList::BleuMat, "Bleu");
     Sphere topWall = Sphere(Vector3(0., -heightOffset, 0.), 3e4, MaterialList::RoseMat, "Rose");
     Sphere bottomWall = Sphere(Vector3(0., heightOffset, 0.), 3e4, MaterialList::BlancMat, "Blanc");

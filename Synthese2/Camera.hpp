@@ -65,9 +65,9 @@ class Camera
     Color GetColor(const Intersection& intersection, const Ray& ray, int remainingBounce = 1, bool mainGetColor = true) const;
     Intersection GetNearestIntersection(const Ray& ray) const;
 //    Vector3 GetRandomDirection(const Vector3& point) const;
-    Vector3 GetRandomDirection(const Vector3& normal) const;
+//    Vector3 GetRandomDirection(const Vector3& normal) const;
     double GetRandomDouble(double min = -1, double max = 1) const;
-    Color GetDirectLightning(const Intersection& intersection) const;
+    Color GetDirectLightning(const Intersection& intersection, int remainingBounce = 1) const;
 
 public:
     Camera(const Vector3& position, const int width, const int height, Vector3& direction) :
