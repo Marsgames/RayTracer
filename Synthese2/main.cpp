@@ -95,7 +95,7 @@ Sphere backWall = Sphere(Vector3(0., 0., -3e4 - 1000), 3e4, MaterialList::BleuCi
     myScene.AddSphere(rightWall);
     myScene.AddSphere(topWall);
     myScene.AddSphere(bottomWall);
-    myScene.AddSphere(backWall);
+//    myScene.AddSphere(backWall);
     myScene.AddSphere(frontWall);
 
     //        myScene.AddLight(Light(Vector3(2000, -900, 900), 500));
@@ -104,7 +104,7 @@ Sphere backWall = Sphere(Vector3(0., 0., -3e4 - 1000), 3e4, MaterialList::BleuCi
     
     
 //    myScene.AddLight(Light(Vector3(-0, 0, 0), 500));
-    myScene.AddLight(Light(Vector3(-0, 500, 0), 500));
+    myScene.AddLight(Light(Vector3(-0, 500, 0), 1000));
 //    myScene.AddLight(Light(Vector3(-700, 500, 0), 1000, Material(Color(255, 255, 255), Color(0, 0, 255))));
 //    myScene.AddLight(Light(Vector3(700, 500, 0), 1000, Material(Color(255, 255, 255), Color(255, 0, 0))));
 
