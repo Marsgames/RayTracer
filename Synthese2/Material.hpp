@@ -40,7 +40,12 @@ class Material {
 public:
     Material() = delete;
     
-    Material(Color diffuseColor, const Color& selfIlluminColor = Color(255, 255, 255)) :
+    Material(Color diffuseColor) :
+    m_diffuseColor{diffuseColor},
+    m_selfIlluminColor{diffuseColor}
+    {};
+    
+    Material(Color diffuseColor, const Color& selfIlluminColor) :
     m_diffuseColor{diffuseColor},
     m_selfIlluminColor{selfIlluminColor}
     {};

@@ -49,6 +49,6 @@ public:
     Material GetMaterial() const;
     
     
-    static Color GetLightning(const Light& light, const Color& color, const double distance);
-//    static Color GetLightning(const Light& light, const Intersection& intersection, const Sphere& actualSphere);
+//    static Color GetLightning(const Light& light, const Color& color, const double distance, Vector3 normal);
+    static Color GetLightning(const Light& light, const Intersection& intersection);
 };

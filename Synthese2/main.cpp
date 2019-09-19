@@ -12,7 +12,7 @@
 #include <main.hpp>
 #include <Scene.hpp>
 #include <Sphere.hpp>
-#include <Toolbox.hpp>
+#include <ToolBox.hpp>
 
 using std::cout;
 using std::endl;
@@ -36,6 +36,9 @@ int main(int argc, char* argv[])
 //    Sphere sp1 = Sphere(Vector3(-300, -300, 500), 200, MaterialList::BlancDiffus);
     
     Sphere sp1 = Sphere(Vector3(0, 0, 500), 200, MaterialList::BlancDiffus);
+    
+//    Sphere sp2 = Sphere(Vector3(-1700, 1000, 500), 50, MaterialList::BlancDiffus);
+//    Sphere sp3 = Sphere(Vector3(1700, 1000, 500), 50, MaterialList::BlancDiffus);
     
 
 ////    // Enlever un 0 à 7000, 4000 et 15000
@@ -106,8 +109,10 @@ Sphere backWall = Sphere(Vector3(0., 0., -3e4 - 1000), 3e4, MaterialList::BleuCi
 //    myScene.AddLight(Light(Vector3(-700, 500, 0), 1000, Material(Color(255, 255, 255), Color(0, 0, 255))));
 //    myScene.AddLight(Light(Vector3(700, 500, 0), 1000, Material(Color(255, 255, 255), Color(255, 0, 0))));
     
-    myScene.AddLight(Light(Vector3(-300, 100, 0), 1000, Material(Color(255, 0, 0), Color(255, 0, 0))));
-    myScene.AddLight(Light(Vector3(300, 100, 0), 1000, Material(Color(0, 0, 255), Color(0, 0, 255))));
+    
+    
+    myScene.AddLight(Light(Vector3(-1700, 1000, 0), 1000, Material(Color(255, 0, 0))));
+    myScene.AddLight(Light(Vector3(1700, 1000, 0), 1000, Material(Color(0, 0, 255))));
 
     
     

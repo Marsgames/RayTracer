@@ -12,7 +12,7 @@
 #include <random>
 #include <Ray.hpp>
 #include <Sphere.hpp>
-#include <Toolbox.hpp>
+#include <ToolBox.hpp>
 #include <vector>
 #include <Vector3.hpp>
 

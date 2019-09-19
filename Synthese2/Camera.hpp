@@ -58,16 +58,16 @@ class Camera
     Vector3 GetRayDirection();
     Vector3 GetRayDirection(const Vector3& toThatPoint) const;
     Reflexion GetMaterial(const vector<Sphere> spheres, const Ray& ray, const vector<Light> lights) const;
-//    Color GetColor(const vector<Sphere>& spheres, const Ray& ray, const vector<Light>& lights, int bounce) const;
-//    Color SendRay(const Ray &ray, const Sphere& sphere, int nbRay, const vector<Sphere>& spheres, const vector<Light>& lights, int bounce);
-//    Color GetIndirectLightning(const Vector3& point, const Vector3& direction, const Sphere& sphere, const int nbRay, const vector<Sphere>& spheres, const vector<Light>& lights, int bounce);
     
-    Color GetColor(const Intersection& intersection, const Ray& ray, int remainingBounce = 1, bool mainGetColor = true) const;
+    Color GetColor(const Intersection& intersection, const Ray& ray) const;
+    Color GetColor(const Intersection& intersection, const Ray& ray, int remainingBounce) const;
+
     Intersection GetNearestIntersection(const Ray& ray) const;
-//    Vector3 GetRandomDirection(const Vector3& point) const;
-//    Vector3 GetRandomDirection(const Vector3& normal) const;
     double GetRandomDouble(double min = -1, double max = 1) const;
-    Color GetDirectLightning(const Intersection& intersection, int remainingBounce = 1) const;
+    
+    Color GetLightning(const Intersection& intersection) const;
+    Color GetDirectLightning(const Light& ligght, const Intersection& intersection) const;
+    Color GetIndirectLightning() const;
 
 public:
     Camera(const Vector3& position, const int width, const int height, Vector3& direction) :
