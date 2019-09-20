@@ -68,6 +68,8 @@ class Camera
     Color GetLightning(const Intersection& intersection) const;
     Color GetDirectLightning(const Light& ligght, const Intersection& intersection) const;
     Color GetIndirectLightning() const;
+    
+    void GeneratePartImage(const int departure, const int arrival, Ray ray);
 
 public:
     Camera(const Vector3& position, const int width, const int height, Vector3& direction) :
@@ -119,7 +121,8 @@ public:
     void SetImageName(string name);
     
     void DrawImage();
-    
+    void DrawImageWithThread();
+
     void SetScene(Scene* scene);
     
     

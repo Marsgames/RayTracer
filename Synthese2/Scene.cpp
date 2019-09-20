@@ -49,7 +49,8 @@ void Scene::AddCamera(const vector<Camera> &cameras) {
 void Scene::DrawImages() {
     for (Camera& camera : m_cameras)
     {
-        camera.DrawImage();
+//        camera.DrawImage();
+        camera.DrawImageWithThread();
     }
 }
 

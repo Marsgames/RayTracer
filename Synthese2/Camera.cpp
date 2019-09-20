@@ -11,6 +11,7 @@
 #include <iostream>
 #include <Library/Bitmap/bitmap_image.hpp>
 #include <Light.hpp>
+#include <thread>
 #include <ToolBox.hpp>
 #include <Vector3.hpp>
 #include <vector>
@@ -380,10 +381,86 @@ void Camera::DrawImage() {
         //        pixel.SetColor(GetColor(spheres, ray, lights));
         
         if (pixel.index % 1000000 == 0)
+        {
             SaveImage();
-        
+        }
     }
 }
+
+void Camera::DrawImageWithThread() {
+    
+    if (nullptr == m_scene)
+    {
+        exit(4); // m_scene n'est pas set !
+    }
+    
+    const vector<Sphere> spheres = m_scene->GetSpheres();
+    const vector<Light> lights = m_scene->GetLights();
+    
+    const Vector3 rayDirection = GetRayDirection();
+    Ray ray = Ray(Vector3{0, 0, 0}, rayDirection);
+    
+//    Color pixelColor = Color(100, 100, 100);
+    
+    const unsigned long diviseur = m_pixels.capacity() / 5;
+    const int reste = m_pixels.capacity() % 5;
+    
+    Pixel p1;
+    Pixel p2;
+    Pixel p3;
+    Pixel p4;
+    Pixel p5;
+    Pixel pReste;
+    
+    std::thread t01(&Camera::GeneratePartImage, this, 0, (int)diviseur, ray);
+    std::thread t02(&Camera::GeneratePartImage, this, (int)diviseur, (int)diviseur * 2, ray);
+    std::thread t03(&Camera::GeneratePartImage, this, (int)diviseur * 2, (int)diviseur * 3, ray);
+    std::thread t04(&Camera::GeneratePartImage, this, (int)diviseur * 3, (int)diviseur * 4, ray);
+    std::thread t05(&Camera::GeneratePartImage, this, (int)diviseur * 4, (int)diviseur * 5, ray);
+    std::thread t06(&Camera::GeneratePartImage, this, (int)diviseur * 5, (int)diviseur * 5 + reste, ray);
+    
+    t01.join();
+            cout << "Thread 1 terminé" << endl;
+            t02.join();
+            cout << "Thread 2 terminé" << endl;
+            t03.join();
+            cout << "Thread 3 terminé" << endl;
+            t04.join();
+            cout << "Thread 4 terminé" << endl;
+            t05.join();
+            cout << "Thread 5 terminé" << endl;
+            t06.join();
+            cout << "Thread 6 terminé" << endl;
+}
+
+void Camera::GeneratePartImage(const int departure, const int arrival, Ray ray)
+{
+    Pixel p;
+    
+    for (int i = departure; i < arrival; i++)
+    {
+        p = m_pixels[i];
+
+        ray.SetOrigin(p.GetPosition());
+        if (m_useFocal)
+        {
+            ray.SetDirection(GetRayDirection(p.GetPosition()));
+        }
+
+        if (p.index % 100000 == 0)
+        cout << "index : " << p.index << endl;
+
+        Intersection intersection = GetNearestIntersection(ray);
+        m_pixels[i].SetColor(GetColor(intersection, ray));
+
+        if (p.index % 1000000 == 0)
+        {
+            SaveImage();
+        }
+    }
+}
+
+
 
 
 Vector3 Camera::GetRayDirection() {
