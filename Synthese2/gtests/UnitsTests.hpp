@@ -16,7 +16,7 @@
 #include <math.h>
 #include <Ray.hpp>
 #include <Sphere.hpp>
-#include <ToolBox.hpp>
+#include <Toolbox.hpp>
 #include <Vector3.hpp>
 
 TEST(Vector3, SimpleTests)

@@ -12,7 +12,7 @@
 #include <Library/Bitmap/bitmap_image.hpp>
 #include <Light.hpp>
 #include <thread>
-#include <ToolBox.hpp>
+#include <Toolbox.hpp>
 #include <Vector3.hpp>
 #include <vector>
 
@@ -420,17 +420,17 @@ void Camera::DrawImageWithThread() {
     std::thread t06(&Camera::GeneratePartImage, this, (int)diviseur * 5, (int)diviseur * 5 + reste, ray);
     
     t01.join();
-            cout << "Thread 1 terminé" << endl;
-            t02.join();
-            cout << "Thread 2 terminé" << endl;
-            t03.join();
-            cout << "Thread 3 terminé" << endl;
-            t04.join();
-            cout << "Thread 4 terminé" << endl;
-            t05.join();
-            cout << "Thread 5 terminé" << endl;
-            t06.join();
-            cout << "Thread 6 terminé" << endl;
+    cout << "Thread 1 terminé" << endl;
+    t02.join();
+    cout << "Thread 2 terminé" << endl;
+    t03.join();
+    cout << "Thread 3 terminé" << endl;
+    t04.join();
+    cout << "Thread 4 terminé" << endl;
+    t05.join();
+    cout << "Thread 5 terminé" << endl;
+    t06.join();
+    cout << "Thread 6 terminé" << endl;
 }
 
 void Camera::GeneratePartImage(const int departure, const int arrival, Ray ray)
@@ -498,7 +498,7 @@ Color Camera::GetColor(const Intersection& intersection, const Ray& ray) const {
         
     // Comment stopper de manière "propre" l'effet infini ?
 //    Color returnedColor = GetColor(intersection, ray, 1000);
-    Color returnedColor = GetColor(intersection, ray, 10);
+    Color returnedColor = GetColor(intersection, ray, 1000);
 
     return returnedColor;
 }
@@ -522,7 +522,7 @@ Color Camera::GetColor(const Intersection& intersection, const Ray& ray, int rem
     }
     else // Si ce n'est pas un miroir
     {
-        return GetLightning(intersection);
+        return GetLighting(intersection);
     }
 }
 
@@ -547,9 +547,9 @@ Intersection Camera::GetNearestIntersection(const Ray &ray) const {
     return nearestIntersection;
 }
 
-double Camera::GetRandomDouble(double min, double max) const {
-    return ((float(rand()) / float(RAND_MAX)) * (max - min)) + min;
-}
+//double Camera::GetRandomDouble(double min, double max) const {
+//    return ((float(rand()) / float(RAND_MAX)) * (max - min)) + min;
+//}
 
 
 
@@ -557,7 +557,7 @@ void Camera::SetScene(Scene* scene) {
     m_scene = scene;
 }
 
-Color Camera::GetLightning(const Intersection& intersection) const
+Color Camera::GetLighting(const Intersection& intersection) const
 {
     int lightsVisible = 0;
     Color finalColor = Color(0, 0, 0);
@@ -570,23 +570,48 @@ Color Camera::GetLightning(const Intersection& intersection) const
         
         if (canSeeLight)
         {
-            finalColor += GetDirectLightning(light, intersection);
+            finalColor += GetDirectLighting(light, intersection);
         }
-        else
-        {
-            finalColor += GetIndirectLightning();
-        }
+        
+//        finalColor += GetIndirectLighting(light, intersection);
     }
     
     return finalColor / lightsVisible;
 }
 
 
-Color Camera::GetDirectLightning(const Light& light, const Intersection &intersection) const {
+Color Camera::GetDirectLighting(const Light& light, const Intersection &intersection) const {
             return Light::GetLightning(light, intersection);
 }
 
-Color Camera::GetIndirectLightning() const {
+Color Camera::GetIndirectLighting(const Light& light, const Intersection &intersection) const {
     
-    return Color(0, 0, 0);
+    Color finalColor;
+    
+    Intersection bounceInter;
+    Ray bounceRay = Ray(Vector3(0), Vector3(0));
+    const int nbIter = 1;
+//    float ponderation = 100;
+//    int rebonds = nbIter;
+    
+    for (int i = 0; i < nbIter; i++)
+    {
+         bounceRay = Ray(intersection.pointCoordonate, Toolbox::GetRandomDirectionOnHemisphere(intersection.pointCoordonate, intersection.touchedSphere.GetNormal(intersection.pointCoordonate)));
+        bounceInter = GetNearestIntersection(bounceRay);
+
+        finalColor += (GetDirectLighting(light, bounceInter));// * ponderation) / 100;
+    }
+    
+//    do
+//    {
+////        ponderation = (ponderation / 2) - .1;
+//
+//        // choisir direction aléatoire pour le rayon
+//        rebonds--;
+//    }while (/*ponderation > 0 && */bounceInter.intersect && rebonds > 0);
+    
+//    cout << "hop hop" << endl;
+    
+    return finalColor / (nbIter);// - rebonds);
+//    return GetDirectLighting(light, intersection);
 }

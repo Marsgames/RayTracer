@@ -107,7 +107,8 @@ Material Light::GetMaterial() const {
 
 Color Light::GetLightning(const Light& light, const Intersection& intersection)
 {
-   const double puissance = light.GetPower() * (1 / (Vector3::GetDistance(light.GetPosition(), intersection.pointCoordonate)));
+    const double distance = Vector3::GetDistance(light.GetPosition(), intersection.pointCoordonate);
+   const double puissance = light.GetPower() * (1 / (distance));
     const Color lightColor = light.GetMaterial().GetSelfIlluminColor() * puissance;
     Color newColor = (intersection.touchedSphere.GetMaterial().GetDiffuseColor() + lightColor) / 2;
     

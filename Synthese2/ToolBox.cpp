@@ -12,7 +12,7 @@
 #include <random>
 #include <Ray.hpp>
 #include <Sphere.hpp>
-#include <ToolBox.hpp>
+#include <Toolbox.hpp>
 #include <vector>
 #include <Vector3.hpp>
 
@@ -39,14 +39,23 @@ double Toolbox::GenerateRandomNumber(const double min, const double max) {
 
 /// Return a random direction from a Point(x, y, z)
 /// @param origin Point from where random direction will be generated
-Vector3 Toolbox::GetRandomDirectionOnHemisphere(const Vector3 origin) {
+Vector3 Toolbox::GetRandomDirectionOnHemisphere(const Vector3& origin, const Vector3& normal) {
     const double random1 = GenerateRandomNumber();
-    const double random2 = GenerateRandomNumber();
+    double random2 = GenerateRandomNumber();
     
-    const double x = cos(2 * M_PI * random1) * (sqrt((1 - random2) * (1 - random2)));
-    const double y = sin(2 * M_PI * random1) * (sqrt((1 - random2) * (1 - random2)));
+    const double x = cos(2 * M_PI * random1) * (sqrt((1 - random2 * random2)));
+    const double y = sin(2 * M_PI * random1) * (sqrt((1 - random2 * random2)));
     
-    return Vector3(x, y, random2);
+    if (normal.GetZ() < 0)
+    {
+        random2 *= -1;
+    }
+    
+    Vector3 theNormal = normal.Normalize();
+    
+//    return Vector3(x, y, random2);// * normal;
+    return Vector3(x + theNormal.GetX(), y + theNormal.GetY(), random2 + theNormal.GetZ()).Normalize();
+
 }
 
 /// Return true if a point is lighted by the light
