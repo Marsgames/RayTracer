@@ -495,12 +495,6 @@ bool Camera::GetUseFocal() {
 }
 
 Color Camera::GetColor(const Intersection& intersection, const Ray& ray) const {
-    if (!intersection.intersect)
-    {
-        // Calculer lumière indirect ?!
-        return Color(0, 0, 0);
-    }
-        
     // Comment stopper de manière "propre" l'effet infini ?
 //    Color returnedColor = GetColor(intersection, ray, 1000);
     Color returnedColor = GetColor(intersection, ray, 1000);
@@ -568,31 +562,32 @@ Color Camera::GetLighting(const Intersection& intersection) const
     int lightsVisible = 0;
     Color finalColor = Color(0, 0, 0);
     
-    const int nbSurfacicLights = 5;
+    const int nbSurfacicLights = 1;
     Light surfacicLight = Light(Vector3(), 0);
 //    Vector3 surfacicLightPos;
     
     #pragma omp parallel for
     for (const Light& light : m_scene->GetLights())
     {
+        lightsVisible++;
+        
         #pragma omp parallel for
         for (int i = 0; i < nbSurfacicLights; i++)
         {
-            lightsVisible++;
-            
-            surfacicLight = Light(Toolbox::GetRandomPointOnSphere(Sphere(light.GetPosition(), 300)), light.GetPower());
+            surfacicLight = Light(Toolbox::GetRandomPointOnSphere(Sphere(light.GetPosition(), 3)), light.GetPower());
             
             const bool canSeeLight = Toolbox::CanSeeLight(intersection.pointCoordonate, surfacicLight, m_scene->GetSpheres());
             
             if (canSeeLight)
-                    {
-                        finalColor += GetDirectLighting(surfacicLight, intersection);
-            //            finalColor = finalColor * GetDirectLighting(light, intersection);
-                    }
+            {
+                finalColor = finalColor + GetDirectLighting(surfacicLight, intersection);
+            }
+//            else
+//            finalColor += GetIndirectLighting(surfacicLight, intersection);
         }
     }
     
-    return finalColor / lightsVisible;
+    return finalColor / (lightsVisible * nbSurfacicLights);
 }
 
 

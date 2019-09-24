@@ -73,7 +73,8 @@ public:
     void operator+=(const Color& other);
     Color operator/(const int value) const;
     Color operator+(const Color& other) const;
-    
+    Color operator-(const Color& other) const;
+
     void Print() const;
     string ToString() const;
     void SetColorName();

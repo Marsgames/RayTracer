@@ -34,7 +34,7 @@ int main(int argc, char* argv[])
     double widthOffset = 30000 + (10 * (0.1 * (mainCamera.GetWidth() / 2)));
     double heightOffset = 30000 + (10 * (0.1 * (mainCamera.GetHeight() / 2)));
     Sphere sp1 = Sphere(Vector3(-300, -300, 500), 200, MaterialList::BlancMat);
-    Sphere sp2 = Sphere(Vector3(0, 0, 500), 200, MaterialList::BlancDiffus);
+//    Sphere sp1 = Sphere(Vector3(0, 0, 500), 200, MaterialList::BlancDiffus);
     
 //    Sphere sp2 = Sphere(Vector3(-1700, 1000, 500), 50, MaterialList::BlancDiffus);
 //    Sphere sp3 = Sphere(Vector3(1700, 1000, 500), 50, MaterialList::BlancDiffus);
@@ -86,7 +86,7 @@ Sphere backWall = Sphere(Vector3(0., 0., -3e4 - 1000), 3e4, MaterialList::BleuCi
     mainCamera.SetScene(&myScene);
     myScene.AddCamera(mainCamera);
     myScene.AddSphere(sp1);
-    myScene.AddSphere(sp2);
+//    myScene.AddSphere(sp2);
 //    myScene.AddSphere(sp3);
 //    myScene.AddSphere(sp4);
 //    myScene.AddSphere(sp5);
@@ -113,8 +113,8 @@ Sphere backWall = Sphere(Vector3(0., 0., -3e4 - 1000), 3e4, MaterialList::BleuCi
 //    myScene.AddLight(Light(Vector3(-1700, 1000, 0), 2000, Material(Color(255, 0, 0))));
 //    myScene.AddLight(Light(Vector3(1700, 1000, 0), 2000, Material(Color(0, 0, 255))));
     
-    myScene.AddLight(Light(Vector3(-1700, 1000, 0), 500, Material(Color(255, 255, 255))));
-    myScene.AddLight(Light(Vector3(1700, 1000, 0), 500, Material(Color(255, 255, 255))));
+//    myScene.AddLight(Light(Vector3(-1700, 1000, 0), 500, Material(Color(255, 255, 255))));
+//    myScene.AddLight(Light(Vector3(1700, 1000, 0), 500, Material(Color(255, 255, 255))));
     
 //    myScene.AddLight(Light(Vector3(-300, 100, 0), 500, Material(Color(255, 0, 0))));
 //    myScene.AddLight(Light(Vector3(300, 100, 0), 500, Material(Color(0, 0, 255))));

@@ -33,58 +33,19 @@ Material Light::GetMaterial() const {
 
 Color Light::GetLightning(const Light& light, const Intersection& intersection)
 {
-//    const int nbSurfacic = 5;
-    
     Color newColor;
-//    Vector3 position;
-//
-//#pragma omp parallel for
-//    for (int i = 0; i < nbSurfacic; i++)
-//    {
-//        position = Toolbox::GetRandomPointOnSphere(Sphere(light.GetPosition(), 10));
         
         const double distance = Vector3::GetDistance(light.GetPosition(), intersection.pointCoordonate);
         const double puissance = light.GetPower() * (1 / (distance));
-         const Color lightColor = light.GetMaterial().GetSelfIlluminColor();
+    
+//    cout << "puissance : " << puissance << endl;
+    
+//         const Color lightColor = light.GetMaterial().GetSelfIlluminColor();
         
-        newColor += ((intersection.touchedSphere.GetMaterial().GetDiffuseColor() + lightColor) / 2) * puissance;
-//    }
+    newColor = intersection.touchedSphere.GetMaterial().GetDiffuseColor() * puissance;// * lightColor;// ((intersection.touchedSphere.GetMaterial().GetDiffuseColor() + lightColor) / 2) * puissance;
     
-    
-    
-    
-//    newColor = newColor / nbSurfacic;
-    
-    { // Check 0
-        if (0 == newColor.GetR())
-        {
-            newColor.SetR(1);
-        }
-        if (0 == newColor.GetG())
-        {
-            newColor.SetG(1);
-        }
-        if (0 == newColor.GetB())
-        {
-            newColor.SetB(1);
-        }
-        }
 
-        newColor = newColor * puissance;
-
-
-
-
-
-
-
-
-        if (newColor.GetR() <= 1 && newColor.GetG() <= 1 && newColor.GetB() <= 1)
-            {
-    //            cout << "Trop loin : noir" << endl;
-    //            return Color{255, 200, 255} * 1;
-                return Color{0, 0, 0} * 1;
-            }
+//        newColor = newColor * puissance;
 
             return newColor;
 }
