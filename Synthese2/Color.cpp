@@ -54,19 +54,19 @@ void Color::SetColorName() {
     {
         m_colorName = EColor::Black;
     }
-    else if (255 == m_r && 0 == m_g && 0 == m_b)
+    else if (1 == m_r && 0 == m_g && 0 == m_b)
     {
         m_colorName = EColor::Red;
     }
-    else if (0 == m_r && 255 == m_g && 0 == m_b)
+    else if (0 == m_r && 1 == m_g && 0 == m_b)
     {
         m_colorName = EColor::Green;
     }
-    else if (0 == m_r && 0 == m_g && 255 == m_b)
+    else if (0 == m_r && 0 == m_g && 1 == m_b)
     {
         m_colorName = EColor::Blue;
     }
-    else if (255 == m_r && 255 == m_g && 255 == m_b)
+    else if (1 == m_r && 1 == m_g && 1 == m_b)
     {
         m_colorName = EColor::White;
     }
@@ -86,22 +86,22 @@ Color Color::GetColor(EColor colorName) {
             return Color{0, 0, 0};
             break;
         case Red:
-            return Color{255, 0, 0};
+            return Color{1, 0, 0};
             break;
         case Green:
-            return Color{0, 255, 0};
+            return Color{0, 1, 0};
             break;
         case Blue:
-            return Color{0, 0, 255};
+            return Color{0, 0, 1};
             break;
         case White:
-            return Color{255, 255, 255};
+            return Color{1, 1, 1};
             break;
         case Pink:
-            return Color{255, 0, 255};
+            return Color{1, 0, 1};
             break;
         case Yellow:
-            return Color{255, 255, 0};
+            return Color{1, 1, 0};
             break;
             
         default:
@@ -128,7 +128,7 @@ void Color::operator+=(const Color &other) {
     m_b += other.m_b;
 }
 
-Color Color::operator/(const int value) const {
+Color Color::operator/(const double value) const {
     return Color(m_r / value, m_g / value, m_b / value);
 }
 

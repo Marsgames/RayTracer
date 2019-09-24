@@ -75,7 +75,7 @@ void Camera::InitPixelsArray() {
         const int indexX = (index % m_width - m_width / 2);// + m_origin.GetX();
         const int indexY = (index / m_width - m_height / 2);// + m_origin.GetY();
         
-        const Vector3 actualPos {indexX, indexY, static_cast<int>(m_position.GetZ())};
+        const Vector3 actualPos {indexX * 1., indexY * 1., m_position.GetZ()};
         //        const Vector3 newPos = Vector3{cos(thetaSigned) * actualPos.GetX() + sin(thetaSigned) * actualPos.GetZ(), actualPos.GetY(), -sin(thetaSigned) * actualPos.GetX() + cos(thetaSigned) * actualPos.GetZ()};
         
         Vector3 newPos = Vector3{cos(thetaSigned) * actualPos.GetX() + sin(thetaSigned) * 1, actualPos.GetY(), -sin(thetaSigned) * actualPos.GetX() + cos(thetaSigned) * 1};
@@ -152,34 +152,34 @@ void Camera::SetDirection(Vector3 direction) {
 }
 
 inline void Camera::SavePPM() {
-    ofstream myfile;
-    myfile.open (m_source + m_name + ".ppm");
-    myfile << "P3" << endl;
-    myfile << "# " << m_name << ".ppm" << endl;
-    myfile << m_width << " " << m_height << endl;
-    myfile << "255" << endl;
-    
-#pragma omp parallel for
-    for (int index = 0; index < m_height * m_width; index++)
-    {
-        double r = m_pixels[index].GetColorR() > 255 ? 255 : m_pixels[index].GetColorR();
-        double g = m_pixels[index].GetColorG() > 255 ? 255 : m_pixels[index].GetColorG();
-        double b = m_pixels[index].GetColorB() > 255 ? 255 : m_pixels[index].GetColorB();
-        
-        if (r < 0 || g < 0 || b < 0)
-        {
-            cout << "color < 0 : (" << r << ", " << g << ", " << b << ")" << endl;
-            myfile.close();
-            exit(2);
-            // EXIT CODE: 2 --> Un pixel avait une couleur < 0
-        }
-        
-        myfile << r << " " << g << " " << b << " ";
-        //        }
-        myfile << endl;
-    }
-    
-    myfile.close();
+//    ofstream myfile;
+//    myfile.open (m_source + m_name + ".ppm");
+//    myfile << "P3" << endl;
+//    myfile << "# " << m_name << ".ppm" << endl;
+//    myfile << m_width << " " << m_height << endl;
+//    myfile << "255" << endl;
+//    
+//#pragma omp parallel for
+//    for (int index = 0; index < m_height * m_width; index++)
+//    {
+//        double r = m_pixels[index].GetColorR() > 255 ? 255 : m_pixels[index].GetColorR();
+//        double g = m_pixels[index].GetColorG() > 255 ? 255 : m_pixels[index].GetColorG();
+//        double b = m_pixels[index].GetColorB() > 255 ? 255 : m_pixels[index].GetColorB();
+//        
+//        if (r < 0 || g < 0 || b < 0)
+//        {
+//            cout << "color < 0 : (" << r << ", " << g << ", " << b << ")" << endl;
+//            myfile.close();
+//            exit(2);
+//            // EXIT CODE: 2 --> Un pixel avait une couleur < 0
+//        }
+//        
+//        myfile << r << " " << g << " " << b << " ";
+//        //        }
+//        myfile << endl;
+//    }
+//    
+//    myfile.close();
 }
 
 inline void Camera::SaveBMP() {
@@ -188,12 +188,17 @@ inline void Camera::SaveBMP() {
 #pragma omp parallel for
     for (int index = 0; index < m_height * m_width; index++)
     {
-        int x = index % m_width;
-        int y = index / m_width;
+        const int x = index % m_width;
+        const int y = index / m_width;
         
-        double r = m_pixels[index].GetColorR() > 255 ? 255 : m_pixels[index].GetColorR();
-        double g = m_pixels[index].GetColorG() > 255 ? 255 : m_pixels[index].GetColorG();
-        double b = m_pixels[index].GetColorB() > 255 ? 255 : m_pixels[index].GetColorB();
+        double r = m_pixels[index].GetColorR() * 255;
+        r = r > 255 ? 255 : r;
+        
+        double g = m_pixels[index].GetColorG() * 255;
+        g = g > 255 ? 255 : g;
+        
+        double b = m_pixels[index].GetColorB() * 255;
+        b = b > 255 ? 255 : b;
         
         //        if(r < 0 || g < 0 || b < 0)
         //        {
@@ -326,7 +331,8 @@ void Camera::DrawImage() {
     // double distance = __DBL_MAX__;
     // Material sphereMaterial = Material(Color(0, 0, 0), EMaterials::DarkFloor);
     // Vector3 pointOnSphere = Vector3(0, 0, 0);
-    Color pixelColor = Color(100, 100, 100);
+
+    Color pixelColor = Color(1, 0, 1);
     
     #pragma omp parallel for
     for (Pixel& pixel : m_pixels)
@@ -516,7 +522,7 @@ Color Camera::GetColor(const Intersection& intersection, const Ray& ray, int rem
             return GetColor(reflectionIntersection, reflectionDirection, remainingBounce);
         }
         
-        return Color(255, 255, 0);
+        return Color(1, 1, 0);
 //        return finalColor;
     }
     else // Si ce n'est pas un miroir

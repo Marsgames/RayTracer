@@ -35,7 +35,7 @@ public:
     Sphere(Vector3 position, int rayon) :
     m_center{position},
     m_rayon{rayon},
-    m_material{Material(Color{255, 0, 0})}
+    m_material{Material(Color{1, 0, 0})}
     {};
     
     Sphere(Vector3 position, int rayon, Material material, string name) :

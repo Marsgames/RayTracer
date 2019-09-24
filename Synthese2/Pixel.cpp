@@ -29,15 +29,15 @@ Color Pixel::GetColor() const {
     return m_color;
 }
 
- int Pixel::GetColorR() const {
+ double Pixel::GetColorR() const {
     return m_color.GetR();
 }
 
- int Pixel::GetColorG() const {
+ double Pixel::GetColorG() const {
     return m_color.GetG();
 }
 
- int Pixel::GetColorB() const {
+ double Pixel::GetColorB() const {
     return m_color.GetB();
  }
 

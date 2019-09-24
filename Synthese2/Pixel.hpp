@@ -32,9 +32,9 @@ public:
     double GetPositionZ() const;
     
     Color GetColor() const;
-    int GetColorR() const;
-    int GetColorG() const;
-    int GetColorB() const;
+    double GetColorR() const;
+    double GetColorG() const;
+    double GetColorB() const;
     
     void SetColor(Color color);
     

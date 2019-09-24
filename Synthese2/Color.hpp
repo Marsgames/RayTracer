@@ -39,14 +39,6 @@ public:
         SetColorName();
     };
     
-//    Color(int r, int g, int b) :
-//    m_r{static_cast<double>(r)},
-//    m_g{static_cast<double>(g)},
-//    m_b{static_cast<double>(b)}
-//    {
-//        SetColorName();
-//    };
-    
     Color(double r, double g, double b) :
     m_r{r},
     m_g{g},
@@ -71,7 +63,7 @@ public:
     Color operator*(const double other) const;
     bool operator==(const Color& other) const;
     void operator+=(const Color& other);
-    Color operator/(const int value) const;
+    Color operator/(const double value) const;
     Color operator+(const Color& other) const;
     Color operator-(const Color& other) const;
 

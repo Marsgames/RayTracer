@@ -50,7 +50,7 @@ public:
     m_selfIlluminColor{selfIlluminColor}
     {};
     
-    Material(const string name, const Color& diffuseColor, const Color& selfIlluminColor = Color(255, 255, 255)) :
+    Material(const string name, const Color& diffuseColor, const Color& selfIlluminColor = Color(1, 1, 1)) :
     m_name{name},
     m_diffuseColor{diffuseColor},
     m_selfIlluminColor{selfIlluminColor}
