@@ -22,13 +22,13 @@ using std::endl;
 /// Generate a random uniform double between min and max
 /// @param min min value of the random generated number
 /// @param max max value of the random generated number
-double Toolbox::GenerateRandomNumber(std::default_random_engine& generator, const double min, const double max) {
+double Toolbox::GenerateRandomNumber(const double min, const double max) {
 //    const unsigned seed = K_SEED;
 //    std::default_random_engine generator(static_cast<unsigned>(t);
     
 //    std::default_random_engine generator;
     std::uniform_real_distribution<double> distribution(min, max);
-    
+        
 //    cout << endl << endl;
 //    for (int i = 0; i < 10; i++)
 //    {
@@ -36,14 +36,14 @@ double Toolbox::GenerateRandomNumber(std::default_random_engine& generator, cons
 //    }
 //    cout << endl;
     
-    return distribution(generator);
+    return distribution(K_GENERATOR);
 }
 
 /// Return a random direction from a Point(x, y, z)
 /// @param normal The center of the hemisphere will be perpendicular with this direction
-Vector3 Toolbox::GetRandomDirectionOnHemisphere(const Vector3& normal, std::default_random_engine& generator) {
-    const double random1 = GenerateRandomNumber(generator);
-    double random2 = GenerateRandomNumber(generator);
+Vector3 Toolbox::GetRandomDirectionOnHemisphere(const Vector3& normal) {
+    const double random1 = GenerateRandomNumber();
+    double random2 = GenerateRandomNumber();
     
     const double x = cos(2 * M_PI * random1) * (sqrt((1 - random2 * random2)));
     const double y = sin(2 * M_PI * random1) * (sqrt((1 - random2 * random2)));
@@ -57,13 +57,13 @@ Vector3 Toolbox::GetRandomDirectionOnHemisphere(const Vector3& normal, std::defa
     return Vector3(x + normal.GetX(), y + normal.GetY(), random2 + normal.GetZ()).Normalize();
 }
 
-Vector3 Toolbox::GetRandomPointOnSphere(const Sphere& sphere, std::default_random_engine& generator)
+Vector3 Toolbox::GetRandomPointOnSphere(const Sphere& sphere)
 {
     const Vector3 position = sphere.GetCenter();
     const int rayon = sphere.GetRayon();
     
-    const double random1 = GenerateRandomNumber(generator);
-    const double random2 = GenerateRandomNumber(generator);
+    const double random1 = GenerateRandomNumber();
+    const double random2 = GenerateRandomNumber();
     
     const double x = position.GetX() + 2 * rayon * cos(2 * M_PI * random1) * random2 * (1 - random2);
     const double y = position.GetY() + 2 * rayon * sin(2 * M_PI * random1) * random2 * (1 - random2);
@@ -119,5 +119,5 @@ bool Toolbox::CanSeeLight(const Vector3& point, const Light& light, const vector
     return true;
 }
 
-
+default_random_engine Toolbox::K_GENERATOR = default_random_engine(K_SEED);
 

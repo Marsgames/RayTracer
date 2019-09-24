@@ -581,8 +581,6 @@ void Camera::SetScene(Scene* scene) {
 
 Color Camera::GetLighting(const Intersection& intersection) const
 {
-    std::default_random_engine generator;
-
     int lightsVisible = 0;
     Color finalColor = Color(0, 0, 0);
     
@@ -597,7 +595,7 @@ Color Camera::GetLighting(const Intersection& intersection) const
 
         for (int i = 0; i < nbSurfacicLights; i++)
         {
-            surfacicLight = Light(Toolbox::GetRandomPointOnSphere(Sphere(light.GetPosition(), 100), generator), light.GetPower(), light.GetMaterial());
+            surfacicLight = Light(Toolbox::GetRandomPointOnSphere(Sphere(light.GetPosition(), 100)), light.GetPower(), light.GetMaterial());
             
 //            surfacicLight.GetPosition().Print();
             
@@ -626,7 +624,7 @@ Color Camera::GetDirectLighting(const Light& light, const Intersection &intersec
             return Light::GetLighting(light, intersection);
 }
 
-Color Camera::GetIndirectLighting(const Light& light, const Intersection &intersection, std::default_random_engine& generator) const {
+Color Camera::GetIndirectLighting(const Light& light, const Intersection &intersection) const {
         Color finalColor = intersection.touchedSphere.GetMaterial().GetDiffuseColor();
     Color colorToAdd;
     
@@ -641,7 +639,7 @@ Color Camera::GetIndirectLighting(const Light& light, const Intersection &inters
     {
         remainingBounces--;
         
-        bounceRay = Ray(intersection.pointCoordonate, Toolbox::GetRandomDirectionOnHemisphere(intersection.touchedSphere.GetNormal(intersection.pointCoordonate), generator));
+        bounceRay = Ray(intersection.pointCoordonate, Toolbox::GetRandomDirectionOnHemisphere(intersection.touchedSphere.GetNormal(intersection.pointCoordonate)));
         bounceInter = GetNearestIntersection(bounceRay);
 
         colorToAdd = bounceInter.touchedSphere.GetMaterial().GetDiffuseColor();// * bounceInter.touchedSphere.GetMaterial().GetAlbedo();// / (diviseur - .1);

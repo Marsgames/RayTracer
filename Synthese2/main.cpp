@@ -21,8 +21,6 @@ using std::endl;
 
 int main(int argc, char* argv[])
 {
-//    Toolbox::K_GENERATOR = std::default_random_engine(0);
-    
     cout << endl;
     testing::InitGoogleTest(&argc, argv);
     RunTests();
@@ -109,9 +107,9 @@ Sphere backWall = Sphere(Vector3(0., 0., -3e4 - 1000), 3e4, MaterialList::BleuCi
     
     
 //    myScene.AddLight(Light(Vector3(-0, 0, 0), 500000));
-//    myScene.AddLight(Light(Vector3(-500, 500, 0), 1000000));
+    myScene.AddLight(Light(Vector3(-500, 500, 0), 1000000));
 myScene.AddLight(Light(Vector3(0, 500, 0), 1000000, Material(Color(1, 1, 1))));
-//myScene.AddLight(Light(Vector3(500, 500, 0), 1000000));
+myScene.AddLight(Light(Vector3(500, 500, 0), 1000000));
 //    myScene.AddLight(Light(Vector3(-700, 500, 0), 1000000, Material(Color(255, 255, 255), Color(0, 0, 255))));
 //    myScene.AddLight(Light(Vector3(700, 500, 0), 1000000, Material(Color(255, 255, 255), Color(255, 0, 0))));
     
