@@ -8,6 +8,7 @@
 
 #pragma once
 
+#include <iostream>
 #include <string>
 
 using std::string;
@@ -38,19 +39,24 @@ public:
         SetColorName();
     };
     
-    Color(int r, int g, int b) :
-    m_r{static_cast<double>(r)},
-    m_g{static_cast<double>(g)},
-    m_b{static_cast<double>(b)}
-    {
-        SetColorName();
-    };
+//    Color(int r, int g, int b) :
+//    m_r{static_cast<double>(r)},
+//    m_g{static_cast<double>(g)},
+//    m_b{static_cast<double>(b)}
+//    {
+//        SetColorName();
+//    };
     
     Color(double r, double g, double b) :
     m_r{r},
     m_g{g},
     m_b{b}
     {
+//        if ((r + g + b) > 3)
+//        {
+//            std::cout << "LES COULEURS NE PEUVENT PAS ÊTRE SUPÉRIEUR À 3" << std::endl;
+//        }
+        
         SetColorName();
     };
     

@@ -23,7 +23,7 @@ using std::endl;
 /// @param min min value of the random generated number
 /// @param max max value of the random generated number
 double Toolbox::GenerateRandomNumber(const double min, const double max) {
-    const unsigned seed = 0;
+    const unsigned seed = K_SEED;
     std::default_random_engine generator(seed);
     std::uniform_real_distribution<double> distribution(min, max);
     
@@ -38,8 +38,8 @@ double Toolbox::GenerateRandomNumber(const double min, const double max) {
 }
 
 /// Return a random direction from a Point(x, y, z)
-/// @param origin Point from where random direction will be generated
-Vector3 Toolbox::GetRandomDirectionOnHemisphere(const Vector3& origin, const Vector3& normal) {
+/// @param normal The center of the hemisphere will be perpendicular with this direction
+Vector3 Toolbox::GetRandomDirectionOnHemisphere(const Vector3& normal) {
     const double random1 = GenerateRandomNumber();
     double random2 = GenerateRandomNumber();
     
@@ -50,12 +50,24 @@ Vector3 Toolbox::GetRandomDirectionOnHemisphere(const Vector3& origin, const Vec
     {
         random2 *= -1;
     }
-    
-    Vector3 theNormal = normal.Normalize();
-    
+        
 //    return Vector3(x, y, random2);// * normal;
-    return Vector3(x + theNormal.GetX(), y + theNormal.GetY(), random2 + theNormal.GetZ()).Normalize();
+    return Vector3(x + normal.GetX(), y + normal.GetY(), random2 + normal.GetZ()).Normalize();
+}
 
+Vector3 Toolbox::GetRandomPointOnSphere(const Sphere& sphere)
+{
+    const Vector3 position = sphere.GetCenter();
+    const int rayon = sphere.GetRayon();
+    
+    const double random1 = GenerateRandomNumber();
+    const double random2 = GenerateRandomNumber();
+    
+    const double x = position.GetX() + 2 * rayon * cos(2 * M_PI * random1) * random2 * (1 - random2);
+    const double y = position.GetY() + 2 * rayon * sin(2 * M_PI * random1) * random2 * (1 - random2);
+    const double z = position.GetZ() + rayon * (1 - 2 * random2);
+    
+    return Vector3(x, y, z);
 }
 
 /// Return true if a point is lighted by the light
@@ -74,6 +86,7 @@ bool Toolbox::CanSeeLight(const Vector3& point, const Light& light, const vector
     
     Intersection intersection;
     
+    #pragma omp parallel for
     for (const Sphere& sphere : spheres)
     {
 //        cout << "sphere " << sphere.GetName() << endl;
@@ -103,4 +116,6 @@ bool Toolbox::CanSeeLight(const Vector3& point, const Light& light, const vector
     
     return true;
 }
+
+
 

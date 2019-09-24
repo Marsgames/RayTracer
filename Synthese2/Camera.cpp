@@ -63,6 +63,7 @@ void Camera::InitPixelsArray() {
     m_pixels.reserve(m_height * m_width);
     Color defaultColor {0, 0, 0};
     
+    #pragma omp parallel for
     for (int index = 0; index < m_height * m_width; index++)
     {
         // Pour un écran de 1000 * 1000
@@ -158,6 +159,7 @@ inline void Camera::SavePPM() {
     myfile << m_width << " " << m_height << endl;
     myfile << "255" << endl;
     
+#pragma omp parallel for
     for (int index = 0; index < m_height * m_width; index++)
     {
         double r = m_pixels[index].GetColorR() > 255 ? 255 : m_pixels[index].GetColorR();
@@ -183,6 +185,7 @@ inline void Camera::SavePPM() {
 inline void Camera::SaveBMP() {
     bitmap_image img(m_width, m_height);
     
+#pragma omp parallel for
     for (int index = 0; index < m_height * m_width; index++)
     {
         int x = index % m_width;
@@ -325,6 +328,7 @@ void Camera::DrawImage() {
     // Vector3 pointOnSphere = Vector3(0, 0, 0);
     Color pixelColor = Color(100, 100, 100);
     
+    #pragma omp parallel for
     for (Pixel& pixel : m_pixels)
     {
         ray.SetOrigin(pixel.GetPosition());
@@ -437,6 +441,7 @@ void Camera::GeneratePartImage(const int departure, const int arrival, Ray ray)
 {
     Pixel p;
     
+#pragma omp parallel for
     for (int i = departure; i < arrival; i++)
     {
         p = m_pixels[i];
@@ -532,6 +537,7 @@ Intersection Camera::GetNearestIntersection(const Ray &ray) const {
     double distanceIntersection = __DBL_MAX__;
     Sphere nearestSphere = Sphere(Vector3(0), -1, Material(Color(0, 0, 0)));
     
+    #pragma omp parallel for
     for (const Sphere& sphere : m_scene->GetSpheres())
     {
         intersection = Sphere::IntersectRaySphere(ray, sphere);
@@ -562,18 +568,28 @@ Color Camera::GetLighting(const Intersection& intersection) const
     int lightsVisible = 0;
     Color finalColor = Color(0, 0, 0);
     
+    const int nbSurfacicLights = 5;
+    Light surfacicLight = Light(Vector3(), 0);
+//    Vector3 surfacicLightPos;
+    
+    #pragma omp parallel for
     for (const Light& light : m_scene->GetLights())
     {
-        const bool canSeeLight = Toolbox::CanSeeLight(intersection.pointCoordonate, light, m_scene->GetSpheres());
-        
-        lightsVisible++;
-        
-        if (canSeeLight)
+        #pragma omp parallel for
+        for (int i = 0; i < nbSurfacicLights; i++)
         {
-            finalColor += GetDirectLighting(light, intersection);
+            lightsVisible++;
+            
+            surfacicLight = Light(Toolbox::GetRandomPointOnSphere(Sphere(light.GetPosition(), 300)), light.GetPower());
+            
+            const bool canSeeLight = Toolbox::CanSeeLight(intersection.pointCoordonate, surfacicLight, m_scene->GetSpheres());
+            
+            if (canSeeLight)
+                    {
+                        finalColor += GetDirectLighting(surfacicLight, intersection);
+            //            finalColor = finalColor * GetDirectLighting(light, intersection);
+                    }
         }
-        
-//        finalColor += GetIndirectLighting(light, intersection);
     }
     
     return finalColor / lightsVisible;
@@ -586,32 +602,34 @@ Color Camera::GetDirectLighting(const Light& light, const Intersection &intersec
 
 Color Camera::GetIndirectLighting(const Light& light, const Intersection &intersection) const {
     
-    Color finalColor;
+    Color finalColor = intersection.touchedSphere.GetMaterial().GetDiffuseColor();
+    Color colorToAdd;
     
     Intersection bounceInter;
     Ray bounceRay = Ray(Vector3(0), Vector3(0));
-    const int nbIter = 1;
-//    float ponderation = 100;
-//    int rebonds = nbIter;
+    const int nbIter = 5;
+    int remainingBounces = nbIter;
+    bool colorBlack;
     
-    for (int i = 0; i < nbIter; i++)
+    cout << "-----------" << endl;
+    
+    do
     {
-         bounceRay = Ray(intersection.pointCoordonate, Toolbox::GetRandomDirectionOnHemisphere(intersection.pointCoordonate, intersection.touchedSphere.GetNormal(intersection.pointCoordonate)));
+        remainingBounces--;
+        
+        bounceRay = Ray(intersection.pointCoordonate, Toolbox::GetRandomDirectionOnHemisphere(intersection.touchedSphere.GetNormal(intersection.pointCoordonate)));
         bounceInter = GetNearestIntersection(bounceRay);
 
-        finalColor += (GetDirectLighting(light, bounceInter));// * ponderation) / 100;
-    }
+        colorToAdd = bounceInter.touchedSphere.GetMaterial().GetDiffuseColor();// * bounceInter.touchedSphere.GetMaterial().GetAlbedo();// / (diviseur - .1);
+//        diviseur *= 2;
+        
+        finalColor += colorToAdd;
+        
+        colorBlack = (colorToAdd.GetR() <= 1 && colorToAdd.GetG() <= 1 && colorToAdd.GetB() <= 1);
+        
+        cout << "colorToAdd : " << colorToAdd.ToString() << endl;
+    }while(bounceInter.intersect && !colorBlack
+           && remainingBounces > 0);
     
-//    do
-//    {
-////        ponderation = (ponderation / 2) - .1;
-//
-//        // choisir direction aléatoire pour le rayon
-//        rebonds--;
-//    }while (/*ponderation > 0 && */bounceInter.intersect && rebonds > 0);
-    
-//    cout << "hop hop" << endl;
-    
-    return finalColor / (nbIter);// - rebonds);
-//    return GetDirectLighting(light, intersection);
+    return finalColor / ((nbIter) - remainingBounces );
 }
