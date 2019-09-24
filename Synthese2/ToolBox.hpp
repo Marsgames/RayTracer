@@ -9,16 +9,17 @@
 #pragma once
 
 #include <Light.hpp>
+#include <random>
 #include <vector>
 #include <Vector3.hpp>
 
 class Toolbox {
     
 public:
-    static const int K_SEED = 0;
+//    static std::default_random_engine K_GENERATOR;
     
-    static double GenerateRandomNumber(const double min = 0.0, const double max = 1.0);
-    static Vector3 GetRandomDirectionOnHemisphere(const Vector3& normal);
-    static Vector3 GetRandomPointOnSphere(const Sphere& sphere);
+    static double GenerateRandomNumber(std::default_random_engine& generator, const double min = 0.0, const double max = 1.0);
+    static Vector3 GetRandomDirectionOnHemisphere(const Vector3& normal, std::default_random_engine& generator);
+    static Vector3 GetRandomPointOnSphere(const Sphere& sphere, std::default_random_engine& generator);
     static bool CanSeeLight(const Vector3& point, const Light& light, const vector<Sphere>& spheres);
 };

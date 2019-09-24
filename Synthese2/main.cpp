@@ -21,6 +21,8 @@ using std::endl;
 
 int main(int argc, char* argv[])
 {
+//    Toolbox::K_GENERATOR = std::default_random_engine(0);
+    
     cout << endl;
     testing::InitGoogleTest(&argc, argv);
     RunTests();
@@ -35,6 +37,9 @@ int main(int argc, char* argv[])
     double heightOffset = 30000 + (10 * (0.1 * (mainCamera.GetHeight() / 2)));
     Sphere sp1 = Sphere(Vector3(-300, -300, 500), 200, MaterialList::BlancMat);
 //    Sphere sp1 = Sphere(Vector3(0, 0, 500), 200, MaterialList::BlancDiffus);
+    
+    Sphere sp2 = Sphere(Vector3(300, -300, 500), 200, MaterialList::BlancMat);
+
     
 //    Sphere sp2 = Sphere(Vector3(-1700, 1000, 500), 50, MaterialList::BlancDiffus);
 //    Sphere sp3 = Sphere(Vector3(1700, 1000, 500), 50, MaterialList::BlancDiffus);
@@ -86,7 +91,7 @@ Sphere backWall = Sphere(Vector3(0., 0., -3e4 - 1000), 3e4, MaterialList::BleuCi
     mainCamera.SetScene(&myScene);
     myScene.AddCamera(mainCamera);
     myScene.AddSphere(sp1);
-//    myScene.AddSphere(sp2);
+    myScene.AddSphere(sp2);
 //    myScene.AddSphere(sp3);
 //    myScene.AddSphere(sp4);
 //    myScene.AddSphere(sp5);
@@ -98,35 +103,37 @@ Sphere backWall = Sphere(Vector3(0., 0., -3e4 - 1000), 3e4, MaterialList::BleuCi
     myScene.AddSphere(backWall);
     myScene.AddSphere(frontWall);
 
-    //        myScene.AddLight(Light(Vector3(2000, -900, 900), 500));
-//    myScene.AddLight(Light(Vector3(0, 500, 0), 500, Material(Color(255, 255, 255), Color(255, 0, 0))));
+    //        myScene.AddLight(Light(Vector3(2000, -900, 900), 500000));
+//    myScene.AddLight(Light(Vector3(0, 500, 0), 500000, Material(Color(255, 255, 255), Color(255, 0, 0))));
     
     
     
-//    myScene.AddLight(Light(Vector3(-0, 0, 0), 500));
-    myScene.AddLight(Light(Vector3(-0, 500, 0), 1000));
-//    myScene.AddLight(Light(Vector3(-700, 500, 0), 1000, Material(Color(255, 255, 255), Color(0, 0, 255))));
-//    myScene.AddLight(Light(Vector3(700, 500, 0), 1000, Material(Color(255, 255, 255), Color(255, 0, 0))));
+//    myScene.AddLight(Light(Vector3(-0, 0, 0), 500000));
+//    myScene.AddLight(Light(Vector3(-500, 500, 0), 1000000));
+myScene.AddLight(Light(Vector3(0, 500, 0), 1000000, Material(Color(1, 1, 1))));
+//myScene.AddLight(Light(Vector3(500, 500, 0), 1000000));
+//    myScene.AddLight(Light(Vector3(-700, 500, 0), 1000000, Material(Color(255, 255, 255), Color(0, 0, 255))));
+//    myScene.AddLight(Light(Vector3(700, 500, 0), 1000000, Material(Color(255, 255, 255), Color(255, 0, 0))));
     
     
     
-//    myScene.AddLight(Light(Vector3(-1700, 1000, 0), 2000, Material(Color(255, 0, 0))));
-//    myScene.AddLight(Light(Vector3(1700, 1000, 0), 2000, Material(Color(0, 0, 255))));
+//    myScene.AddLight(Light(Vector3(-1700, 1000, 0), 2000000, Material(Color(255, 0, 0))));
+//    myScene.AddLight(Light(Vector3(1700, 1000, 0), 2000000, Material(Color(0, 0, 255))));
     
-//    myScene.AddLight(Light(Vector3(-1700, 1000, 0), 500, Material(Color(255, 255, 255))));
-//    myScene.AddLight(Light(Vector3(1700, 1000, 0), 500, Material(Color(255, 255, 255))));
+//    myScene.AddLight(Light(Vector3(-1700, 1000, 0), 500000, Material(Color(255, 255, 255))));
+//    myScene.AddLight(Light(Vector3(1700, 1000, 0), 500000, Material(Color(255, 255, 255))));
     
-//    myScene.AddLight(Light(Vector3(-300, 100, 0), 500, Material(Color(255, 0, 0))));
-//    myScene.AddLight(Light(Vector3(300, 100, 0), 500, Material(Color(0, 0, 255))));
+//    myScene.AddLight(Light(Vector3(-300, 100, 0), 500000, Material(Color(255, 0, 0))));
+//    myScene.AddLight(Light(Vector3(300, 100, 0), 500000, Material(Color(0, 0, 255))));
 
     
     
-//    myScene.AddLight(Light(Vector3(-2000, 0, 0), 500));
-//    myScene.AddLight(Light(Vector3(1600, -800, 0), 500));
-//    myScene.AddLight(Light(Vector3(2800, 0, 0), 3000));
-//    myScene.AddLight(Light(Vector3(1900, -900, 800), 2000));
-//    myScene.AddLight(Light(Vector3(6500, -3000, 10000), 100000));
-//    myScene.AddLight(Light(Vector3(5000, -5000, -5000), 10000));
+//    myScene.AddLight(Light(Vector3(-2000, 0, 0), 500000));
+//    myScene.AddLight(Light(Vector3(1600, -800, 0), 500000));
+//    myScene.AddLight(Light(Vector3(2800, 0, 0), 3000000));
+//    myScene.AddLight(Light(Vector3(1900, -900, 800), 2000000));
+//    myScene.AddLight(Light(Vector3(6500, -3000, 10000), 100000000));
+//    myScene.AddLight(Light(Vector3(5000, -5000, -5000), 10000000));
 
     myScene.DrawImages();
     

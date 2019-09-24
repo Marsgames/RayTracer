@@ -154,16 +154,16 @@ TEST(Light, SimpleTest)
 TEST(Color, SimpleTest)
 {
     const Color noir = Color(0, 0, 0);
-    const Color blanc = Color(255, 255, 255);
-    Color autre = Color(90, 90, 90);
-    autre += Color(10, 10, 10);
+    const Color blanc = Color(1, 1, 1);
+    Color autre = Color(.9, .9, .9);
+    autre += Color(.1, .1, .1);
     const Color autre2 = autre / 10;
     
     EXPECT_EQ(Color::GetColor(EColor::Black), noir);
     EXPECT_EQ(Color::GetColor(EColor::White), blanc);
     EXPECT_EQ(Color(0, 0, 0), blanc * 0);
-    EXPECT_EQ(Color(100, 100, 100), autre);
-    EXPECT_EQ(Color(10, 10, 10), autre2);
+    EXPECT_EQ(Color(1, 1, 1), autre);
+    EXPECT_EQ(Color(.1, .1, .1), autre2);
 }
 
 TEST(Ray, SimpleTest)
@@ -191,7 +191,7 @@ TEST(Ray, Reflexion)
 
 TEST(Sphere, SimpleTest)
 {
-    Sphere sphere = Sphere(Vector3(10, 0, 0), 10, Material(Color(255, 0, 0)));
+    Sphere sphere = Sphere(Vector3(10, 0, 0), 10, Material(Color(1, 0, 0)));
     sphere.SetCenter(0, 0, 0);
     
     EXPECT_EQ(Vector3(0, 0, 0), sphere.GetCenter());

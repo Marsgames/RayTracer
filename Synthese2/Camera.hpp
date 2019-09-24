@@ -11,6 +11,7 @@
 #include <Light.hpp>
 #include <vector>
 #include <Pixel.hpp>
+#include <random>
 #include <Scene.hpp>
 #include <Sphere.hpp>
 #include <string>
@@ -67,7 +68,7 @@ class Camera
     
     Color GetLighting(const Intersection& intersection) const;
     Color GetDirectLighting(const Light& ligght, const Intersection& intersection) const;
-    Color GetIndirectLighting(const Light& light, const Intersection &intersection) const;
+    Color GetIndirectLighting(const Light& light, const Intersection &intersection, std::default_random_engine& generator) const;
     
     void GeneratePartImage(const int departure, const int arrival, Ray ray);
 

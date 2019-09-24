@@ -50,5 +50,5 @@ public:
     
     
 //    static Color GetLightning(const Light& light, const Color& color, const double distance, Vector3 normal);
-    static Color GetLightning(const Light& light, const Intersection& intersection);
+    static Color GetLighting(const Light& light, const Intersection& intersection);
 };

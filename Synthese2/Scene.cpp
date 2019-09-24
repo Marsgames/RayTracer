@@ -18,7 +18,7 @@ void Scene::AddSphere(const Sphere& sphere) {
 }
 
 void Scene::AddSphere(const vector<Sphere>& spheres) {
-    #pragma omp parallel for
+//    #pragma omp parallel for
     for (const Sphere& sphere : spheres)
     {
         m_spheres.push_back(sphere);
@@ -30,7 +30,7 @@ void Scene::AddLight(const Light &light) {
 }
 
 void Scene::AddLight(const vector<Light> &lights) {
-    #pragma omp parallel for
+//    #pragma omp parallel for
     for (const Light& light : lights)
     {
         m_lights.push_back(light);
@@ -42,7 +42,7 @@ void Scene::AddCamera(const Camera &camera) {
 }
 
 void Scene::AddCamera(const vector<Camera> &cameras) {
-    #pragma omp parallel for
+//    #pragma omp parallel for
     for (const Camera& camera : cameras)
     {
         m_cameras.push_back(camera);
@@ -50,7 +50,7 @@ void Scene::AddCamera(const vector<Camera> &cameras) {
 }
 
 void Scene::DrawImages() {
-    #pragma omp parallel for
+//    #pragma omp parallel for
     for (Camera& camera : m_cameras)
     {
 //        camera.DrawImage();
@@ -61,7 +61,7 @@ void Scene::DrawImages() {
 void Scene::SaveImages() {
     int index = 0;
     
-    #pragma omp parallel for
+//    #pragma omp parallel for
     for (Camera& camera : m_cameras)
     {
         camera.SetImageName("theImage" + to_string(index));
