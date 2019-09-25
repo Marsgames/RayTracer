@@ -37,6 +37,9 @@ int main(int argc, char* argv[])
 //    Sphere sp1 = Sphere(Vector3(0, 0, 500), 200, MaterialList::BlancDiffus);
     
     Sphere sp2 = Sphere(Vector3(300, -300, 500), 200, MaterialList::BlancMat);
+    
+    Sphere sp3 = Sphere(Vector3(0, 500, 500), 200, MaterialList::Miroir);
+
 
     
 //    Sphere sp2 = Sphere(Vector3(-1700, 1000, 500), 50, MaterialList::BlancDiffus);
@@ -50,7 +53,7 @@ int main(int argc, char* argv[])
     Sphere bottomWall = Sphere(Vector3(0., heightOffset, 0.), 3e4, MaterialList::BlancMat, "Blanc");
 ////    //    Sphere bottomWall = Sphere(Vector3(0., 4e5 + 4000., -00.), 4e5, Material(EMaterialType::DifuseType, Vector3(255 / 75, 255 / 140, 255 / 225)), "Rouge chelou");
 Sphere backWall = Sphere(Vector3(0., 0., -3e4 - 1000), 3e4, MaterialList::BleuCielMat, "Bleu ciel");
-    Sphere frontWall = Sphere(Vector3(0., 0., 3e4 + 1000), 3e4, MaterialList::JauneMat, "Jaune");
+    Sphere frontWall = Sphere(Vector3(0., 0., 3e4 + 1000), 3e4, MaterialList::Miroir, "Jaune");
     
     leftWall.GetMaterial().SetAlbedo(0);
     rightWall.GetMaterial().SetAlbedo(0);
@@ -90,7 +93,7 @@ Sphere backWall = Sphere(Vector3(0., 0., -3e4 - 1000), 3e4, MaterialList::BleuCi
     myScene.AddCamera(mainCamera);
     myScene.AddSphere(sp1);
     myScene.AddSphere(sp2);
-//    myScene.AddSphere(sp3);
+    myScene.AddSphere(sp3);
 //    myScene.AddSphere(sp4);
 //    myScene.AddSphere(sp5);
 
@@ -107,9 +110,9 @@ Sphere backWall = Sphere(Vector3(0., 0., -3e4 - 1000), 3e4, MaterialList::BleuCi
     
     
 //    myScene.AddLight(Light(Vector3(-0, 0, 0), 500000));
-    myScene.AddLight(Light(Vector3(-500, 500, 0), 1000000));
+//    myScene.AddLight(Light(Vector3(-500, 500, 0), 1000000));
 myScene.AddLight(Light(Vector3(0, 500, 0), 1000000, Material(Color(1, 1, 1))));
-myScene.AddLight(Light(Vector3(500, 500, 0), 1000000));
+//myScene.AddLight(Light(Vector3(500, 500, 0), 1000000));
 //    myScene.AddLight(Light(Vector3(-700, 500, 0), 1000000, Material(Color(255, 255, 255), Color(0, 0, 255))));
 //    myScene.AddLight(Light(Vector3(700, 500, 0), 1000000, Material(Color(255, 255, 255), Color(255, 0, 0))));
     

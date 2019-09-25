@@ -31,11 +31,11 @@ Material Light::GetMaterial() const {
     return m_material;
 }
 
-Color Light::GetLighting(const Light& light, const Intersection& intersection)
+Color Light::GetLighting(const Light& light, const Intersection& intersection, const float distanceToAdd)
 {
     Color newColor;
         
-        const double distance = Vector3::GetDistance(light.GetPosition(), intersection.pointCoordonate);
+        const double distance = Vector3::GetDistance(light.GetPosition(), intersection.pointCoordonate) + distanceToAdd;
         const double puissance = light.GetPower() * (1 / (distance * distance));
     
     const Color lightColor = light.GetMaterial().GetSelfIlluminColor() * puissance;
