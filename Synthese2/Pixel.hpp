@@ -2,40 +2,40 @@
 //  Pixel.hpp
 //  Synthese2
 //
-//  Created by Raphaël Daumas on 30/03/2019.
+//  Created by Raphaël Daumas on 29/05/2019.
 //  Copyright © 2019 Marsgames. All rights reserved.
 //
 
 #pragma once
 
-#include <Color.hpp>
 #include <Vector3.hpp>
+#include <Color.hpp>
 
 class Pixel {
-    Vector3 m_position;
-    Color m_color;
+    Vector3 m_position = Vector3{0, 0, 0};
+    Color m_color = Color{0, 0, 0};
     
 public:
-    inline Pixel(const Vector3& position, const Color& color) :
+    int index;
+    
+    Pixel() {};
+    
+    Pixel(const Vector3& position, const Color& color, const int index):
     m_position{position},
-    m_color{color}
-    {}
+    m_color{color},
+    index{index}
+    {};
     
-    inline Vector3 GetPosition() const
-    {
-        return m_position;
-    }
-    inline void SetPosition(const Vector3& position)
-    {
-        m_position = position;
-    }
+    Vector3 GetPosition() const;
+    double GetPositionX() const;
+    double GetPositionY() const;
+    double GetPositionZ() const;
     
-    inline Color GetColor() const
-    {
-        return m_color;
-    }
-    inline void SetColor(const Color& color)
-    {
-        m_color = color;
-    }
+    Color GetColor() const;
+    double GetColorR() const;
+    double GetColorG() const;
+    double GetColorB() const;
+    
+    void SetColor(Color color);
+    
 };

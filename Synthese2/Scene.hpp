@@ -1,41 +1,40 @@
 //
-//  Misc.hpp
+//  Scene.hpp
 //  Synthese2
 //
-//  Created by Raphaël Daumas on 31/03/2019.
+//  Created by Raphaël Daumas on 30/05/2019.
 //  Copyright © 2019 Marsgames. All rights reserved.
 //
 
 #pragma once
 
-#include <iostream>
+#include <Camera.hpp>
+#include <Light.hpp>
 #include <Sphere.hpp>
 #include <vector>
-#include <Camera.hpp>
-#include <Vector3.hpp>
-#include <Pixel.hpp>
-#include <Light.hpp>
 
 using std::vector;
 
-class Scene
-{
-private:
-    using Image = vector<Pixel>;
-    
-    Light* m_light;
-    vector<Sphere>* m_spheres;
-    double facteurLumiere{0.2};
-    
-    void ClearImage (Image& imageArray, const Camera& ecran);
-    void ImageFromArray(const Image& pixelsArray, const string source, const string nomImage, const Camera& ecran);
+class Scene {
+    vector<class Camera> m_cameras;
+    vector<Light> m_lights;
+    vector<Sphere> m_spheres;
     
 public:
-    Scene(Light& light, vector<Sphere>& spheres) :
-    m_light{&light},
-    m_spheres{&spheres}
-    {};
+    Scene(){};
     
-    void LaunchThreads(const int nbImages, Camera& ecran, const Vector3& directionLight);
-    void GenerateImages(const int firstImage, const int lastImage, Camera& ecran, const Vector3& MoveLightDirection);
+    void AddCamera(const class Camera& camera);
+    void AddCamera(const vector<class Camera>& cameras);
+    
+    void AddLight(const Light& light);
+    void AddLight(const vector<Light>& lights);
+    
+    void AddSphere(const Sphere& sphere);
+    void AddSphere(const vector<Sphere>& spheres);
+    
+    vector<Light> GetLights() const;
+    vector<Sphere> GetSpheres() const;
+    
+    void DrawImages();
+    void SaveImages();
 };

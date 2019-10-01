@@ -2,59 +2,52 @@
 //  Light.cpp
 //  Synthese2
 //
-//  Created by Raphaël Daumas on 31/03/2019.
+//  Created by Raphaël Daumas on 30/05/2019.
 //  Copyright © 2019 Marsgames. All rights reserved.
 //
 
-#include <Light.hpp>
-#include <Pixel.hpp>
+#include <iostream>
+#include "Light.hpp"
+#include <random>
 #include <Sphere.hpp>
+#include <Toolbox.hpp>
+#include <Vector3.hpp>
 #include <vector>
 
-using std::vector;
+using std::cout;
+using std::endl;
 
-bool Light::CanSeeLight(const Vector3& point, const Light* light, const vector<Sphere>* scene)
+Vector3 Light::GetPosition() const
 {
-    Vector3 dirLampe = (light->GetPosition() - point).Normalize();
-    //    const Vector3 dirCam = (ecran.GetPosition() - point).Normalize();
-    const double distPL = Vector3::GetDistance(point, light->GetPosition());
-    
-    for (const Sphere& sphere : *scene)
-    {
-        
-        if (EMaterialType::LightType == sphere.GetMaterial().m_materialType)
-        {
-            continue;
-        }
-        
-        Intersection result;
-        
-        //        const Rayon rayon = Rayon((point + (dirCam * .01)), dirCam);
-        const Rayon rayon = Rayon((point + (dirLampe * .5)), dirLampe);
-        //        const Rayon rayon = Rayon(point, dirLampe);
-        Sphere::Intersect(rayon, sphere, result);
-        
-        if (result.intersect)
-        {
-            const double distPI = Vector3::GetDistance(point, result.point);
-            
-            // Si l'objet est devant la lumière return false.
-            if (distPI <= distPL)
-            {
-                return false;
-            }
-        }
-    }
-    
-    // Si l'objet est derrière la lumière return true.
-    return true;
+    return m_position;
 }
 
-void Light::SetLightning(const Vector3& point, const int index, const Light* light,  vector<Pixel>& image)
+double Light::GetPower() const
 {
-    const double puissance = light->GetPuissance() * (1 / (abs((light->GetPosition().GetX() - point.GetX()) + (light->GetPosition().GetY() - point.GetY()) + (light->GetPosition().GetZ() - point.GetZ()))));
+    return m_power;
+}
+
+Material Light::GetMaterial() const {
+    return m_material;
+}
+
+Color Light::GetLighting(const Light& light, const Intersection& intersection, const float distanceToAdd)
+{
+    Color newColor;
+        
+        const double distance = Vector3::GetDistance(light.GetPosition(), intersection.pointCoordonate) + distanceToAdd;
+        const double puissance = light.GetPower() * (1 / (distance * distance));
     
-    Color col = image[index].GetColor();
+    const Color lightColor = light.GetMaterial().GetSelfIlluminColor() * puissance;
     
-    image[index].SetColor(Color(col.GetR() * puissance, col.GetG() * puissance, col.GetB() * puissance));
+    const Vector3 normale = intersection.touchedSphere.GetNormal(intersection.pointCoordonate);
+    const float angle = acos((Vector3::Dot(normale, Vector3::GetDirection(light.GetPosition(), intersection.pointCoordonate))));
+    
+    
+    
+    newColor = (intersection.touchedSphere.GetMaterial().GetDiffuseColor() * lightColor) * (angle / M_PI);
+    
+
+
+            return newColor;
 }

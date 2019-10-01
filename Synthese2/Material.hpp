@@ -2,82 +2,91 @@
 //  Material.hpp
 //  Synthese2
 //
-//  Created by Raphaël Daumas on 03/03/2019.
+//  Created by Raphaël Daumas on 03/06/2019.
 //  Copyright © 2019 Marsgames. All rights reserved.
 //
 
 #pragma once
 
-#include <Vector3.hpp>
 #include <Color.hpp>
-#include <map>
+#include <string>
 
-using std::map;
+using std::string;
 
-enum EMaterialType
-{
-    DifuseType = 0,
-    MirrorType = 1,
-    LightType = 2,
-    GlassType = 3
-};
+//enum EMaterials
+//{
+//    Mirror = 100,
+//    Wall = 0,
+//    DarkFloor = 15
+//};
 
-class Material
-{
-private:
-    Color m_color;
-    float m_albedo;
-    map<EMaterialType, float> albedoMap =
-    {
-        {DifuseType, 0},
-        {MirrorType, 1},
-        {LightType, 0},
-        {GlassType, 9},
-    };
+class Material {
+    string m_name;
+//    Color m_specularColor; // voila voila
+    Color m_diffuseColor; // Couleur de base de l'objet
+//    Color m_ambiantColor; // couleur de l'éclairage ambiant
+    Color m_selfIlluminColor; // Couleur de la lumière émise
+//    double m_shininess; // brillance
+//    double m_shineStrength; // puissance de brillance
+//    double m_transmittivity; // coéfficient de transmission (réfraction)
+//    double m_reflectivity; // coéf de reflexion
+//    bool m_permanent; // Permet de savoir si le material doit rester en memoire ou est temporaire.
+    
+//    Color m_color;
+//    EMaterials m_material;
+    double m_albedo;
+//    string m_name;
     
 public:
-    int m_materialType;
+    Material() = delete;
     
-    inline Material(){}
-    inline Material(const int material, const Color color) :
-    m_materialType{material},
-    m_color{color}
-    {
-        SetAlbedo();
-    }
+    Material(Color diffuseColor) :
+    m_diffuseColor{diffuseColor},
+    m_selfIlluminColor{diffuseColor}
+    {};
     
-    inline Color GetColor() const
-    {
-        return m_color;
-    }
+    Material(Color diffuseColor, const Color& selfIlluminColor) :
+    m_diffuseColor{diffuseColor},
+    m_selfIlluminColor{selfIlluminColor}
+    {};
     
-    inline float GetAlbedo() const
-    {
-        return m_albedo;
-    }
+    Material(const string name, const Color& diffuseColor, const Color& selfIlluminColor = Color(1, 1, 1)) :
+    m_name{name},
+    m_diffuseColor{diffuseColor},
+    m_selfIlluminColor{selfIlluminColor}
+    {};
     
-private:
-    inline void SetAlbedo()
-    {
-        m_albedo = albedoMap[static_cast<EMaterialType>(m_materialType)];
-        
-//        switch (m_materialType)
-//        {
-//            case DifuseType:
-//                m_albedo = 0;
-//                break;
-//
-//            case MirrorType:
-//                m_albedo = 1;
-//                break;
-//
-//            case LightType:
-//                m_albedo = 0;
-//                break;
-//
-//            case GlassType:
-//                m_albedo = 9;
-//                break;
-//        }
-    }
+    Material(const string name, const Color& diffuseColor, const double albedo) :
+    m_name{name},
+    m_diffuseColor{diffuseColor},
+    m_albedo{albedo}
+    {};
+    
+//    Material(Color color, EMaterials material) :
+//    m_color{color},
+//    m_albedo{(material / 100.)},
+//    m_material{material}
+//    {};
+    
+    Color GetDiffuseColor() const;
+    Color GetSelfIlluminColor() const;
+    double GetAlbedo() const;
+    void SetAlbedo(const double value);
+//    EMaterials GetMaterialType() const;
+};
+
+struct MaterialList
+{
+    static const Material NoirMat;
+    static const Material RougeMat;
+    static const Material RougeDiffus;
+    static const Material VertMat;
+    static const Material VertDiffus;
+    static const Material BleuMat;
+    static const Material BlancMat;
+    static const Material BlancDiffus;
+    static const Material RoseMat;
+    static const Material JauneMat;
+    static const Material BleuCielMat;
+    static const Material Miroir;
 };

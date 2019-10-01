@@ -2,57 +2,53 @@
 //  Light.hpp
 //  Synthese2
 //
-//  Created by Raphaël Daumas on 08/10/2018.
-//  Copyright © 2018 Marsgames. All rights reserved.
+//  Created by Raphaël Daumas on 30/05/2019.
+//  Copyright © 2019 Marsgames. All rights reserved.
 //
 
 #pragma once
 
 #include <Color.hpp>
-#include <Pixel.hpp>
+#include <iostream>
+#include <Material.hpp>
+#include <Sphere.hpp>
 #include <Sphere.hpp>
 #include <Vector3.hpp>
+#include <vector>
 
+using std::cout;
+using std::endl;
 using std::vector;
 
-class Light
-{
-private:
+class Light {
     Vector3 m_position;
-    int m_puissance;
+    double m_power;
+    Color m_color;
+    Material m_material;
+    
+    
     
 public:
-    inline Light() {}
-    
-    inline Light(Vector3 position) :
-    m_position{position}
-    {}
-    
-    inline Light(Vector3 position, int puissance) :
+    Light(const Vector3& position, const double power):
     m_position{position},
-    m_puissance{puissance}
-    {}
+    m_power{power},
+    m_material{MaterialList::BlancMat}
+//    m_color{Color{255, 255, 255}}
+    {};
     
-    static bool CanSeeLight(const Vector3& point, const Light* light, const vector<Sphere>* scene);
-    static void SetLightning(const Vector3& point, const int index, const Light* light,  vector<Pixel>& image);
+    Light(const Vector3& position, const double power, const Material material):
+    m_position{position},
+    m_power{power},
+//    m_color{color}
+    m_material{material}
+    {};
     
-    inline Vector3 GetPosition() const
-    {
-        return m_position;
-    }
-    inline void SetPosition(Vector3 position)
-    {
-        m_position = position;
-    }
+    Vector3 GetPosition() const;
+    double GetPower() const;
+//    Color GetColor() const;
+    Material GetMaterial() const;
     
-    inline int GetPuissance() const
-    {
-        return m_puissance;
-    }
-    inline void SetPuissance(int puissance)
-    {
-        m_puissance = puissance;
-    }
+    
+//    static Color GetLightning(const Light& light, const Color& color, const double distance, Vector3 normal);
+    static Color GetLighting(const Light& light, const Intersection& intersection, const float distanceToAdd = 0);
 };
-
-

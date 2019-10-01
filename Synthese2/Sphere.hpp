@@ -2,81 +2,84 @@
 //  Sphere.hpp
 //  Synthese2
 //
-//  Created by Raphaël Daumas on 22/10/2018.
-//  Copyright © 2018 Marsgames. All rights reserved.
+//  Created by Raphaël Daumas on 29/05/2019.
+//  Copyright © 2019 Marsgames. All rights reserved.
 //
 
 #pragma once
 
-#include <iostream>
-#include <math.h>
+#include <Color.hpp>
 #include <Material.hpp>
-#include <Rayon.hpp>
+#include <Ray.hpp>
+#include <string>
 #include <Vector3.hpp>
 
 using std::string;
 
-struct Intersection{
-    bool intersect;
-    double distance;
-    string nameInterObj;
-    Vector3 point;
-};
-
-class Sphere{
-private:
+class Sphere
+{
     Vector3 m_center;
-    double m_rayon;
+    int m_rayon;
     Material m_material;
-    string m_nom;
+    string m_name = "";
     
 public:
-    inline Sphere(){};
+    Sphere() = delete;
     
-    inline Sphere(const Vector3& origin, const double& rayon) :
-    m_center{origin},
-    m_rayon{rayon}
+    Sphere(Vector3 position, int rayon, Material material) :
+    m_center{position},
+    m_rayon{rayon},
+    m_material{material}
     {};
     
-    inline Sphere(const Vector3& origin, const double rayon, const Material& material, const string nom) :
-    m_center{origin},
+    Sphere(Vector3 position, int rayon) :
+    m_center{position},
+    m_rayon{rayon},
+    m_material{Material(Color{1, 0, 0})}
+    {};
+    
+    Sphere(Vector3 position, int rayon, Material material, string name) :
+    m_center{position},
     m_rayon{rayon},
     m_material{material},
-    m_nom{nom}
+    m_name{name}
     {};
     
-//    inline Sphere(const Vector3& origine, const double rayon, const Material& material, const string nom, int isLight){
-//        m_center = origine;
-//        m_rayon = rayon;
-//        m_material = material;
-//        m_nom = nom;
-//    };
+    Vector3 GetCenter() const;
+    void SetCenter(Vector3 position);
+    void SetCenter(int x, int y, int z);
+    double GetPositionX() const;
+    double GetPositionY() const;
+    double GetPositionZ() const;
     
-    inline Vector3 GetCenter() const
-    {
-        return m_center;
-    }
-    inline void SetCenter(Vector3 center)
-    {
-        m_center = center;
-    }
+    int GetRayon() const;
     
-    inline double GetRayon() const
-    {
-        return m_rayon;
-    }
+    Material GetMaterial() const;
+    int GetColorR() const;
+    int GetColorG() const;
+    int GetColorB() const;
     
-    inline Material GetMaterial() const
-    {
-        return m_material;
-    }
+    Vector3 GetNormal(Vector3 point) const;
     
-    inline string GetName() const
-    {
-        return m_nom;
-    }
+    string GetName() const;
     
-    static void Intersect(const Rayon& rayon, const Sphere& sphere, Intersection& myRes);
+    static class Intersection IntersectRaySphere(class Ray ray, Sphere sphere);
 };
 
-
+struct Intersection {
+    bool intersect = false;
+    double distance = -1;
+    Vector3 pointCoordonate = Vector3{0, 0, 0};
+    int nbIntersect = 0;
+    class Sphere touchedSphere = Sphere(Vector3(0), -1);
+    
+    Intersection() {};
+    
+    Intersection(bool theIntersect, double theDistance, Vector3 thePointCoordonate):
+    intersect{theIntersect},
+    distance{theDistance},
+    pointCoordonate{thePointCoordonate}
+    {};
+    
+    void PrintSphereState() const;
+};

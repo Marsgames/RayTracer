@@ -2,74 +2,74 @@
 //  Color.hpp
 //  Synthese2
 //
-//  Created by Raphaël Daumas on 22/10/2018.
-//  Copyright © 2018 Marsgames. All rights reserved.
+//  Created by Raphaël Daumas on 29/05/2019.
+//  Copyright © 2019 Marsgames. All rights reserved.
 //
 
 #pragma once
 
-#include <algorithm>
 #include <iostream>
-#include <Vector3.hpp>
+#include <string>
 
-using std::to_string;
 using std::string;
-using std::tolower;
+
+enum EColor
+{
+    Black,
+    Red,
+    Green,
+    Blue,
+    White,
+    Other,
+    Pink,
+    Yellow
+};
 
 class Color {
-private:
     double m_r, m_g, m_b;
     
-public:    
-    inline Color() {}
+    EColor m_colorName;
     
-    inline Color(double r, double g, double b) :
+public:
+    Color() :
+    m_r{0},
+    m_g{0},
+    m_b{0}
+    {
+        SetColorName();
+    };
+    
+    Color(double r, double g, double b) :
     m_r{r},
     m_g{g},
     m_b{b}
-    {}
+    {
+//        if ((r + g + b) > 3)
+//        {
+//            std::cout << "LES COULEURS NE PEUVENT PAS ÊTRE SUPÉRIEUR À 3" << std::endl;
+//        }
+        
+        SetColorName();
+    };
     
-//    inline Color(int r, int g, int b) :
-//    m_r{static_cast<double>(r)},
-//    m_g{static_cast<double>(g)},
-//    m_b{static_cast<double>(b)}
-//    {}
+    double GetR() const;
+    double GetG() const;
+    double GetB() const;
+    void SetR(double value);
+    void SetG(double value);
+    void SetB(double value);
     
-    inline Color(Vector3 color)
-    {
-        m_r = color.GetX() * 255;
-        m_g = color.GetY() * 255;
-        m_b = color.GetZ() * 255;
-    }
-    
-    inline double GetR() const
-    {
-        return m_r;
-    }
-    inline double GetG() const
-    {
-        return m_g;
-    }
-    inline double GetB() const
-    {
-        return m_b;
-    }
-    
-    inline void SetR(double r)
-    {
-        m_r = r;
-    }
-    inline void SetG(double g)
-    {
-        m_g = g;
-    }
-    inline void SetB(double b)
-    {
-        m_b = b;
-    }
-    
-    inline string ToString()
-    {
-        return "(" + to_string(static_cast<int>(m_r)) + ", " + to_string(static_cast<int>(m_g)) + ", " + to_string(static_cast<int>(m_b)) + ")";
-    }
+    Color operator*(const Color& other) const;
+    Color operator*(const double other) const;
+    bool operator==(const Color& other) const;
+    void operator+=(const Color& other);
+    Color operator/(const double value) const;
+    Color operator+(const Color& other) const;
+    Color operator-(const Color& other) const;
+
+    void Print() const;
+    string ToString() const;
+    void SetColorName();
+    EColor GetColorName() const;
+    static Color GetColor(EColor colorName);
 };

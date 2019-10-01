@@ -1,83 +1,129 @@
 //
-//  Camera.h
+//  Camera.hpp
 //  Synthese2
 //
-//  Created by Raphaël Daumas on 08/10/2018.
-//  Copyright © 2018 Marsgames. All rights reserved.
+//  Created by Raphaël Daumas on 29/05/2019.
+//  Copyright © 2019 Marsgames. All rights reserved.
 //
 
 #pragma once
 
-#include <iostream>
-#include <math.h>
-#include <Pixel.hpp>
-#include <Vector3.hpp>
+#include <Light.hpp>
 #include <vector>
+#include <Pixel.hpp>
+#include <Scene.hpp>
+#include <Sphere.hpp>
+#include <string>
 
 using std::vector;
+using std::string;
+
+enum EImageFormat
+{
+    BMP,
+    PPM
+};
+
+struct Reflexion
+{
+    Material material = Material(Color());
+    Intersection intersection = Intersection(false, -1, Vector3(0));
+    Sphere sphere = Sphere(Vector3(0), -1, material);
+    
+    Reflexion(){};
+    Reflexion(const Material& mat, const Intersection& inter, const Sphere& sph)
+    {
+        material = mat;
+        intersection = inter;
+        sphere = sph;
+    };
+    
+};
 
 class Camera
 {
-private:
-    int m_height, m_width;
-    Vector3 m_origin, m_direction;
-    float m_focal;
-    vector<Pixel> m_image;
+    Vector3 m_position, m_direction;
+    int m_width, m_height, m_focalDist, m_maxBounce, m_maxMirrorBounce;
+    vector<Pixel> m_pixels;
+    bool m_useFocal;
+    EImageFormat m_imageFormat = EImageFormat::BMP;
+    class Scene* m_scene = nullptr;
     
-    void InitImage();
+    string m_source = "/Users/Raph/Desktop/TestSynthese/";
+    string m_name = "theImage0";
     
+    void InitPixelsArray();
+    inline void SavePPM();
+    inline void SaveBMP();
+    Vector3 GetRayDirection();
+    Vector3 GetRayDirection(const Vector3& toThatPoint) const;
+    Reflexion GetMaterial(const vector<Sphere> spheres, const Ray& ray, const vector<Light> lights) const;
+    
+    Color GetColor(const Intersection& intersection, const Ray& ray) const;
+    Color GetColor(const Intersection& intersection, const Ray& ray, int remainingBounce) const;
+
+    Intersection GetNearestIntersection(const Ray& ray) const;
+//    double GetRandomDouble(double min = -1, double max = 1) const;
+    
+    Color GetLighting(const Intersection& intersection) const;
+    Color GetDirectLighting(const Light& ligght, const Intersection& intersection, const float distanceToAdd = 0) const;
+    Color GetIndirectLighting(const Light& light, const Intersection &intersection) const;
+    
+    void GeneratePartImage(const int departure, const int arrival, Ray ray);
+
 public:
-    inline Camera(const Vector3& origin, const int width, const int height, Vector3& direction, float focal) :
-    m_origin{origin},
-    m_height{height},
+    Camera(const Vector3& position, const int width, const int height, Vector3& direction) :
+    m_position{position},
     m_width{width},
+    m_height{height},
     m_direction{direction.Normalize()}
     {
-        if (focal < 0)
-        {
-            throw "Focal cannot be less than 0 !";
-        }
-        else
-        {
-            m_focal = focal;
-        }
+        InitPixelsArray();
+        m_focalDist = 1000;
+        m_useFocal = true;
+        m_imageFormat = EImageFormat::BMP;
+        m_maxBounce = 0;
+        m_maxMirrorBounce = 30;
         
-        InitImage();
-    };
-    
-    inline int GetHeight() const
-    {
-        return m_height;
     }
     
-    inline int GetWidth() const
+    Camera(const Vector3& position, const int width, const int height, Vector3 direction, const int focalDistance) :
+    m_position{position},
+    m_width{width},
+    m_height{height},
+    m_direction{direction.Normalize()},
+    m_focalDist{focalDistance}
     {
-        return m_width;
+        InitPixelsArray();
+        m_useFocal = true;
+        m_imageFormat = EImageFormat::BMP;
+        m_maxBounce = 0;
+        m_maxMirrorBounce = 30;
     }
     
-    inline Vector3 GetPosition() const
-    {
-        return m_origin;
-    }
-    inline void SetPosition(Vector3& position)
-    {
-        m_origin = position;
-    }
+    Vector3 GetPosition() const;
+    void SetPosition(Vector3 position);
     
-    inline Vector3 GetDirection() const
-    {
-        return m_direction;
-    }
-    inline void SetDirection(Vector3& direction)
-    {
-        m_direction = direction.Normalize();
-        InitImage();
-    }
+    Vector3 GetDirection() const;
+    void SetDirection(Vector3 direction);
     
-    inline Vector3 GetFocalDirection(const Vector3& toThatPoint) const;
+    int GetWidth() const;
+    int GetHeight() const;
     
-    inline vector<Pixel>& GetImage()
-    {
-        return m_image;
-    }
+    int GetFocalDist() const;
+    void SetFocalDist(int focalDistance);
+
+    bool GetUseFocal();
+    void SetUseFocal(bool value);
+    
+    void SetImageFormat(EImageFormat format);
+    void SaveImage();
+    void SetImageName(string name);
+    
+    void DrawImage();
+    void DrawImageWithThread();
+
+    void SetScene(Scene* scene);
+    
+    
 };

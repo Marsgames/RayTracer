@@ -2,136 +2,104 @@
 //  Vector3.hpp
 //  Synthese2
 //
-//  Created by Raphaël Daumas on 01/10/2018.
-//  Copyright © 2018 Marsgames. All rights reserved.
+//  Created by Raphaël Daumas on 29/05/2019.
+//  Copyright © 2019 Marsgames. All rights reserved.
 //
 
 #pragma once
 
-#include <math.h>
 #include <iostream>
+#include <string>
 
+using std::cout;
+using std::endl;
 using std::string;
 
 class Vector3 {
 private:
-    double m_x{}, m_y{}, m_z{};
-//    double norme;
+    double m_x, m_y, m_z;
     
 public:
-    inline Vector3() {};
+    Vector3() :
+    m_x{0},
+    m_y{0},
+    m_z{0}
+    {};
     
-    inline Vector3(int x, int y, int z) :
-    m_x{static_cast<float>(x)},
-    m_y{static_cast<float>(y)},
-    m_z{static_cast<float>(z)}
-    {
-//        norme = sqrt(Dot(*this, *this));
-    }
+//    Vector3(int x, int y, int z) :
+//    m_x{static_cast<double>(x)},
+//    m_y{static_cast<double>(y)},
+//    m_z{static_cast<double>(z)}
+//    {};
     
-    inline Vector3(double x, double y, double z) :
-    m_x{static_cast<float>(x)},
-    m_y{static_cast<float>(y)},
-    m_z{static_cast<float>(z)}
-    {
-//        norme = sqrt(Dot(*this, *this));
-    }
+    Vector3(double x, double y, double z) :
+    m_x{x},
+    m_y{y},
+    m_z{z}
+    {};
     
-    inline Vector3(float x, float y, float z) :
-    m_x{static_cast<float>(x)},
-    m_y{static_cast<float>(y)},
-    m_z{static_cast<float>(z)}
-    {
-//        norme = sqrt(Dot(*this, *this));
-    }
+    Vector3(const Vector3& vector):
+    m_x{vector.m_x},
+    m_y{vector.m_y},
+    m_z{vector.m_z}
+    {};
     
-    void Print() const;
-    string ToString() const;
+    Vector3(const double number):
+    m_x{number},
+    m_y{number},
+    m_z{number}
+    {};
     
-    inline double GetX() const
-    {
-        return m_x;
-    }
-    inline void SetX(const double x)
-    {
-        m_x = x;
-    }
+    Vector3(const int number):
+    m_x{static_cast<double>(number)},
+    m_y{static_cast<double>(number)},
+    m_z{static_cast<double>(number)}
+    {};
+        
+    double GetX() const;
+    double GetY() const;
+    double GetZ() const;
+    void SetX(const double x);
+    void SetY(const double y);
+    void SetZ(const double z);
+//    inline void Normalize();
+    Vector3 Normalize() const;
     
-    inline double GetY() const
-    {
-        return m_y;
-    }
-    inline void SetY(const double y)
-    {
-        m_y = y;
-    }
+    //////////////////////////////
+    //         Operator         //
+    //////////////////////////////
+    // Repris de l'ancienne version
+//    Vector3 operator*=(const Vector3& other) const;
+//    Vector3 operator+=(const Vector3& other) const;
+    Vector3 operator+(const Vector3& other) const;
+    Vector3 operator*(const Vector3& other) const;
+    Vector3 operator*(const double other) const;
+    Vector3 operator-(const Vector3 &other) const;
+    bool operator<(const Vector3& other) const;
+    bool operator>(const Vector3& other) const;
+    bool operator==(const Vector3& other) const;
+    //////////////////////////////
     
-    inline double GetZ() const
-    {
-        return m_z;
-    }
-    inline void SetZ(const double z)
-    {
-        m_z = z;
-    }
-    
-    inline Vector3 Normalize()
-    {
-        double norme = sqrt(Dot(*this, *this));
-        return Vector3(m_x / norme, m_y / norme, m_z / norme);
-    }
-    
-    // Magnitude
     static double Dot(const Vector3& pA, const Vector3& pB);
-    
     static double Dist2(const Vector3& pA);
     
+    static Vector3 CrossProduct(const Vector3& vA, const Vector3& vB);
+    
     static Vector3 Negate(const Vector3& v);
-    inline void Negate();
+//    inline void Negate();
     
-    inline static double GetDistance(const Vector3& pointA, const Vector3& pointB)
-    {
-        return sqrt(((pointA.GetX() - pointB.GetX()) * (pointA.GetX() - pointB.GetX())) + ((pointA.GetY() - pointB.GetY()) * (pointA.GetY() - pointB.GetY())) + ((pointA.GetZ() - pointB.GetZ()) * (pointA.GetZ() - pointB.GetZ())));
-    }
+    static Vector3 GetDirection(const Vector3& from, const Vector3& to) ;
+    static double GetSum(const Vector3 vector);
+    static double GetDistance(const Vector3& pointA, const Vector3& pointB);
+        
+    void Print() const;
     
-    inline friend Vector3 operator*=(const Vector3& leftV, const Vector3& rightV)
-    {
-        return Vector3{leftV.GetX() * rightV.GetX(), leftV.GetY() * rightV.GetY(), leftV.GetZ() * rightV.GetZ()};
-    }
-    inline friend Vector3 operator+=(const Vector3& leftV, const Vector3& rightV)
-    {
-        return Vector3{leftV.GetX() + rightV.GetX(), leftV.GetY() + rightV.GetY(), leftV.GetZ() + rightV.GetZ()};
-    }
-    inline friend Vector3 operator+(Vector3 lhs, const Vector3& rhs)
-    {
-        return Vector3{lhs.GetX() + rhs.GetX(), lhs.GetY() + rhs.GetY(), lhs.GetZ() + rhs.GetZ()};
-    }
-    inline friend Vector3 operator*(const Vector3& leftV, const Vector3& rightV)
-    {
-        return Vector3{leftV.GetX() * rightV.GetX(), leftV.GetY() * rightV.GetY(), leftV.GetZ() * rightV.GetZ()};
-    }
-    inline friend Vector3 operator*(const Vector3& leftV, const double rightV)
-    {
-        return Vector3{leftV.GetX() * rightV, leftV.GetY() * rightV, leftV.GetZ() * rightV};
-    }
+    string ToString() const;
     
-    inline friend Vector3 operator-(const Vector3& leftV, const Vector3 &rightV)
-    {
-        return Vector3{leftV.GetX() - rightV.GetX(), leftV.GetY() - rightV.GetY(), leftV.GetZ() - rightV.GetZ()};
-    }
-    
-    inline friend bool operator<(const Vector3& leftV, const Vector3& rightV)
-    {
-        return (leftV.GetX() + leftV.GetY() + leftV.GetZ()) < (rightV.GetX() + rightV.GetY() + rightV.GetZ());
-    }
-    
-    inline friend bool operator>(const Vector3& leftV, const Vector3& rightV)
-    {
-        return (leftV.GetX() + leftV.GetY() + leftV.GetZ()) > (rightV.GetX() + rightV.GetY() + rightV.GetZ());
-    }
-    
-   inline friend bool operator==(const Vector3& leftV, const Vector3& rightV)
-    {
-        return (leftV.GetX() == rightV.GetX() && leftV.GetY() == rightV.GetY() && leftV.GetZ() == rightV.GetZ());
-    }
 };
+
+//void Normalize(Vector3 vector)
+//{
+//    Vector3 newVector = vector.Normalize();
+//    vector = newVector;
+//}
