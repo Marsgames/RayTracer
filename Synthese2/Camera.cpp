@@ -228,7 +228,7 @@ inline void Camera::SaveBMP() {
         if (b < 0)
             b = 0;
         
-        img.set_pixel(x, y, r, g, b);
+        img.set_pixel(x, y, static_cast<unsigned char>(r), static_cast<unsigned char>(g), static_cast<unsigned char>(b));
     }
     
     img.save_image(m_source + m_name + ".bmp");
@@ -479,47 +479,46 @@ void Camera::DrawImageWithThread() {
 
 void Camera::GeneratePartImage(const int departure, const int arrival, Ray ray)
 {
-    Pixel p;
-    
     const int sampling = 8;
-    
+
     if (sampling <= 0)
     {
         // EXIT CODE: 5 --> Le sampling ne peut être inférieur à 1
         exit(5);
     }
+
     
-//    for (int i = 0; i < sampling; i++)
-//    {
-//        cout << "passe nb " << i << endl;
+    Pixel p;
+    Intersection intersection;
+    Color finalColor;
+    Ray initialRay = ray;
+    
+    
     for (int i = departure; i < arrival; i++)
     {
         p = m_pixels[i];
+        finalColor = Color(0, 0, 0);
 
         ray.SetOrigin(p.GetPosition());
         if (m_useFocal)
         {
             ray.SetDirection(GetRayDirection(p.GetPosition()));
         }
-        
-       
 
 //        if (p.index % 100000 == 0)
 //        {
 //            cout << "index : " << p.index << endl;
 //        }
-
-        Intersection intersection = GetNearestIntersection(ray);
+        initialRay = ray;
+        intersection = GetNearestIntersection(ray);
         
-        Color finalColor;
-        
-        for (int i = 0; i < sampling; i++)
+        for (int _ = 0; _ < sampling; _++)
         {
-        if (sampling > 1)
-        {
-            ray.SetDirection(Toolbox::GetRandomDirectionInAngle(ray.GetDirection(), 1));
-            intersection = GetNearestIntersection(ray);
-        }
+            if (sampling > 1)
+            {
+                ray.SetDirection(Toolbox::GetRandomDirectionInAngle(initialRay.GetDirection(), 1));
+                intersection = GetNearestIntersection(ray);
+            }
             
             finalColor += GetColor(intersection, ray);
         }
@@ -533,14 +532,6 @@ void Camera::GeneratePartImage(const int departure, const int arrival, Ray ray)
             SaveImage();
         }
     }
-//    }
-    
-//    for(Pixel& pixel : m_pixels)
-//    {
-//        pixel.SetColor(pixel.GetColor() / sampling);
-//    }
-//
-//    SaveImage();
 }
 
 
@@ -636,7 +627,7 @@ void Camera::SetScene(Scene* scene) {
 
 Color Camera::GetLighting(const Intersection& intersection) const
 {
-    int lightsVisible = 0;
+//    int lightsVisible = 0;
     Color finalColor = Color(0, 0, 0);
     
     bool canSeeLight;
@@ -650,7 +641,7 @@ Color Camera::GetLighting(const Intersection& intersection) const
 
         for (int i = 0; i < nbSurfacicLights; i++)
         {
-            surfacicLight = Light(Toolbox::GetRandomPointOnSphere(Sphere(light.GetPosition(), 100)), light.GetPower(), light.GetMaterial());
+            surfacicLight = Light(Toolbox::GetRandomPointOnSphere(Sphere(light.GetPosition(), 10)), light.GetPower() / nbSurfacicLights, light.GetMaterial());
             
 //            surfacicLight.GetPosition().Print();
             
@@ -659,19 +650,19 @@ Color Camera::GetLighting(const Intersection& intersection) const
             if (canSeeLight)
             {
                 finalColor +=  GetDirectLighting(surfacicLight, intersection);
-                lightsVisible += 1;
+//                lightsVisible += 1;
             }
 //            lightsVisible += 1; // TODO: supprimer quand on rajoute la lumière indirecte
             
-            for (int i = 0; i < 1; i++)
+            for (int _ = 0; _ < 5; _++)
             {
                 finalColor += GetIndirectLighting(surfacicLight, intersection);
-                lightsVisible += 1;
+//                lightsVisible += 1;
             }
         }
     }
     
-    return finalColor / lightsVisible;
+    return finalColor;// / lightsVisible;
 }
 
 
@@ -685,7 +676,7 @@ Color Camera::GetIndirectLighting(const Light& light, const Intersection &inters
     
     Intersection bounceInter;
     Ray bounceRay = Ray(Vector3(0), Vector3(0));
-    const int nbIter = 5;
+    const int nbIter = 3;
     int remainingBounces = nbIter;
     
     float distanceToAdd = 0;
@@ -697,7 +688,7 @@ Color Camera::GetIndirectLighting(const Light& light, const Intersection &inters
         bounceRay = Ray(intersection.pointCoordonate, Toolbox::GetRandomDirectionOnHemisphere(intersection.touchedSphere.GetNormal(intersection.pointCoordonate)));
         bounceInter = GetNearestIntersection(bounceRay);
         
-        distanceToAdd += bounceInter.distance;
+        distanceToAdd += static_cast<float>(bounceInter.distance);
 
         finalColor += (GetDirectLighting(light, bounceInter, distanceToAdd));
     }while(bounceInter.intersect && remainingBounces > 0);

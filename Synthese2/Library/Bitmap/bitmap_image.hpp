@@ -1366,7 +1366,7 @@ private:
 
    inline unsigned short flip(const unsigned short& v) const
    {
-      return ((v >> 8) | (v << 8));
+      return static_cast<unsigned short>((v >> 8) | (v << 8));
    }
 
    inline unsigned int flip(const unsigned int& v) const
