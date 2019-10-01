@@ -160,5 +160,3 @@ Vector3 Vector3::CrossProduct(const Vector3 &vA, const Vector3 &vB) {
 
     return Vector3(x, y, z);
 }
-
-//////////////////////////////

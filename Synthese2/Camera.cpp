@@ -332,101 +332,103 @@ inline void Camera::SaveBMP() {
 
 
 void Camera::DrawImage() {
-    
-    if (nullptr == m_scene)
-    {
-        exit(4); // m_scene n'est pas set !
-    }
-    
-    const vector<Sphere> spheres = m_scene->GetSpheres();
-    const vector<Light> lights = m_scene->GetLights();
-    
-    const Vector3 rayDirection = GetRayDirection();
-    Ray ray = Ray(Vector3{0, 0, 0}, rayDirection);
-    // double distance = __DBL_MAX__;
-    // Material sphereMaterial = Material(Color(0, 0, 0), EMaterials::DarkFloor);
-    // Vector3 pointOnSphere = Vector3(0, 0, 0);
-
-    Color pixelColor = Color(1, 0, 1);
-    
-    const int sampling = 64;
-    
-    for (int i = 0; i < sampling; i++)
-    {
-        cout << "pass nb " << i << endl;
-        #pragma omp parallel for
-        for (Pixel& pixel : m_pixels)
-        {
-            ray.SetOrigin(pixel.GetPosition());
-            if (m_useFocal)
-            {
-                ray.SetDirection(GetRayDirection(pixel.GetPosition()));
-            }
-            
-            if (pixel.index % 100000 == 0)
-            cout << "index : " << pixel.index << endl;
-            
-            
-            
-            
-            Intersection intersection = GetNearestIntersection(ray);
-            
-                pixelColor += GetColor(intersection, ray);
-            
-            
-            
-            pixel.SetColor(pixelColor);
-            
-            
-            
-            if (pixel.index % 1000000 == 0)
-            {
-                SaveImage();
-            }
-        }
-    }
-    
-    for(Pixel& pixel : m_pixels)
-    {
-        pixel.SetColor(pixel.GetColor() / sampling);
-    }
-    
-    SaveImage();
-    
-//    #pragma omp parallel for
-//    for (Pixel& pixel : m_pixels)
+//
+//    if (nullptr == m_scene)
 //    {
-//        ray.SetOrigin(pixel.GetPosition());
-//        if (m_useFocal)
+//        exit(4); // m_scene n'est pas set !
+//    }
+//
+//    const vector<Sphere> spheres = m_scene->GetSpheres();
+//    const vector<Light> lights = m_scene->GetLights();
+//
+//    const Vector3 rayDirection = GetRayDirection();
+//    Ray ray = Ray(Vector3{0, 0, 0}, rayDirection);
+//    // double distance = __DBL_MAX__;
+//    // Material sphereMaterial = Material(Color(0, 0, 0), EMaterials::DarkFloor);
+//    // Vector3 pointOnSphere = Vector3(0, 0, 0);
+//
+//    Color pixelColor = Color(1, 0, 1);
+//
+//    const int sampling = 64;
+//
+//    for (int i = 0; i < sampling; i++)
+//    {
+//        cout << "pass nb " << i << endl;
+//        #pragma omp parallel for
+//        for (Pixel& pixel : m_pixels)
 //        {
-//            ray.SetDirection(GetRayDirection(pixel.GetPosition()));
-//        }
+//            ray.SetOrigin(pixel.GetPosition());
+//            if (m_useFocal)
+//            {
+//                ray.SetDirection(GetRayDirection(pixel.GetPosition()));
+//            }
 //
-//        if (pixel.index % 100000 == 0)
-//        cout << "index : " << pixel.index << endl;
+//            ray.SetDirection(Toolbox::GetRandomDirectionInAngle(ray.GetDirection(), 1));
 //
-//
-//
-//
-//        Intersection intersection = GetNearestIntersection(ray);
-//
-//        for (int i = 1; i < 32; i++)
-//        {
-//            pixelColor += GetColor(intersection, ray);
-//        }
-//        pixelColor = pixelColor / 32;
+//            if (pixel.index % 100000 == 0)
+//            cout << "index : " << pixel.index << endl;
 //
 //
 //
-//        pixel.SetColor(pixelColor);
+//
+//            Intersection intersection = GetNearestIntersection(ray);
+//
+//                pixelColor += GetColor(intersection, ray);
 //
 //
 //
-//        if (pixel.index % 1000000 == 0)
-//        {
-//            SaveImage();
+//            pixel.SetColor(pixelColor);
+//
+//
+//
+//            if (pixel.index % 1000000 == 0)
+//            {
+//                SaveImage();
+//            }
 //        }
 //    }
+//
+//    for(Pixel& pixel : m_pixels)
+//    {
+//        pixel.SetColor(pixel.GetColor() / sampling);
+//    }
+//
+//    SaveImage();
+//
+////    #pragma omp parallel for
+////    for (Pixel& pixel : m_pixels)
+////    {
+////        ray.SetOrigin(pixel.GetPosition());
+////        if (m_useFocal)
+////        {
+////            ray.SetDirection(GetRayDirection(pixel.GetPosition()));
+////        }
+////
+////        if (pixel.index % 100000 == 0)
+////        cout << "index : " << pixel.index << endl;
+////
+////
+////
+////
+////        Intersection intersection = GetNearestIntersection(ray);
+////
+////        for (int i = 1; i < 32; i++)
+////        {
+////            pixelColor += GetColor(intersection, ray);
+////        }
+////        pixelColor = pixelColor / 32;
+////
+////
+////
+////        pixel.SetColor(pixelColor);
+////
+////
+////
+////        if (pixel.index % 1000000 == 0)
+////        {
+////            SaveImage();
+////        }
+////    }
 }
 
 void Camera::DrawImageWithThread() {
@@ -479,7 +481,13 @@ void Camera::GeneratePartImage(const int departure, const int arrival, Ray ray)
 {
     Pixel p;
     
-    const int sampling = 1;
+    const int sampling = 8;
+    
+    if (sampling <= 0)
+    {
+        // EXIT CODE: 5 --> Le sampling ne peut être inférieur à 1
+        exit(5);
+    }
     
 //    for (int i = 0; i < sampling; i++)
 //    {
@@ -493,9 +501,13 @@ void Camera::GeneratePartImage(const int departure, const int arrival, Ray ray)
         {
             ray.SetDirection(GetRayDirection(p.GetPosition()));
         }
+        
+       
 
-        if (p.index % 100000 == 0)
-        cout << "index : " << p.index << endl;
+//        if (p.index % 100000 == 0)
+//        {
+//            cout << "index : " << p.index << endl;
+//        }
 
         Intersection intersection = GetNearestIntersection(ray);
         
@@ -503,6 +515,12 @@ void Camera::GeneratePartImage(const int departure, const int arrival, Ray ray)
         
         for (int i = 0; i < sampling; i++)
         {
+        if (sampling > 1)
+        {
+            ray.SetDirection(Toolbox::GetRandomDirectionInAngle(ray.GetDirection(), 1));
+            intersection = GetNearestIntersection(ray);
+        }
+            
             finalColor += GetColor(intersection, ray);
         }
         finalColor = finalColor / sampling;
@@ -643,6 +661,7 @@ Color Camera::GetLighting(const Intersection& intersection) const
                 finalColor +=  GetDirectLighting(surfacicLight, intersection);
                 lightsVisible += 1;
             }
+//            lightsVisible += 1; // TODO: supprimer quand on rajoute la lumière indirecte
             
             for (int i = 0; i < 1; i++)
             {
@@ -666,7 +685,7 @@ Color Camera::GetIndirectLighting(const Light& light, const Intersection &inters
     
     Intersection bounceInter;
     Ray bounceRay = Ray(Vector3(0), Vector3(0));
-    const int nbIter = 150;
+    const int nbIter = 5;
     int remainingBounces = nbIter;
     
     float distanceToAdd = 0;

@@ -91,7 +91,7 @@ public:
     static Vector3 GetDirection(const Vector3& from, const Vector3& to) ;
     static double GetSum(const Vector3 vector);
     static double GetDistance(const Vector3& pointA, const Vector3& pointB);
-    
+        
     void Print() const;
     
     string ToString() const;

@@ -22,6 +22,7 @@ class Toolbox {
 public:    
     static double GenerateRandomNumber(const double min = 0.0, const double max = 1.0);
     static Vector3 GetRandomDirectionOnHemisphere(const Vector3& normal);
+    static Vector3 GetRandomDirectionInAngle(const Vector3& normal, const float angleMax);
     static Vector3 GetRandomPointOnSphere(const Sphere& sphere);
     static bool CanSeeLight(const Vector3& point, const Light& light, const vector<Sphere>& spheres);
 };

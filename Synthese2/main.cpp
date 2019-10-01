@@ -38,7 +38,7 @@ int main(int argc, char* argv[])
     
     Sphere sp2 = Sphere(Vector3(300, -300, 500), 200, MaterialList::BlancMat);
     
-    Sphere sp3 = Sphere(Vector3(0, 500, 500), 200, MaterialList::Miroir);
+    Sphere sp3 = Sphere(Vector3(-800, 800, 500), 300, MaterialList::Miroir);
 
 
     
@@ -53,7 +53,7 @@ int main(int argc, char* argv[])
     Sphere bottomWall = Sphere(Vector3(0., heightOffset, 0.), 3e4, MaterialList::BlancMat, "Blanc");
 ////    //    Sphere bottomWall = Sphere(Vector3(0., 4e5 + 4000., -00.), 4e5, Material(EMaterialType::DifuseType, Vector3(255 / 75, 255 / 140, 255 / 225)), "Rouge chelou");
 Sphere backWall = Sphere(Vector3(0., 0., -3e4 - 1000), 3e4, MaterialList::BleuCielMat, "Bleu ciel");
-    Sphere frontWall = Sphere(Vector3(0., 0., 3e4 + 1000), 3e4, MaterialList::Miroir, "Jaune");
+    Sphere frontWall = Sphere(Vector3(0., 0., 3e4 + 1000), 3e4, MaterialList::JauneMat, "Jaune");
     
     leftWall.GetMaterial().SetAlbedo(0);
     rightWall.GetMaterial().SetAlbedo(0);
