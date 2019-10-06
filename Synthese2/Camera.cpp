@@ -479,7 +479,7 @@ void Camera::DrawImageWithThread() {
 
 void Camera::GeneratePartImage(const int departure, const int arrival, Ray ray)
 {
-    const int sampling = 8;
+    const int sampling = 1;
 
     if (sampling <= 0)
     {
@@ -632,7 +632,7 @@ Color Camera::GetLighting(const Intersection& intersection) const
     
     bool canSeeLight;
     
-    const int nbSurfacicLights = 10;
+    const int nbSurfacicLights = 5;
     Light surfacicLight = Light(Vector3(), 0);
     
     for (const Light& light : m_scene->GetLights())
@@ -654,7 +654,7 @@ Color Camera::GetLighting(const Intersection& intersection) const
             }
 //            lightsVisible += 1; // TODO: supprimer quand on rajoute la lumière indirecte
             
-            for (int _ = 0; _ < 5; _++)
+            for (int _ = 0; _ < 1; _++)
             {
                 finalColor += GetIndirectLighting(surfacicLight, intersection);
 //                lightsVisible += 1;
@@ -662,7 +662,7 @@ Color Camera::GetLighting(const Intersection& intersection) const
         }
     }
     
-    return finalColor;// / lightsVisible;
+    return finalColor / 2;
 }
 
 
@@ -675,6 +675,7 @@ Color Camera::GetIndirectLighting(const Light& light, const Intersection &inters
 //    Color colorToAdd;
     
     Intersection bounceInter;
+    bounceInter.pointCoordonate = bounceInter.pointCoordonate *  (Vector3::GetDirection(bounceInter.pointCoordonate, light.GetPosition()) * .1f);
     Ray bounceRay = Ray(Vector3(0), Vector3(0));
     const int nbIter = 3;
     int remainingBounces = nbIter;
