@@ -41,6 +41,7 @@ public:
     vector<Box> GetBoxes() const;
     
     void DrawImages();
+    void DrawScene();
     void DrawBB();
     void SaveImages();
 };

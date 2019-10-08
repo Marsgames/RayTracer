@@ -123,6 +123,11 @@ void Sphere::SetCenter(int x, int y, int z) {
     m_center = Vector3(x, y, z);
 }
 
+bool Sphere::operator<(const Sphere& other) const
+{
+    return m_rayon < other.m_rayon;
+}
+
 string Sphere::GetName() const {
     return m_name;
 }

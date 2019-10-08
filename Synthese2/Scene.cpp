@@ -65,6 +65,15 @@ void Scene::DrawImages() {
     }
 }
 
+void Scene::DrawScene()
+{
+    for (Camera& camera : m_cameras)
+    {
+//        camera.DrawImage();
+        camera.DrawSceneWithThread();
+    }
+}
+
 void Scene::DrawBB()
 {
     for (Camera& camera : m_cameras)

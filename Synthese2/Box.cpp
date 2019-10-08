@@ -10,6 +10,7 @@
 #include <math.h>
 #include <Ray.hpp>
 #include <Sphere.hpp>
+#include <TreeBox.hpp>
 #include <vector>
 #include <Vector3.hpp>
 
@@ -34,25 +35,25 @@ void Box::SetPMax(Vector3 pMax)
     m_pMax = pMax;
 }
 
-EBoxType Box::GetSource() const
-{
-    return m_source;
-}
-
-void Box::SetSource(EBoxType source)
-{
-    m_source = source;
-}
-
-Sphere Box::GetMySphere() const
-{
-    return m_mySphere;
-}
-
-void Box::SetMySphere(Sphere mySphere)
-{
-    m_mySphere = mySphere;
-}
+//EBoxType Box::GetSource() const
+//{
+//    return m_source;
+//}
+//
+//void Box::SetSource(EBoxType source)
+//{
+//    m_source = source;
+//}
+//
+//Sphere Box::GetMySphere() const
+//{
+//    return m_mySphere;
+//}
+//
+//void Box::SetMySphere(Sphere mySphere)
+//{
+//    m_mySphere = mySphere;
+//}
 
 bool Box::operator<(const Box& other) const
 {
@@ -64,6 +65,8 @@ bool Box::operator<(const Box& other) const
 
 bool Box::IntersectBox(const Ray &ray, const Box &box)
 {
+//    Box box = tb.GetBox();
+    
     // Division pour éviter une multiplication plus tard
     const double rinvx = 1 / ray.GetDirection().GetX();
     const double rinvy = 1 / ray.GetDirection().GetY();
@@ -104,23 +107,23 @@ bool Box::IntersectBox(const Ray &ray, const Box &box)
     }
 }
 
-void Box::CreateSpheresBoxes(std::vector<Box> &boxesScene, const std::vector<Sphere> &scene)
-{
-//    int i = 1;
-    for (const Sphere& sphere : scene)
-    {
-//        if (sphere.GetName() == "lampe")
-//        {
-//            break;
-//        }
-        
-        Box b = Box(sphere);
-        boxesScene.push_back(b);
-        
-//        cout << "Box" << i << " crée. bMin = ";
-//        Print(b.pMin);
-//        cout << " - bMax = ";
-//        Print(b.pMax);
-//        cout << endl;
-    }
-}
+//void Box::CreateSpheresBoxes(std::vector<Box> &boxesScene, const std::vector<Sphere> &scene)
+//{
+////    int i = 1;
+//    for (const Sphere& sphere : scene)
+//    {
+////        if (sphere.GetName() == "lampe")
+////        {
+////            break;
+////        }
+//
+//        Box b = Box(sphere);
+//        boxesScene.push_back(b);
+//
+////        cout << "Box" << i << " crée. bMin = ";
+////        Print(b.pMin);
+////        cout << " - bMax = ";
+////        Print(b.pMax);
+////        cout << endl;
+//    }
+//}

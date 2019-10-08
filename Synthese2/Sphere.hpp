@@ -20,12 +20,14 @@ class Sphere
 {
     Vector3 m_center;
     int m_rayon;
-    Material m_material;
+    Material m_material ;
     string m_name = "";
     
 public:
 //    Sphere() = delete;
-    Sphere(){};
+    Sphere() :
+    m_material{MaterialList::NoirMat}
+    {};
     
     Sphere(Vector3 position, int rayon, Material material) :
     m_center{position},
@@ -52,6 +54,8 @@ public:
     double GetPositionX() const;
     double GetPositionY() const;
     double GetPositionZ() const;
+    
+    bool operator<(const Sphere& other) const;
     
     int GetRayon() const;
     

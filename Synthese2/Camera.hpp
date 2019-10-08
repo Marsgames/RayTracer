@@ -59,17 +59,17 @@ class Camera
     Vector3 GetRayDirection(const Vector3& toThatPoint) const;
     Reflexion GetMaterial(const vector<Sphere> spheres, const Ray& ray, const vector<Light> lights) const;
     
-    Color GetColor(const Intersection& intersection, const Ray& ray) const;
-    Color GetColor(const Intersection& intersection, const Ray& ray, int remainingBounce) const;
+    Color GetColor(const Intersection& intersection, const Ray& ray, const vector<Sphere>& spheres) const;
+    Color GetColor(const Intersection& intersection, const Ray& ray, int remainingBounce, const vector<Sphere>& spheres) const;
 
-    Intersection GetNearestIntersection(const Ray& ray) const;
+    Intersection GetNearestIntersection(const Ray& ray, const vector<Sphere>& spheres) const;
 //    double GetRandomDouble(double min = -1, double max = 1) const;
     
     Color GetLighting(const Intersection& intersection, int remainingBounces = 3) const;
     Color GetDirectLighting(const Light& ligght, const Intersection& intersection, const float distanceToAdd = 0) const;
-    Color GetIndirectLighting(const Intersection &intersection, int remainingBounces) const;
+    Color GetIndirectLighting(const Intersection &intersection, int remainingBounces, const vector<Sphere>& spheres) const;
     
-    void GeneratePartImage(const int departure, const int arrival, Ray ray);
+    void GeneratePartImage(const int departure, const int arrival, Ray ray, const vector<Sphere> sphere);
 
 public:
     Camera(const Vector3& position, const int width, const int height, Vector3& direction) :
@@ -120,8 +120,9 @@ public:
     void SaveImage();
     void SetImageName(string name);
     
-    void DrawImage();
     void DrawBB();
+    void DrawSceneWithThread();
+    void DrawImage();
     void DrawImageWithThread();
 
     void SetScene(Scene* scene);

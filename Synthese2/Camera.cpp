@@ -16,6 +16,7 @@
 #include <random>
 #include <thread>
 #include <Toolbox.hpp>
+#include <TreeBox.hpp>
 #include <Vector3.hpp>
 #include <vector>
 
@@ -433,6 +434,60 @@ void Camera::DrawImage() {
 ////    }
 }
 
+void Camera::DrawSceneWithThread() {
+    
+    if (nullptr == m_scene)
+    {
+        exit(4); // m_scene n'est pas set !
+    }
+    
+    vector<Sphere> spheres;
+    for (Sphere sp : m_scene->GetSpheres())
+    {
+        if (sp.GetName() == "Wall")
+        {
+            spheres.push_back(sp);
+        }
+    }
+    
+    const vector<Light> lights = m_scene->GetLights();
+    
+    const Vector3 rayDirection = GetRayDirection();
+    Ray ray = Ray(Vector3{0, 0, 0}, rayDirection);
+    
+//    Color pixelColor = Color(100, 100, 100);
+    
+    const unsigned long diviseur = m_pixels.capacity() / 5;
+    const int reste = m_pixels.capacity() % 5;
+    
+    Pixel p1;
+    Pixel p2;
+    Pixel p3;
+    Pixel p4;
+    Pixel p5;
+    Pixel pReste;
+    
+    std::thread t01(&Camera::GeneratePartImage, this, 0, (int)diviseur, ray, spheres);
+    std::thread t02(&Camera::GeneratePartImage, this, (int)diviseur, (int)diviseur * 2, ray, spheres);
+    std::thread t03(&Camera::GeneratePartImage, this, (int)diviseur * 2, (int)diviseur * 3, ray, spheres);
+    std::thread t04(&Camera::GeneratePartImage, this, (int)diviseur * 3, (int)diviseur * 4, ray, spheres);
+    std::thread t05(&Camera::GeneratePartImage, this, (int)diviseur * 4, (int)diviseur * 5, ray, spheres);
+    std::thread t06(&Camera::GeneratePartImage, this, (int)diviseur * 5, (int)diviseur * 5 + reste, ray, spheres);
+    
+    t01.join();
+    cout << "Thread 1 terminé" << endl;
+    t02.join();
+    cout << "Thread 2 terminé" << endl;
+    t03.join();
+    cout << "Thread 3 terminé" << endl;
+    t04.join();
+    cout << "Thread 4 terminé" << endl;
+    t05.join();
+    cout << "Thread 5 terminé" << endl;
+    t06.join();
+    cout << "Thread 6 terminé" << endl;
+}
+
 void Camera::DrawBB()
 {
         if (nullptr == m_scene)
@@ -462,7 +517,36 @@ void Camera::DrawBB()
 ////            pixel.SetColor(Color(0,1,0));
 ////        }
 //    }
+    vector<Sphere> spheresTree;
+    for (const Sphere& sp : spheres)
+    {
+        if ("Wall" == sp.GetName())
+        {
+            continue;
+        }
+        
+        spheresTree.push_back(sp);
+    }
     
+    TreeBox* tb = TreeBox::GenerateTree(spheresTree);
+    
+    if (tb->m_nodeLeft == nullptr)
+    {
+        cout << "left is null" << endl;
+    }
+    else
+    {
+        cout << "left IS NOT null" << endl;
+    }
+    
+    if (tb->m_nodeRight == nullptr)
+    {
+        cout << "right is null" << endl;
+    }
+    else
+    {
+        cout << "right IS NOT null" << endl;
+    }
     
     
         const int sampling = 1;
@@ -484,15 +568,23 @@ void Camera::DrawBB()
                 {
                     cout << "index : " << pixel.index << endl;
                 }
-    
-    
-                for (Box box : boxes)
+                
+                
+//                Intersection tbIntersect = tb->IntersectSphere(ray);
+                Intersection tbIntersect = tb->IntersectSphere(ray);
+                if (tbIntersect.intersect)
                 {
-                    if (BoundingBox::IntersectBBox(ray, box))
-                    {
-                        pixel.SetColor(Color(0,0,1));
-                    }
+                    pixel.SetColor(GetColor(tbIntersect, ray, spheres));
+//                    pixel.SetColor(Color(0, 0, 1));
                 }
+//                else
+//                {
+//                    pixel.SetColor(Color(0, 1, 0));
+//                }
+                
+                
+
+                
     
                 if (pixel.index % 1000000 == 0)
                 {
@@ -506,6 +598,7 @@ void Camera::DrawBB()
             pixel.SetColor(pixel.GetColor() / sampling);
         }
     
+//    m_name = "theImage01";
         SaveImage();
 }
 
@@ -517,29 +610,40 @@ void Camera::DrawImageWithThread() {
     }
     
     const vector<Sphere> spheres = m_scene->GetSpheres();
-    const vector<Light> lights = m_scene->GetLights();
+//    const vector<Light> lights = m_scene->GetLights();
+    
+    vector<Sphere> spheresTree;
+    for (const Sphere& sp : spheres)
+    {
+        if ("Wall" != sp.GetName())
+        {
+            continue;
+        }
+        
+        spheresTree.push_back(sp);
+    }
     
     const Vector3 rayDirection = GetRayDirection();
-    Ray ray = Ray(Vector3{0, 0, 0}, rayDirection);
+    const Ray ray = Ray(Vector3{0, 0, 0}, rayDirection);
     
 //    Color pixelColor = Color(100, 100, 100);
     
     const unsigned long diviseur = m_pixels.capacity() / 5;
     const int reste = m_pixels.capacity() % 5;
     
-    Pixel p1;
-    Pixel p2;
-    Pixel p3;
-    Pixel p4;
-    Pixel p5;
-    Pixel pReste;
+//    Pixel p1;
+//    Pixel p2;
+//    Pixel p3;
+//    Pixel p4;
+//    Pixel p5;
+//    Pixel pReste;
     
-    std::thread t01(&Camera::GeneratePartImage, this, 0, (int)diviseur, ray);
-    std::thread t02(&Camera::GeneratePartImage, this, (int)diviseur, (int)diviseur * 2, ray);
-    std::thread t03(&Camera::GeneratePartImage, this, (int)diviseur * 2, (int)diviseur * 3, ray);
-    std::thread t04(&Camera::GeneratePartImage, this, (int)diviseur * 3, (int)diviseur * 4, ray);
-    std::thread t05(&Camera::GeneratePartImage, this, (int)diviseur * 4, (int)diviseur * 5, ray);
-    std::thread t06(&Camera::GeneratePartImage, this, (int)diviseur * 5, (int)diviseur * 5 + reste, ray);
+    std::thread t01(&Camera::GeneratePartImage, this, 0, (int)diviseur, ray, spheresTree);
+    std::thread t02(&Camera::GeneratePartImage, this, (int)diviseur, (int)diviseur * 2, ray, spheresTree);
+    std::thread t03(&Camera::GeneratePartImage, this, (int)diviseur * 2, (int)diviseur * 3, ray, spheresTree);
+    std::thread t04(&Camera::GeneratePartImage, this, (int)diviseur * 3, (int)diviseur * 4, ray, spheresTree);
+    std::thread t05(&Camera::GeneratePartImage, this, (int)diviseur * 4, (int)diviseur * 5, ray, spheresTree);
+    std::thread t06(&Camera::GeneratePartImage, this, (int)diviseur * 5, (int)diviseur * 5 + reste, ray, spheresTree);
     
     t01.join();
     cout << "Thread 1 terminé" << endl;
@@ -555,7 +659,7 @@ void Camera::DrawImageWithThread() {
     cout << "Thread 6 terminé" << endl;
 }
 
-void Camera::GeneratePartImage(const int departure, const int arrival, Ray ray)
+void Camera::GeneratePartImage(const int departure, const int arrival, Ray ray, const vector<Sphere> spheres)
 {
     const int sampling = 1;
 
@@ -589,17 +693,17 @@ void Camera::GeneratePartImage(const int departure, const int arrival, Ray ray)
             cout << "index : " << p.index << endl;
         }
         initialRay = ray;
-        intersection = GetNearestIntersection(ray);
+        intersection = GetNearestIntersection(ray, spheres);
         
         for (int _ = 0; _ < sampling; _++)
         {
             if (sampling > 1)
             {
                 ray.SetDirection(Toolbox::GetRandomDirectionInAngle(initialRay.GetDirection(), 1));
-                intersection = GetNearestIntersection(ray);
+                intersection = GetNearestIntersection(ray, spheres);
             }
             
-            finalColor += GetColor(intersection, ray);
+            finalColor += GetColor(intersection, ray, spheres);
         }
         finalColor = finalColor / sampling;
         
@@ -643,15 +747,15 @@ bool Camera::GetUseFocal() {
     return m_useFocal;
 }
 
-Color Camera::GetColor(const Intersection& intersection, const Ray& ray) const {
+Color Camera::GetColor(const Intersection& intersection, const Ray& ray, const vector<Sphere>& spheres) const {
     // Comment stopper de manière "propre" l'effet infini ?
 //    Color returnedColor = GetColor(intersection, ray, 1000);
-    Color returnedColor = GetColor(intersection, ray, 1000);
+    Color returnedColor = GetColor(intersection, ray, 1000, spheres);
 
     return returnedColor;
 }
 
-Color Camera::GetColor(const Intersection& intersection, const Ray& ray, int remainingBounce) const {
+Color Camera::GetColor(const Intersection& intersection, const Ray& ray, int remainingBounce, const vector<Sphere>& spheres) const {
     Color finalColor;
     
     // Si c'est un miroir
@@ -660,11 +764,11 @@ Color Camera::GetColor(const Intersection& intersection, const Ray& ray, int rem
         if (remainingBounce >= 0)
         {
             const Ray reflectionDirection = Ray::GetReflectDirection(ray, intersection, intersection.touchedSphere);
-            const Intersection reflectionIntersection = GetNearestIntersection(reflectionDirection);
+            const Intersection reflectionIntersection = GetNearestIntersection(reflectionDirection, spheres);
             
             remainingBounce--;
             
-            finalColor = GetColor(reflectionIntersection, reflectionDirection, remainingBounce);
+            finalColor = GetColor(reflectionIntersection, reflectionDirection, remainingBounce, spheres);
             return finalColor;
         }
         
@@ -678,11 +782,11 @@ Color Camera::GetColor(const Intersection& intersection, const Ray& ray, int rem
         if (remainingBounce >= 0)
         {
             const Ray reflectionDirection = Ray::GetReflectDirection(ray, intersection, intersection.touchedSphere);
-            const Intersection reflectionIntersection = GetNearestIntersection(reflectionDirection);
+            const Intersection reflectionIntersection = GetNearestIntersection(reflectionDirection, spheres);
             
             remainingBounce--;
             
-            finalColor += (GetColor(reflectionIntersection, reflectionDirection, remainingBounce)) * (intersection.touchedSphere.GetMaterial().GetAlbedo());
+            finalColor += (GetColor(reflectionIntersection, reflectionDirection, remainingBounce, spheres)) * (intersection.touchedSphere.GetMaterial().GetAlbedo());
         }
         
 //        finalColor = Color(1, 1, 0);
@@ -697,13 +801,13 @@ Color Camera::GetColor(const Intersection& intersection, const Ray& ray, int rem
     return finalColor;
 }
 
-Intersection Camera::GetNearestIntersection(const Ray &ray) const {
+Intersection Camera::GetNearestIntersection(const Ray &ray, const vector<Sphere>& spheres) const {
     
     Intersection intersection, nearestIntersection;
     double distanceIntersection = __DBL_MAX__;
     Sphere nearestSphere = Sphere(Vector3(0), -1, Material(Color(0, 0, 0)));
     
-    for (const Sphere& sphere : m_scene->GetSpheres())
+    for (const Sphere& sphere : spheres)
     {
         intersection = Sphere::IntersectRaySphere(ray, sphere);
         
@@ -778,7 +882,7 @@ Color Camera::GetDirectLighting(const Light& light, const Intersection &intersec
             return Light::GetLighting(light, intersection, distanceToAdd);
 }
 
-Color Camera::GetIndirectLighting(const Intersection &intersection, int remainingBounces) const {
+Color Camera::GetIndirectLighting(const Intersection &intersection, int remainingBounces, const vector<Sphere>& spheres) const {
     Color finalColor;
     
 remainingBounces--;
@@ -786,7 +890,7 @@ remainingBounces--;
     const Vector3 randomDir = Toolbox::GetRandomDirectionOnHemisphere(intersection.touchedSphere.GetNormal(intersection.pointCoordonate)).Normalize();
     
         const Ray ray = Ray(intersection.pointCoordonate + (randomDir * 1.5), randomDir);
-    const Intersection inter = GetNearestIntersection(ray);
+    const Intersection inter = GetNearestIntersection(ray, spheres);
 
 //    while (finalColor == Color(0, 0, 0))
 //    {

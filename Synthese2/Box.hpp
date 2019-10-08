@@ -21,41 +21,47 @@ enum EBoxType
 class Box {
 protected:
     Vector3 m_pMin, m_pMax;
-    EBoxType m_source; // Je ne sais plus à quoi ça sert
-    Sphere m_mySphere; // Je ne sais plus non plus à quoi ça sert
+//    EBoxType m_source; // Je ne sais plus à quoi ça sert
+//    Sphere m_mySphere;
     
 public:
     Box(){};
     
-    Box(const Sphere& sphere)
+//    Box(const Sphere& sphere)
+//    {
+//        m_pMin = Vector3(sphere.GetCenter().GetX() - sphere.GetRayon(), sphere.GetCenter().GetY() - sphere.GetRayon(), sphere.GetCenter().GetZ() - sphere.GetRayon());
+//        m_pMax = Vector3(sphere.GetCenter().GetX() + sphere.GetRayon(), sphere.GetCenter().GetY() + sphere.GetRayon(), sphere.GetCenter().GetZ() + sphere.GetRayon());
+////        m_source = SphereType;
+////        m_mySphere = sphere;
+//    };
+    
+    Box(Vector3 pMin, Vector3 pMax)
     {
-        m_pMin = Vector3(sphere.GetCenter().GetX() - sphere.GetRayon(), sphere.GetCenter().GetY() - sphere.GetRayon(), sphere.GetCenter().GetZ() - sphere.GetRayon());
-        m_pMax = Vector3(sphere.GetCenter().GetX() + sphere.GetRayon(), sphere.GetCenter().GetY() + sphere.GetRayon(), sphere.GetCenter().GetZ() + sphere.GetRayon());
-        m_source = SphereType;
-        m_mySphere = sphere;
-    };
+        m_pMin = pMin;
+        m_pMax = pMax;
+    }
     
     Box(const Box& box1, const Box& box2)
     {
         m_pMin = box1.m_pMin < box2.m_pMin ? box1.m_pMin : box2.m_pMin;
         m_pMax = box1.m_pMax > box2.m_pMax ? box1.m_pMax : box2.m_pMax;
-        m_source = BoundingBoxType;
+//        m_source = BoundingBoxType;
     };
     
     Vector3 GetPMin() const;
     void SetPMin(Vector3 pMin);
     Vector3 GetPMax() const;
     void SetPMax(Vector3 pMax);
-    EBoxType GetSource() const;
-    void SetSource(EBoxType source);
-    Sphere GetMySphere() const;
-    void SetMySphere(Sphere mySphere);
+//    EBoxType GetSource() const;
+//    void SetSource(EBoxType source);
+//    Sphere GetMySphere() const;
+//    void SetMySphere(Sphere mySphere);
     
     bool operator<(const Box& other) const;
     
     
     static bool IntersectBox(const Ray& ray, const Box& box);
-    static void CreateSpheresBoxes(std::vector<Box>& boxesScene, const std::vector<Sphere>& scene);
+//    static void CreateSpheresBoxes(std::vector<Box>& boxesScene, const std::vector<Sphere>& scene);
     
     
 };
