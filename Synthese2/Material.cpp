@@ -36,7 +36,7 @@ Material Material::GetRandomMaterial()
     switch (random)
     {
         case 0:
-            return MaterialList::NoirMat;
+//            return MaterialList::NoirMat;
         case 1:
             return MaterialList::RougeMat;
 case 2:

@@ -24,7 +24,8 @@ class Sphere
     string m_name = "";
     
 public:
-    Sphere() = delete;
+//    Sphere() = delete;
+    Sphere(){};
     
     Sphere(Vector3 position, int rayon, Material material) :
     m_center{position},

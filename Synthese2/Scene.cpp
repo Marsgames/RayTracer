@@ -7,11 +7,15 @@
 //
 
 #include <iostream>
-#include "Scene.hpp"
+#include <Box.hpp>
+#include <Light.hpp>
+#include <Scene.hpp>
+#include <vector>
 
 using std::cout;
 using std::endl;
 using std::to_string;
+using std::vector;
 
 void Scene::AddSphere(const Sphere& sphere) {
     m_spheres.push_back(sphere);
@@ -46,12 +50,28 @@ void Scene::AddCamera(const vector<Camera> &cameras) {
     }
 }
 
+void Scene::AddBoxes(const vector<Box> &boxes) {
+    for (const Box& box : boxes)
+    {
+        m_boxes.push_back(box);
+    }
+}
+
 void Scene::DrawImages() {
     for (Camera& camera : m_cameras)
     {
 //        camera.DrawImage();
         camera.DrawImageWithThread();
     }
+}
+
+void Scene::DrawBB()
+{
+    for (Camera& camera : m_cameras)
+        {
+    //        camera.DrawImage();
+            camera.DrawBB();
+        }
 }
 
 void Scene::SaveImages() {
@@ -75,7 +95,10 @@ vector<Light> Scene::GetLights() const {
     return m_lights;
 }
 
-
 vector<Sphere> Scene::GetSpheres() const {
     return m_spheres;
+}
+
+vector<Box> Scene::GetBoxes() const {
+    return m_boxes;
 }

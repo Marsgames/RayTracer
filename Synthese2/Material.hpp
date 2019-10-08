@@ -34,11 +34,12 @@ class Material {
     
 //    Color m_color;
 //    EMaterials m_material;
-    double m_albedo;
+    double m_albedo = 0;
 //    string m_name;
     
 public:
-    Material() = delete;
+//    Material() = delete;
+    Material(){};
     
     Material(Color diffuseColor) :
     m_diffuseColor{diffuseColor},

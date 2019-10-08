@@ -8,6 +8,7 @@
 
 #pragma once
 
+#include <Box.hpp>
 #include <Camera.hpp>
 #include <Light.hpp>
 #include <Sphere.hpp>
@@ -19,6 +20,7 @@ class Scene {
     vector<class Camera> m_cameras;
     vector<Light> m_lights;
     vector<Sphere> m_spheres;
+    vector<Box> m_boxes;
     
 public:
     Scene(){};
@@ -32,9 +34,13 @@ public:
     void AddSphere(const Sphere& sphere);
     void AddSphere(const vector<Sphere>& spheres);
     
+    void AddBoxes(const vector<Box>& boxes);
+    
     vector<Light> GetLights() const;
     vector<Sphere> GetSpheres() const;
+    vector<Box> GetBoxes() const;
     
     void DrawImages();
+    void DrawBB();
     void SaveImages();
 };

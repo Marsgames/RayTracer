@@ -121,6 +121,7 @@ public:
     void SetImageName(string name);
     
     void DrawImage();
+    void DrawBB();
     void DrawImageWithThread();
 
     void SetScene(Scene* scene);

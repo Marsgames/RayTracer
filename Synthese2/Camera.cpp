@@ -6,6 +6,8 @@
 //  Copyright © 2019 Marsgames. All rights reserved.
 //
 
+#include <BoundingBox.hpp>
+#include <Box.hpp>
 #include <Camera.hpp>
 #include <fstream>
 #include <iostream>
@@ -431,6 +433,82 @@ void Camera::DrawImage() {
 ////    }
 }
 
+void Camera::DrawBB()
+{
+        if (nullptr == m_scene)
+        {
+            exit(4); // m_scene n'est pas set !
+        }
+    
+        const vector<Sphere> spheres = m_scene->GetSpheres();
+    const vector<Box> boxes = m_scene->GetBoxes();
+        const vector<Light> lights = m_scene->GetLights();
+    
+        const Vector3 rayDirection = GetRayDirection();
+        Ray ray = Ray(Vector3{0, 0, 0}, rayDirection);
+        // double distance = __DBL_MAX__;
+        // Material sphereMaterial = Material(Color(0, 0, 0), EMaterials::DarkFloor);
+        // Vector3 pointOnSphere = Vector3(0, 0, 0);
+    
+//        Color pixelColor = Color(1, 0, 1);
+    
+    
+//    for (Box box : boxes)
+//    {
+//        BoundingBox bb = static_cast<BoundingBox&>(box);
+//        bb.boxL
+////        if (BoundingBox::IntersectBBox(ray, box))
+////        {
+////            pixel.SetColor(Color(0,1,0));
+////        }
+//    }
+    
+    
+    
+        const int sampling = 1;
+        for (int i = 0; i < sampling; i++)
+        {
+            cout << "pass nb " << i << endl;
+            #pragma omp parallel for
+            for (Pixel& pixel : m_pixels)
+            {
+                ray.SetOrigin(pixel.GetPosition());
+                if (m_useFocal)
+                {
+                    ray.SetDirection(GetRayDirection(pixel.GetPosition()));
+                }
+    
+//                ray.SetDirection(Toolbox::GetRandomDirectionInAngle(ray.GetDirection(), 1));
+    
+                if (pixel.index % 100000 == 0)
+                {
+                    cout << "index : " << pixel.index << endl;
+                }
+    
+    
+                for (Box box : boxes)
+                {
+                    if (BoundingBox::IntersectBBox(ray, box))
+                    {
+                        pixel.SetColor(Color(0,0,1));
+                    }
+                }
+    
+                if (pixel.index % 1000000 == 0)
+                {
+                    SaveImage();
+                }
+            }
+        }
+    
+        for(Pixel& pixel : m_pixels)
+        {
+            pixel.SetColor(pixel.GetColor() / sampling);
+        }
+    
+        SaveImage();
+}
+
 void Camera::DrawImageWithThread() {
     
     if (nullptr == m_scene)
@@ -657,7 +735,7 @@ Color Camera::GetLighting(const Intersection& intersection, int remainingBounces
     
     bool canSeeLight;
     
-    const int nbSurfacicLights = 1;
+    const int nbSurfacicLights = 5;
     Light surfacicLight = Light(Vector3(), 0);
     
     if (remainingBounces > 0)

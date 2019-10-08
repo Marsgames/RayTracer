@@ -20,6 +20,8 @@
 		AE91571F229F1CA9003C8179 /* Color.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AE91571D229F1CA9003C8179 /* Color.cpp */; };
 		AE915722229F3110003C8179 /* Sphere.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AE915720229F3110003C8179 /* Sphere.cpp */; };
 		AE915725229F361B003C8179 /* Ray.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AE915723229F361B003C8179 /* Ray.cpp */; };
+		AEA73EB8234C872C0086CDAC /* BoundingBox.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AEA73EB6234C872C0086CDAC /* BoundingBox.cpp */; };
+		AEDBFE6C234C7B91003BCF68 /* Box.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AEDBFE6A234C7B91003BCF68 /* Box.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -64,8 +66,12 @@
 		AE915721229F3110003C8179 /* Sphere.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Sphere.hpp; sourceTree = "<group>"; };
 		AE915723229F361B003C8179 /* Ray.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Ray.cpp; sourceTree = "<group>"; };
 		AE915724229F361B003C8179 /* Ray.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Ray.hpp; sourceTree = "<group>"; };
+		AEA73EB6234C872C0086CDAC /* BoundingBox.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = BoundingBox.cpp; sourceTree = "<group>"; };
+		AEA73EB7234C872C0086CDAC /* BoundingBox.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = BoundingBox.hpp; sourceTree = "<group>"; };
 		AEA8E6352158FF1100E89BCC /* main.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = main.hpp; sourceTree = "<group>"; };
 		AEA8E63621590E1900E89BCC /* bitmap_image.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = bitmap_image.hpp; sourceTree = "<group>"; };
+		AEDBFE6A234C7B91003BCF68 /* Box.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Box.cpp; sourceTree = "<group>"; };
+		AEDBFE6B234C7B91003BCF68 /* Box.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Box.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -125,6 +131,10 @@
 				AE1625F622A485C800D0A45C /* Material.hpp */,
 				AE25731B2331051F00E322A3 /* Toolbox.cpp */,
 				AE25731C2331051F00E322A3 /* Toolbox.hpp */,
+				AEDBFE6A234C7B91003BCF68 /* Box.cpp */,
+				AEDBFE6B234C7B91003BCF68 /* Box.hpp */,
+				AEA73EB6234C872C0086CDAC /* BoundingBox.cpp */,
+				AEA73EB7234C872C0086CDAC /* BoundingBox.hpp */,
 			);
 			path = Synthese2;
 			sourceTree = "<group>";
@@ -232,6 +242,8 @@
 				AE91571C229F1BB9003C8179 /* Vector3.cpp in Sources */,
 				AE915725229F361B003C8179 /* Ray.cpp in Sources */,
 				AE915722229F3110003C8179 /* Sphere.cpp in Sources */,
+				AEA73EB8234C872C0086CDAC /* BoundingBox.cpp in Sources */,
+				AEDBFE6C234C7B91003BCF68 /* Box.cpp in Sources */,
 				AE1625F722A485C800D0A45C /* Material.cpp in Sources */,
 				AE376F5F2158B2C700044A00 /* main.cpp in Sources */,
 			);
