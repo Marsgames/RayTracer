@@ -93,16 +93,16 @@ Sphere backWall = Sphere(Vector3(0., 0., -3e4 - 1000), 3e4, MaterialList::BlancM
     Scene myScene = Scene();
     mainCamera.SetScene(&myScene);
     myScene.AddCamera(mainCamera);
-    myScene.AddSphere(sp1);
+//    myScene.AddSphere(sp1);
 //    myScene.AddSphere(sp2);
 //    myScene.AddSphere(sp3);
 //    myScene.AddSphere(sp4);
 //    myScene.AddSphere(sp5);
     
     Sphere sp = Sphere(Vector3(0), 50);
-    for (int i = 0; i < 500; i++)
+    for (int i = 0; i < 100; i++)
     {
-        sp = Sphere(Vector3(Toolbox::GenerateRandomNumber(-1000, 1000), Toolbox::GenerateRandomNumber(-1000, 1000), Toolbox::GenerateRandomNumber(100, 1000)), 50, Material::GetRandomMaterial());
+        sp = Sphere(Vector3(Toolbox::GenerateRandomNumber(-1500, 1500), Toolbox::GenerateRandomNumber(-1000, 1000), Toolbox::GenerateRandomNumber(100, 1000)), 50, Material::GetRandomMaterial());
         myScene.AddSphere(sp);
     }
 

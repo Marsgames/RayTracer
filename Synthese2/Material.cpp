@@ -40,17 +40,17 @@ Material Material::GetRandomMaterial()
         case 1:
             return MaterialList::RougeMat;
 case 2:
-            return MaterialList::RougeDiffus;
+//            return MaterialList::RougeDiffus;
 case 3:
             return MaterialList::VertMat;
 case 4:
-            return MaterialList::VertDiffus;
+//            return MaterialList::VertDiffus;
 case 5:
             return MaterialList::BleuMat;
 case 6:
             return MaterialList::BlancMat;
 case 7:
-            return MaterialList::BlancDiffus;
+//            return MaterialList::BlancDiffus;
 case 8:
             return MaterialList::RoseMat;
 case 9:
@@ -58,7 +58,7 @@ case 9:
 case 10:
             return MaterialList::BleuCielMat;
 case 11:
-            return MaterialList::Miroir;
+//            return MaterialList::Miroir;
             
             default:
             return MaterialList::BlancMat;

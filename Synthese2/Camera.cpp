@@ -479,7 +479,7 @@ void Camera::DrawImageWithThread() {
 
 void Camera::GeneratePartImage(const int departure, const int arrival, Ray ray)
 {
-    const int sampling = 2;
+    const int sampling = 1;
 
     if (sampling <= 0)
     {
@@ -668,7 +668,7 @@ Color Camera::GetLighting(const Intersection& intersection, int remainingBounces
 
         for (int i = 0; i < nbSurfacicLights; i++)
         {
-            surfacicLight = Light(Toolbox::GetRandomPointOnSphere(Sphere(light.GetPosition(), 10)), light.GetPower() / nbSurfacicLights, light.GetMaterial());
+            surfacicLight = Light(Toolbox::GetRandomPointOnSphere(Sphere(light.GetPosition(), 100)), light.GetPower() / nbSurfacicLights, light.GetMaterial());
             
 //            surfacicLight.GetPosition().Print();
             
