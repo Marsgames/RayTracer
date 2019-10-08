@@ -479,7 +479,7 @@ void Camera::DrawImageWithThread() {
 
 void Camera::GeneratePartImage(const int departure, const int arrival, Ray ray)
 {
-    const int sampling = 1;
+    const int sampling = 2;
 
     if (sampling <= 0)
     {
@@ -505,10 +505,11 @@ void Camera::GeneratePartImage(const int departure, const int arrival, Ray ray)
             ray.SetDirection(GetRayDirection(p.GetPosition()));
         }
 
-//        if (p.index % 100000 == 0)
-//        {
-//            cout << "index : " << p.index << endl;
-//        }
+        if (p.index % 100000 == 0)
+//        if (p.index % 10000 == 0)
+        {
+            cout << "index : " << p.index << endl;
+        }
         initialRay = ray;
         intersection = GetNearestIntersection(ray);
         
@@ -528,6 +529,7 @@ void Camera::GeneratePartImage(const int departure, const int arrival, Ray ray)
         m_pixels[i].SetColor(finalColor);
 
         if (p.index % 1000000 == 0)
+//        if (p.index % 25000 == 0)
         {
             SaveImage();
         }
@@ -572,6 +574,7 @@ Color Camera::GetColor(const Intersection& intersection, const Ray& ray) const {
 }
 
 Color Camera::GetColor(const Intersection& intersection, const Ray& ray, int remainingBounce) const {
+    Color finalColor;
     
     // Si c'est un miroir
     if (1 == intersection.touchedSphere.GetMaterial().GetAlbedo())
@@ -582,16 +585,38 @@ Color Camera::GetColor(const Intersection& intersection, const Ray& ray, int rem
             const Intersection reflectionIntersection = GetNearestIntersection(reflectionDirection);
             
             remainingBounce--;
-            return GetColor(reflectionIntersection, reflectionDirection, remainingBounce);
+            
+            finalColor = GetColor(reflectionIntersection, reflectionDirection, remainingBounce);
+            return finalColor;
         }
         
-        return Color(1, 1, 0);
+        finalColor = Color(1, 1, 0);
 //        return finalColor;
     }
-    else // Si ce n'est pas un miroir
+    else if (intersection.touchedSphere.GetMaterial().GetAlbedo() > 0)// Si ce n'est pas un miroir
     {
-        return GetLighting(intersection);
+        finalColor += GetLighting(intersection) * (1 -  intersection.touchedSphere.GetMaterial().GetAlbedo());
+        
+        if (remainingBounce >= 0)
+        {
+            const Ray reflectionDirection = Ray::GetReflectDirection(ray, intersection, intersection.touchedSphere);
+            const Intersection reflectionIntersection = GetNearestIntersection(reflectionDirection);
+            
+            remainingBounce--;
+            
+            finalColor += (GetColor(reflectionIntersection, reflectionDirection, remainingBounce)) * (intersection.touchedSphere.GetMaterial().GetAlbedo());
+        }
+        
+//        finalColor = Color(1, 1, 0);
+        
     }
+    else
+    {
+        finalColor += GetLighting(intersection);
+        return finalColor;
+    }
+    
+    return finalColor;
 }
 
 Intersection Camera::GetNearestIntersection(const Ray &ray) const {
@@ -625,16 +650,18 @@ void Camera::SetScene(Scene* scene) {
     m_scene = scene;
 }
 
-Color Camera::GetLighting(const Intersection& intersection) const
+Color Camera::GetLighting(const Intersection& intersection, int remainingBounces) const
 {
 //    int lightsVisible = 0;
-    Color finalColor = Color(0, 0, 0);
+    Color finalColor;
     
     bool canSeeLight;
     
-    const int nbSurfacicLights = 5;
+    const int nbSurfacicLights = 1;
     Light surfacicLight = Light(Vector3(), 0);
     
+    if (remainingBounces > 0)
+    {
     for (const Light& light : m_scene->GetLights())
     {
 //        cout << "-----------" << endl;
@@ -649,20 +676,23 @@ Color Camera::GetLighting(const Intersection& intersection) const
             
             if (canSeeLight)
             {
-                finalColor +=  GetDirectLighting(surfacicLight, intersection);
+                finalColor = finalColor +  GetDirectLighting(surfacicLight, intersection);
 //                lightsVisible += 1;
             }
-//            lightsVisible += 1; // TODO: supprimer quand on rajoute la lumière indirecte
-            
-            for (int _ = 0; _ < 1; _++)
-            {
-                finalColor += GetIndirectLighting(surfacicLight, intersection);
-//                lightsVisible += 1;
-            }
+//            else
+//            {
+////            lightsVisible += 1; // TODO: supprimer quand on rajoute la lumière indirecte
+//            
+//
+//                finalColor = finalColor + (GetIndirectLighting(intersection, remainingBounces));
+////                lightsVisible += 1;
+//            }
         }
     }
+    }
     
-    return finalColor / 2;
+    return finalColor;
+//    return finalColor / 2;
 }
 
 
@@ -670,29 +700,32 @@ Color Camera::GetDirectLighting(const Light& light, const Intersection &intersec
             return Light::GetLighting(light, intersection, distanceToAdd);
 }
 
-Color Camera::GetIndirectLighting(const Light& light, const Intersection &intersection) const {
-    Color finalColor = Color(0, 0, 0);
-//    Color colorToAdd;
+Color Camera::GetIndirectLighting(const Intersection &intersection, int remainingBounces) const {
+    Color finalColor;
     
-    Intersection bounceInter;
-    bounceInter.pointCoordonate = bounceInter.pointCoordonate *  (Vector3::GetDirection(bounceInter.pointCoordonate, light.GetPosition()) * .1f);
-    Ray bounceRay = Ray(Vector3(0), Vector3(0));
-    const int nbIter = 3;
-    int remainingBounces = nbIter;
+remainingBounces--;
     
-    float distanceToAdd = 0;
-        
-    do
-    {
-        remainingBounces--;
-        
-        bounceRay = Ray(intersection.pointCoordonate, Toolbox::GetRandomDirectionOnHemisphere(intersection.touchedSphere.GetNormal(intersection.pointCoordonate)));
-        bounceInter = GetNearestIntersection(bounceRay);
-        
-        distanceToAdd += static_cast<float>(bounceInter.distance);
+    const Vector3 randomDir = Toolbox::GetRandomDirectionOnHemisphere(intersection.touchedSphere.GetNormal(intersection.pointCoordonate)).Normalize();
+    
+        const Ray ray = Ray(intersection.pointCoordonate + (randomDir * 1.5), randomDir);
+    const Intersection inter = GetNearestIntersection(ray);
 
-        finalColor += (GetDirectLighting(light, bounceInter, distanceToAdd));
-    }while(bounceInter.intersect && remainingBounces > 0);
+//    while (finalColor == Color(0, 0, 0))
+//    {
+        finalColor = GetLighting(inter, remainingBounces);
+//    }
     
-    return finalColor / ((nbIter) - remainingBounces );
+    
+//    if (finalColor == Color(0, 0, 0))
+//    {
+//        cout << "----------" << endl;
+//        cout << "normale : " << intersection.touchedSphere.GetNormal(intersection.pointCoordonate).ToString() << endl;
+//        cout << "randomDir : " << randomDir.ToString() << endl;
+//    }
+    
+//    const Intersection reflectionIntersection = GetNearestIntersection(reflectionDirection);
+    
+    
+//    cout << "remainingbounces : " << remainingBounces << endl;
+    return finalColor;
 }

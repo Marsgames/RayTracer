@@ -65,9 +65,9 @@ class Camera
     Intersection GetNearestIntersection(const Ray& ray) const;
 //    double GetRandomDouble(double min = -1, double max = 1) const;
     
-    Color GetLighting(const Intersection& intersection) const;
+    Color GetLighting(const Intersection& intersection, int remainingBounces = 3) const;
     Color GetDirectLighting(const Light& ligght, const Intersection& intersection, const float distanceToAdd = 0) const;
-    Color GetIndirectLighting(const Light& light, const Intersection &intersection) const;
+    Color GetIndirectLighting(const Intersection &intersection, int remainingBounces) const;
     
     void GeneratePartImage(const int departure, const int arrival, Ray ray);
 

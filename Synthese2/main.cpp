@@ -49,13 +49,13 @@ int main(int argc, char* argv[])
 
 
 ////    // Enlever un 0 à 7000, 4000 et 15000
-    Sphere leftWall = Sphere(Vector3(-widthOffset, 0., 0.), 3e4,  MaterialList::VertMat, "Vert");
-    Sphere rightWall = Sphere(Vector3(widthOffset, 0., 0.), 3e4, MaterialList::BleuMat, "Bleu");
-    Sphere topWall = Sphere(Vector3(0., -heightOffset, 0.), 3e4, MaterialList::RoseMat, "Rose");
+    Sphere leftWall = Sphere(Vector3(-widthOffset, 0., 0.), 3e4,  MaterialList::BleuMat, "Vert");
+    Sphere rightWall = Sphere(Vector3(widthOffset, 0., 0.), 3e4, MaterialList::RougeMat, "Bleu");
+    Sphere topWall = Sphere(Vector3(0., -heightOffset, 0.), 3e4, MaterialList::BlancMat, "Rose");
     Sphere bottomWall = Sphere(Vector3(0., heightOffset, 0.), 3e4, MaterialList::BlancMat, "Blanc");
 ////    //    Sphere bottomWall = Sphere(Vector3(0., 4e5 + 4000., -00.), 4e5, Material(EMaterialType::DifuseType, Vector3(255 / 75, 255 / 140, 255 / 225)), "Rouge chelou");
-Sphere backWall = Sphere(Vector3(0., 0., -3e4 - 1000), 3e4, MaterialList::BleuCielMat, "Bleu ciel");
-    Sphere frontWall = Sphere(Vector3(0., 0., 3e4 + 1000), 3e4, MaterialList::JauneMat, "Jaune");
+Sphere backWall = Sphere(Vector3(0., 0., -3e4 - 1000), 3e4, MaterialList::BlancMat, "Bleu ciel");
+    Sphere frontWall = Sphere(Vector3(0., 0., 3e4 + 1000), 3e4, MaterialList::BlancMat, "Jaune");
 
     leftWall.GetMaterial().SetAlbedo(0);
     rightWall.GetMaterial().SetAlbedo(0);
@@ -98,6 +98,13 @@ Sphere backWall = Sphere(Vector3(0., 0., -3e4 - 1000), 3e4, MaterialList::BleuCi
 //    myScene.AddSphere(sp3);
 //    myScene.AddSphere(sp4);
 //    myScene.AddSphere(sp5);
+    
+    Sphere sp = Sphere(Vector3(0), 50);
+    for (int i = 0; i < 500; i++)
+    {
+        sp = Sphere(Vector3(Toolbox::GenerateRandomNumber(-1000, 1000), Toolbox::GenerateRandomNumber(-1000, 1000), Toolbox::GenerateRandomNumber(100, 1000)), 50, Material::GetRandomMaterial());
+        myScene.AddSphere(sp);
+    }
 
     myScene.AddSphere(leftWall);
     myScene.AddSphere(rightWall);
@@ -201,6 +208,8 @@ myScene.AddLight(Light(Vector3(0, 500, 0), 1000000, Material(Color(1, 1, 1))));
 //    //    myScene.AddSphere(sp3);
 //    //    myScene.AddSphere(sp4);
 //    //    myScene.AddSphere(sp5);
+//
+//
 //
 //        myScene.AddSphere(leftWall);
 //        myScene.AddSphere(rightWall);

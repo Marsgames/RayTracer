@@ -73,6 +73,7 @@ public:
     double GetAlbedo() const;
     void SetAlbedo(const double value);
 //    EMaterials GetMaterialType() const;
+    static Material GetRandomMaterial();
 };
 
 struct MaterialList
