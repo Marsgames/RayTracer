@@ -20,7 +20,7 @@ Vector3 Box::GetPMin() const
     return m_pMin;
 }
 
-void Box::SetPMin(Vector3 pMin)
+void Box::SetPMin(const Vector3& pMin)
 {
     m_pMin = pMin;
 }
@@ -30,7 +30,7 @@ Vector3 Box::GetPMax() const
     return m_pMax;
 }
 
-void Box::SetPMax(Vector3 pMax)
+void Box::SetPMax(const Vector3& pMax)
 {
     m_pMax = pMax;
 }
@@ -106,24 +106,3 @@ bool Box::IntersectBox(const Ray &ray, const Box &box)
         return false;
     }
 }
-
-//void Box::CreateSpheresBoxes(std::vector<Box> &boxesScene, const std::vector<Sphere> &scene)
-//{
-////    int i = 1;
-//    for (const Sphere& sphere : scene)
-//    {
-////        if (sphere.GetName() == "lampe")
-////        {
-////            break;
-////        }
-//
-//        Box b = Box(sphere);
-//        boxesScene.push_back(b);
-//
-////        cout << "Box" << i << " crée. bMin = ";
-////        Print(b.pMin);
-////        cout << " - bMax = ";
-////        Print(b.pMax);
-////        cout << endl;
-//    }
-//}

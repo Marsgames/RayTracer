@@ -6,7 +6,6 @@
 //  Copyright © 2018 Marsgames. All rights reserved.
 //
 
-#include <BoundingBox.hpp>
 #include <Box.hpp>
 #include <Camera.hpp>
 #include <iostream>
@@ -29,7 +28,7 @@ int main(int argc, char* argv[])
     cout << endl;
     
     
-    //    return Generate4KScene();
+//        return Generate4KScene();
     //    return Generate500Scene();
     return GenerateBBoxScene();
 }
@@ -250,8 +249,8 @@ int GenerateBBoxScene()
     mainCamera.SetScene(&myScene);
     myScene.AddCamera(mainCamera);
     
-            Sphere sp;
-            for (int i = 0; i < 100; i++)
+            Sphere sp = Sphere(Vector3(0), 0);
+            for (int i = 0; i < 10; i++)
             {
                 sp = Sphere(Vector3(Toolbox::GenerateRandomNumber(-1500, 1500), Toolbox::GenerateRandomNumber(-1000, 1000), Toolbox::GenerateRandomNumber(100, 1000)), 50, Material::GetRandomMaterial(), std::to_string(i));
                 myScene.AddSphere(sp);
@@ -323,7 +322,7 @@ int GenerateBBoxScene()
     myScene.AddLight(Light(Vector3(0, 0, 0), 1000000, Material(Color(1, 1, 1))));
     
     
-    myScene.DrawScene();
+//    myScene.DrawScene();
     myScene.DrawBB();
     
     myScene.SaveImages();

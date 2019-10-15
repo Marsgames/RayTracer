@@ -31,33 +31,30 @@ class Color {
     EColor m_colorName;
     
 public:
-    Color() :
-    m_r{0},
-    m_g{0},
-    m_b{0}
+    Color() = delete;
+    
+    Color(const double c):
+    m_r{c},
+    m_g{c},
+    m_b{c}
     {
         SetColorName();
     };
     
-    Color(double r, double g, double b) :
+    Color(const double r, const double g, const double b) :
     m_r{r},
     m_g{g},
     m_b{b}
     {
-//        if ((r + g + b) > 3)
-//        {
-//            std::cout << "LES COULEURS NE PEUVENT PAS ÊTRE SUPÉRIEUR À 3" << std::endl;
-//        }
-        
         SetColorName();
     };
     
     double GetR() const;
     double GetG() const;
     double GetB() const;
-    void SetR(double value);
-    void SetG(double value);
-    void SetB(double value);
+    void SetR(const double value);
+    void SetG(const double value);
+    void SetB(const double value);
     
     Color operator*(const Color& other) const;
     Color operator*(const double other) const;
@@ -71,5 +68,5 @@ public:
     string ToString() const;
     void SetColorName();
     EColor GetColorName() const;
-    static Color GetColor(EColor colorName);
+    static Color GetColor(const EColor& colorName);
 };

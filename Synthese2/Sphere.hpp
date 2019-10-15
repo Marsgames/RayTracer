@@ -24,24 +24,21 @@ class Sphere
     string m_name = "";
     
 public:
-//    Sphere() = delete;
-    Sphere() :
-    m_material{MaterialList::NoirMat}
-    {};
+    Sphere() = delete;
     
-    Sphere(Vector3 position, int rayon, Material material) :
+    Sphere(const Vector3& position, const int rayon, const Material& material) :
     m_center{position},
     m_rayon{rayon},
     m_material{material}
     {};
     
-    Sphere(Vector3 position, int rayon) :
+    Sphere(const Vector3& position, const int rayon) :
     m_center{position},
     m_rayon{rayon},
     m_material{Material(Color{1, 0, 0})}
     {};
     
-    Sphere(Vector3 position, int rayon, Material material, string name) :
+    Sphere(const Vector3& position, const int rayon, const Material& material, const string name) :
     m_center{position},
     m_rayon{rayon},
     m_material{material},
@@ -49,8 +46,8 @@ public:
     {};
     
     Vector3 GetCenter() const;
-    void SetCenter(Vector3 position);
-    void SetCenter(int x, int y, int z);
+    void SetCenter(const Vector3& position);
+    void SetCenter(const int x, const int y, const int z);
     double GetPositionX() const;
     double GetPositionY() const;
     double GetPositionZ() const;
@@ -64,11 +61,11 @@ public:
     int GetColorG() const;
     int GetColorB() const;
     
-    Vector3 GetNormal(Vector3 point) const;
+    Vector3 GetNormal(const Vector3& point) const;
     
     string GetName() const;
     
-    static class Intersection IntersectRaySphere(class Ray ray, Sphere sphere);
+    static class Intersection IntersectRaySphere(const class Ray& ray, const Sphere& sphere);
 };
 
 struct Intersection {
@@ -80,7 +77,7 @@ struct Intersection {
     
     Intersection() {};
     
-    Intersection(bool theIntersect, double theDistance, Vector3 thePointCoordonate):
+    Intersection(const bool theIntersect, const double theDistance, const Vector3& thePointCoordonate):
     intersect{theIntersect},
     distance{theDistance},
     pointCoordonate{thePointCoordonate}

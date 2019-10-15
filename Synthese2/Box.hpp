@@ -25,43 +25,24 @@ protected:
 //    Sphere m_mySphere;
     
 public:
-    Box(){};
+    Box() = delete;
     
-//    Box(const Sphere& sphere)
-//    {
-//        m_pMin = Vector3(sphere.GetCenter().GetX() - sphere.GetRayon(), sphere.GetCenter().GetY() - sphere.GetRayon(), sphere.GetCenter().GetZ() - sphere.GetRayon());
-//        m_pMax = Vector3(sphere.GetCenter().GetX() + sphere.GetRayon(), sphere.GetCenter().GetY() + sphere.GetRayon(), sphere.GetCenter().GetZ() + sphere.GetRayon());
-////        m_source = SphereType;
-////        m_mySphere = sphere;
-//    };
+    Box(const Vector3& pMin, const Vector3& pMax):
+    m_pMin{pMin},
+    m_pMax{pMax}
+    {};
     
-    Box(Vector3 pMin, Vector3 pMax)
-    {
-        m_pMin = pMin;
-        m_pMax = pMax;
-    }
-    
-    Box(const Box& box1, const Box& box2)
-    {
-        m_pMin = box1.m_pMin < box2.m_pMin ? box1.m_pMin : box2.m_pMin;
-        m_pMax = box1.m_pMax > box2.m_pMax ? box1.m_pMax : box2.m_pMax;
-//        m_source = BoundingBoxType;
-    };
+    Box(const Box& box1, const Box& box2):
+    m_pMin{box1.m_pMin < box2.m_pMin ? box1.m_pMin : box2.m_pMin},
+    m_pMax{box1.m_pMax > box2.m_pMax ? box1.m_pMax : box2.m_pMax}
+    {};
     
     Vector3 GetPMin() const;
-    void SetPMin(Vector3 pMin);
+    void SetPMin(const Vector3& pMin);
     Vector3 GetPMax() const;
-    void SetPMax(Vector3 pMax);
-//    EBoxType GetSource() const;
-//    void SetSource(EBoxType source);
-//    Sphere GetMySphere() const;
-//    void SetMySphere(Sphere mySphere);
+    void SetPMax(const Vector3& pMax);
     
     bool operator<(const Box& other) const;
     
-    
     static bool IntersectBox(const Ray& ray, const Box& box);
-//    static void CreateSpheresBoxes(std::vector<Box>& boxesScene, const std::vector<Sphere>& scene);
-    
-    
 };

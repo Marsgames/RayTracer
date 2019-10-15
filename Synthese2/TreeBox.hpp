@@ -21,44 +21,28 @@ using std::map;
 
 class TreeBox {
 private:
-    
-    //    std::variant<TreeBox*, Sphere> m_nodeLeft;
-    //    std::variant<TreeBox*, Sphere> m_nodeRight;
-    
     Box m_box;
     bool m_isLeaf = false;
     Sphere m_sphere;
-    //    std::variant<TreeBox*, Sphere> m_nodeLeft;
-    
-    //    std::map<Box, Sphere> m_boxesSpheresDic;
-    
-    TreeBox GenerateTree(vector<Box> boxes) const;
-    
-public:
     TreeBox* m_nodeLeft = nullptr;
     TreeBox* m_nodeRight = nullptr;
     
-//    TreeBox(){};
+public:
+    TreeBox() = delete;
     
-//    TreeBox(const vector<Box> boxes)
-//    {
-//        GenerateTree(boxes);
-//    }
-    
-    TreeBox(Box box, Sphere sphere)
+    TreeBox(const Box& box, const Sphere& sphere):
+    m_box{box},
+    m_sphere{sphere}
     {
-        m_box = box;
-
-        m_sphere = sphere;
         m_isLeaf = true;
     }
     
-    TreeBox(TreeBox* leftBox, TreeBox* rightBox, const Box box)
+    TreeBox(TreeBox* leftBox, TreeBox* rightBox, const Box& box):
+    m_box{box},
+    m_sphere{Sphere(Vector3(0, 0, 0), 0)}
     {
         m_nodeLeft = leftBox;
         m_nodeRight = rightBox;
-
-        m_box = box;
 
         m_isLeaf = false;
     }
@@ -67,7 +51,6 @@ public:
     bool GetIsLeaf() const;
     
     static map<Sphere, Box> InitDictionary(const vector<Sphere>& spheres);
-//    void GenerateTree(vector<Box> boxes);
     
     static TreeBox* GenerateTree(const vector<Sphere>& spheres);
     

@@ -25,8 +25,8 @@ class Scene {
 public:
     Scene(){};
     
-    void AddCamera(const class Camera& camera);
-    void AddCamera(const vector<class Camera>& cameras);
+    void AddCamera(const Camera& camera);
+    void AddCamera(const vector<Camera>& cameras);
     
     void AddLight(const Light& light);
     void AddLight(const vector<Light>& lights);

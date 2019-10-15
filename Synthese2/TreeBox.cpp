@@ -106,15 +106,8 @@ TreeBox* TreeBox::GenerateTree(const vector<Sphere>& spheres) {
 }
 
 Intersection TreeBox::IntersectSphere(const Ray& ray) const {
-//    if ()
-//    {
-//        cout << "m_isLead is null..." << endl;
-//    }
-    
     if (m_isLeaf)
     {
-        //        cout << "name in IntersectSpheres : " << m_sphere.GetName() << endl;
-        
         return Sphere::IntersectRaySphere(ray, m_sphere);
     }
     

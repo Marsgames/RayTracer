@@ -26,7 +26,7 @@ enum EImageFormat
 
 struct Reflexion
 {
-    Material material = Material(Color());
+    Material material = Material(Color(0));
     Intersection intersection = Intersection(false, -1, Vector3(0));
     Sphere sphere = Sphere(Vector3(0), -1, material);
     
@@ -57,7 +57,7 @@ class Camera
     inline void SaveBMP();
     Vector3 GetRayDirection();
     Vector3 GetRayDirection(const Vector3& toThatPoint) const;
-    Reflexion GetMaterial(const vector<Sphere> spheres, const Ray& ray, const vector<Light> lights) const;
+    Reflexion GetMaterial(const vector<Sphere>& spheres, const Ray& ray, const vector<Light>& lights) const;
     
     Color GetColor(const Intersection& intersection, const Ray& ray, const vector<Sphere>& spheres) const;
     Color GetColor(const Intersection& intersection, const Ray& ray, int remainingBounce, const vector<Sphere>& spheres) const;
@@ -72,7 +72,9 @@ class Camera
     void GeneratePartImage(const int departure, const int arrival, Ray ray, const vector<Sphere> sphere);
 
 public:
-    Camera(const Vector3& position, const int width, const int height, Vector3& direction) :
+    Camera() = delete;
+    
+    Camera(const Vector3& position, const int width, const int height, const Vector3& direction) :
     m_position{position},
     m_width{width},
     m_height{height},
@@ -87,7 +89,7 @@ public:
         
     }
     
-    Camera(const Vector3& position, const int width, const int height, Vector3 direction, const int focalDistance) :
+    Camera(const Vector3& position, const int width, const int height, const Vector3& direction, const int focalDistance) :
     m_position{position},
     m_width{width},
     m_height{height},
@@ -102,23 +104,23 @@ public:
     }
     
     Vector3 GetPosition() const;
-    void SetPosition(Vector3 position);
+    void SetPosition(const Vector3& position);
     
     Vector3 GetDirection() const;
-    void SetDirection(Vector3 direction);
+    void SetDirection(const Vector3& direction);
     
     int GetWidth() const;
     int GetHeight() const;
     
     int GetFocalDist() const;
-    void SetFocalDist(int focalDistance);
+    void SetFocalDist(const int focalDistance);
 
     bool GetUseFocal();
-    void SetUseFocal(bool value);
+    void SetUseFocal(const bool value);
     
-    void SetImageFormat(EImageFormat format);
+    void SetImageFormat(const EImageFormat& format);
     void SaveImage();
-    void SetImageName(string name);
+    void SetImageName(const string name);
     
     void DrawBB();
     void DrawSceneWithThread();

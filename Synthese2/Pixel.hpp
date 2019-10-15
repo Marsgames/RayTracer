@@ -18,7 +18,8 @@ class Pixel {
 public:
     int index;
     
-    Pixel() {};
+//    Pixel() {};
+    Pixel() = delete;
     
     Pixel(const Vector3& position, const Color& color, const int index):
     m_position{position},
@@ -36,6 +37,6 @@ public:
     double GetColorG() const;
     double GetColorB() const;
     
-    void SetColor(Color color);
+    void SetColor(const Color& color);
     
 };

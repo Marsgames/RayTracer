@@ -97,7 +97,7 @@ double Vector3::GetDistance(const Vector3 &pointA, const Vector3 &pointB) {
     return dist;
 }
 
-double Vector3::GetSum(const Vector3 vector)
+double Vector3::GetSum(const Vector3& vector)
 {
     return vector.m_x + vector.m_y + vector.m_z;
 }

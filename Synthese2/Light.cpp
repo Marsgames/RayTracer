@@ -33,7 +33,7 @@ Material Light::GetMaterial() const {
 
 Color Light::GetLighting(const Light& light, const Intersection& intersection, const float distanceToAdd)
 {
-    Color newColor;
+    Color newColor = Color(0);
         
         const double distance = Vector3::GetDistance(light.GetPosition(), intersection.pointCoordonate) + distanceToAdd;
         const double puissance = light.GetPower() * (1 / (distance * distance));

@@ -20,19 +20,9 @@ private:
     double m_x, m_y, m_z;
     
 public:
-    Vector3() :
-    m_x{0},
-    m_y{0},
-    m_z{0}
-    {};
+    Vector3() = delete;
     
-//    Vector3(int x, int y, int z) :
-//    m_x{static_cast<double>(x)},
-//    m_y{static_cast<double>(y)},
-//    m_z{static_cast<double>(z)}
-//    {};
-    
-    Vector3(double x, double y, double z) :
+    Vector3(const double x, const double y, const double z) :
     m_x{x},
     m_y{y},
     m_z{z}
@@ -89,7 +79,7 @@ public:
 //    inline void Negate();
     
     static Vector3 GetDirection(const Vector3& from, const Vector3& to) ;
-    static double GetSum(const Vector3 vector);
+    static double GetSum(const Vector3& vector);
     static double GetDistance(const Vector3& pointA, const Vector3& pointB);
         
     void Print() const;
