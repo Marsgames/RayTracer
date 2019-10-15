@@ -40,8 +40,8 @@ public:
     vector<Sphere> GetSpheres() const;
     vector<Box> GetBoxes() const;
     
-    void DrawImages();
+//    void DrawImages();
     void DrawScene();
-    void DrawBB();
+//    void DrawBB();
     void SaveImages();
 };

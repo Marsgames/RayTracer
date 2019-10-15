@@ -66,7 +66,7 @@ void Camera::InitPixelsArray() {
     m_pixels.reserve(m_height * m_width);
     Color defaultColor {0, 0, 0};
     
-    #pragma omp parallel for
+#pragma omp parallel for
     for (int index = 0; index < m_height * m_width; index++)
     {
         // Pour un écran de 1000 * 1000
@@ -155,479 +155,381 @@ void Camera::SetDirection(const Vector3& direction) {
 }
 
 inline void Camera::SavePPM() {
-//    ofstream myfile;
-//    myfile.open (m_source + m_name + ".ppm");
-//    myfile << "P3" << endl;
-//    myfile << "# " << m_name << ".ppm" << endl;
-//    myfile << m_width << " " << m_height << endl;
-//    myfile << "255" << endl;
-//    
-//    for (int index = 0; index < m_height * m_width; index++)
-//    {
-//        double r = m_pixels[index].GetColorR() > 255 ? 255 : m_pixels[index].GetColorR();
-//        double g = m_pixels[index].GetColorG() > 255 ? 255 : m_pixels[index].GetColorG();
-//        double b = m_pixels[index].GetColorB() > 255 ? 255 : m_pixels[index].GetColorB();
-//        
-//        if (r < 0 || g < 0 || b < 0)
-//        {
-//            cout << "color < 0 : (" << r << ", " << g << ", " << b << ")" << endl;
-//            myfile.close();
-//            exit(2);
-//            // EXIT CODE: 2 --> Un pixel avait une couleur < 0
-//        }
-//        
-//        myfile << r << " " << g << " " << b << " ";
-//        //        }
-//        myfile << endl;
-//    }
-//    
-//    myfile.close();
+    ofstream myfile;
+    myfile.open (m_source + m_name + ".ppm");
+    myfile << "P3" << endl;
+    myfile << "# " << m_name << ".ppm" << endl;
+    myfile << m_width << " " << m_height << endl;
+    myfile << "255" << endl;
+    
+#pragma omp parallel for
+    for (const Pixel& p : m_pixels)
+    {
+        double r = pow(p.GetColorR(), (1/2.2));
+        r = r > 1 ? 1 : r;
+        r *= 255;
+        double g = pow(p.GetColorG(), (1/2.2));
+        g = g > 1 ? 1 : g;
+        g *= 255;
+        double b = pow(p.GetColorB(), (1/2.2));
+        b = b > 1 ? 1 : b;
+        b *= 255;
+        
+        if (r < 0 || g < 0 || b < 0)
+        {
+            cout << "color < 0 : (" << r << ", " << g << ", " << b << ")" << endl;
+            myfile.close();
+            exit(2);
+            // EXIT CODE: 2 --> Un pixel avait une couleur < 0
+        }
+        
+        myfile << r << " " << g << " " << b << " ";
+        myfile << endl;
+    }
+    
+    myfile.close();
 }
-
 inline void Camera::SaveBMP() {
     bitmap_image img(m_width, m_height);
     
 #pragma omp parallel for
-    for (int index = 0; index < m_height * m_width; index++)
+    for (const Pixel& p : m_pixels)
     {
-        const int x = index % m_width;
-        const int y = index / m_width;
+        const int x = p.index % m_width;
+        const int y = p.index / m_width;
         
-//        double r = m_pixels[index].GetColorR() * 255;
-//        r = r > 255 ? 255 : r;
-//
-//        double g = m_pixels[index].GetColorG() * 255;
-//        g = g > 255 ? 255 : g;
-//
-//        double b = m_pixels[index].GetColorB() * 255;
-//        b = b > 255 ? 255 : b;
-        
-        double r = pow(m_pixels[index].GetColorR(), (1/2.2));
+        double r = pow(p.GetColorR(), (1/2.2));
         r = r > 1 ? 1 : r;
         r *= 255;
-        
-        double g = pow(m_pixels[index].GetColorG(), (1/2.2));
+        double g = pow(p.GetColorG(), (1/2.2));
         g = g > 1 ? 1 : g;
         g *= 255;
-        
-        double b = pow(m_pixels[index].GetColorB(), (1/2.2));
+        double b = pow(p.GetColorB(), (1/2.2));
         b = b > 1 ? 1 : b;
         b *= 255;
         
-        
-        
-        
-        //        if(r < 0 || g < 0 || b < 0)
-        //        {
-        //            cout << "color < 0 : (" << r << ", " << g << ", " << b << ")" << endl;
-        //            exit(2);
-        //            // EXIT CODE: 2 --> Un pixel avait une couleur < 0
-        //        }
-        if (r < 0)
-            r = 0;
-        if (g < 0)
-            g = 0;
-        if (b < 0)
-            b = 0;
+        if (r < 0 || g < 0 || b < 0)
+        {
+            cout << "color < 0 : (" << r << ", " << g << ", " << b << ")" << endl;
+            exit(1);
+            // EXIT CODE: 1 --> Un pixel avait une couleur < 0
+        }
         
         img.set_pixel(x, y, static_cast<unsigned char>(r), static_cast<unsigned char>(g), static_cast<unsigned char>(b));
     }
     
+    // MARK: Save multiple images for gif
+//    img.save_image(m_source + m_name + std::to_string(time(NULL)) + ".bmp");
     img.save_image(m_source + m_name + ".bmp");
-    //        img.save_image("imageSynthese.bmp");
-    //    if (nomImage.find('0') != std::string::npos)
-    //    {
-    //        cout << "image sauvegardée dans " << source + nomImage << " !" << endl;
-    //    }
 }
 
-//void Camera::DrawImage(const vector<Sphere> &spheres, const vector<Light>& lights) {
+//void Camera::DrawImage() {
+//    if (nullptr == m_scene)
+//    {
+//        exit(4); // EXIT CODE: 4 --> m_scene n'est pas set !
+//    }
+//
+//    const vector<Sphere> spheres = m_scene->GetSpheres();
+//    const vector<Light> lights = m_scene->GetLights();
 //
 //    const Vector3 rayDirection = GetRayDirection();
 //    Ray ray = Ray(Vector3{0, 0, 0}, rayDirection);
-//    double distance = __DBL_MAX__;
-//    Material sphereMaterial = Material(Color(0, 0, 0), EMaterials::DarkFloor);
-//    Vector3 pointOnSphere = Vector3(0, 0, 0);
-//    Pixel pixel = Pixel();
+//    // double distance = __DBL_MAX__;
+//    // Material sphereMaterial = Material(Color(0, 0, 0), EMaterials::DarkFloor);
+//    // Vector3 pointOnSphere = Vector3(0, 0, 0);
 //
-//    for (int index = 0; index < m_height * m_width; index++)
+//    Color pixelColor = Color(1, 0, 1);
+//
+//    const int sampling = 64;
+//
+//    for (int i = 0; i < sampling; i++)
 //    {
-//        pixel = m_pixels[index];
-//
-//        ray.SetOrigin(m_pixels[index].GetPosition());
-//        if (m_useFocal)
+//        cout << "pass nb " << i << endl;
+//#pragma omp parallel for
+//        for (Pixel& pixel : m_pixels)
 //        {
-//            ray.SetDirection(GetRayDirection(pixel.GetPosition()));
-//        }
-//
-//        for (Sphere sphere : spheres)
-//        {
-//            Intersection intersection = Sphere::IntersectRaySphere(ray, sphere);
-//
-//            if (intersection.intersect && intersection.distance <= distance)
+//            ray.SetOrigin(pixel.GetPosition());
+//            if (m_useFocal)
 //            {
-//                distance = intersection.distance;
-//                sphereMaterial = sphere.GetMaterial();
-//                pointOnSphere = intersection.pointCoordonate;
+//                ray.SetDirection(GetRayDirection(pixel.GetPosition()));
+//            }
+//
+//            ray.SetDirection(Toolbox::GetRandomDirectionInAngle(ray.GetDirection(), 1));
+//
+//            if (pixel.index % 100000 == 0)
+//                cout << "index : " << pixel.index << endl;
+//
+//
+//
+//
+//            Intersection intersection = GetNearestIntersection(ray, spheres);
+//
+//            pixelColor += GetColor(intersection, ray, spheres);
+//
+//
+//
+//            pixel.SetColor(pixelColor);
+//
+//
+//
+//            if (pixel.index % 1000000 == 0)
+//            {
+//                SaveImage();
 //            }
 //        }
-//
-//        if (distance < __DBL_MAX__)
-//        {
-//            for (const Light& light : lights)
-//            {
-//                cout << "index : " << index << endl;
-//                int nbBounce = 0;
-//                Color finalColor;
-//                Color gotColor;
-//                do
-//                {
-////                    cout << "albedo : " << sphereMaterial.GetAlbedo() << endl;
-//                    bool canSeeLight = Light::CanSeeLight(pointOnSphere, light, spheres);
-//                    if (canSeeLight)
-//                    {
-//                        gotColor = Light::GetLightning(light, sphereMaterial.GetColor(), Vector3::GetDistance(pointOnSphere, light.GetPosition()));
-//                        gotColor = gotColor * (1 - sphereMaterial.GetAlbedo());
-//
-//
-//
-////                        cout << "gotColor : " << gotColor.ToString() << endl;
-//
-//                        finalColor += gotColor;
-//                    }
-//                    else
-//                    {
-//                        finalColor += Color(0, 0, 0);
-//                    }
-//
-//
-//                    nbBounce++;
-//                }while (nbBounce < 10 && 0 != sphereMaterial.GetAlbedo());
-//
-////                cout << "finalColor : " << finalColor.ToString() << endl << endl;
-//
-//                m_pixels[index].SetColor(finalColor / nbBounce);
-//                finalColor = Color(0, 0, 0);
-//
-//
-//                //                                sphereColor.Print();
-//
-////                if (canSeeLight)
-////                {
-////                    Color newColor = Light::GetLightning(light, sphereMaterial.GetColor(), Vector3::GetDistance(pointOnSphere, light.GetPosition()));
-////                    newColor = newColor * (1 - sphereMaterial.GetAlbedo());
-//////                    newColor = newColor +
-////
-////                    m_pixels[index].SetColor(newColor);
-////                }
-////                else
-////                {
-////                    //                    m_pixels[index].SetColor(Color{200, 200, 200} * 0.3f);
-////                    m_pixels[index].SetColor(sphereMaterial.GetColor() * 0.000002);
-////                }
-//            }
-//        }
-//        distance = __DBL_MAX__;
-//        //        sphereColor = Color{0, 0, 0};
 //    }
+//
+//    for(Pixel& pixel : m_pixels)
+//    {
+//        pixel.SetColor(pixel.GetColor() / sampling);
+//    }
+//
+//    SaveImage();
+//
+//    //    #pragma omp parallel for
+//    //    for (Pixel& pixel : m_pixels)
+//    //    {
+//    //        ray.SetOrigin(pixel.GetPosition());
+//    //        if (m_useFocal)
+//    //        {
+//    //            ray.SetDirection(GetRayDirection(pixel.GetPosition()));
+//    //        }
+//    //
+//    //        if (pixel.index % 100000 == 0)
+//    //        cout << "index : " << pixel.index << endl;
+//    //
+//    //
+//    //
+//    //
+//    //        Intersection intersection = GetNearestIntersection(ray);
+//    //
+//    //        for (int i = 1; i < 32; i++)
+//    //        {
+//    //            pixelColor += GetColor(intersection, ray);
+//    //        }
+//    //        pixelColor = pixelColor / 32;
+//    //
+//    //
+//    //
+//    //        pixel.SetColor(pixelColor);
+//    //
+//    //
+//    //
+//    //        if (pixel.index % 1000000 == 0)
+//    //        {
+//    //            SaveImage();
+//    //        }
+//    //    }
 //}
 
-
-void Camera::DrawImage() {
-//
-    if (nullptr == m_scene)
-    {
-        exit(4); // m_scene n'est pas set !
-    }
-
-    const vector<Sphere> spheres = m_scene->GetSpheres();
-    const vector<Light> lights = m_scene->GetLights();
-
-    const Vector3 rayDirection = GetRayDirection();
-    Ray ray = Ray(Vector3{0, 0, 0}, rayDirection);
-    // double distance = __DBL_MAX__;
-    // Material sphereMaterial = Material(Color(0, 0, 0), EMaterials::DarkFloor);
-    // Vector3 pointOnSphere = Vector3(0, 0, 0);
-
-    Color pixelColor = Color(1, 0, 1);
-
-    const int sampling = 64;
-
-    for (int i = 0; i < sampling; i++)
-    {
-        cout << "pass nb " << i << endl;
-        #pragma omp parallel for
-        for (Pixel& pixel : m_pixels)
-        {
-            ray.SetOrigin(pixel.GetPosition());
-            if (m_useFocal)
-            {
-                ray.SetDirection(GetRayDirection(pixel.GetPosition()));
-            }
-
-            ray.SetDirection(Toolbox::GetRandomDirectionInAngle(ray.GetDirection(), 1));
-
-            if (pixel.index % 100000 == 0)
-            cout << "index : " << pixel.index << endl;
-
-
-
-
-            Intersection intersection = GetNearestIntersection(ray, spheres);
-
-                pixelColor += GetColor(intersection, ray, spheres);
-
-
-
-            pixel.SetColor(pixelColor);
-
-
-
-            if (pixel.index % 1000000 == 0)
-            {
-                SaveImage();
-            }
-        }
-    }
-
-    for(Pixel& pixel : m_pixels)
-    {
-        pixel.SetColor(pixel.GetColor() / sampling);
-    }
-
-    SaveImage();
-
-//    #pragma omp parallel for
-//    for (Pixel& pixel : m_pixels)
+//void Camera::DrawWallsWithThread() {
+//    if (nullptr == m_scene)
 //    {
-//        ray.SetOrigin(pixel.GetPosition());
-//        if (m_useFocal)
+//        exit(5); // EXIT CODE: 5 --> m_scene n'est pas set !
+//    }
+//
+//    vector<Sphere> spheres;
+//    for (const Sphere& sp : m_scene->GetSpheres())
+//    {
+//        if ("Wall" != sp.GetName())
 //        {
-//            ray.SetDirection(GetRayDirection(pixel.GetPosition()));
+//            continue;
 //        }
 //
-//        if (pixel.index % 100000 == 0)
-//        cout << "index : " << pixel.index << endl;
+//        spheres.push_back(sp);
+//    }
 //
+//    const vector<Light> lights = m_scene->GetLights();
 //
+//    const Vector3 rayDirection = GetRayDirection();
+//    const Ray ray = Ray(Vector3{0, 0, 0}, rayDirection);
 //
+//    const unsigned long diviseur = m_pixels.capacity() / 5;
+//    const int reste = m_pixels.capacity() % 5;
 //
-//        Intersection intersection = GetNearestIntersection(ray);
+//    Pixel p1 = Pixel(Vector3(0), Color(0), 0);
+//    Pixel p2 = p1;
+//    Pixel p3 = p1;
+//    Pixel p4 = p1;
+//    Pixel p5 = p1;
+//    Pixel pReste = p1;
 //
-//        for (int i = 1; i < 32; i++)
+//    std::thread t01(&Camera::GeneratePartImage, this, 0, (int)diviseur, ray, spheres);
+//    std::thread t02(&Camera::GeneratePartImage, this, (int)diviseur, (int)diviseur * 2, ray, spheres);
+//    std::thread t03(&Camera::GeneratePartImage, this, (int)diviseur * 2, (int)diviseur * 3, ray, spheres);
+//    std::thread t04(&Camera::GeneratePartImage, this, (int)diviseur * 3, (int)diviseur * 4, ray, spheres);
+//    std::thread t05(&Camera::GeneratePartImage, this, (int)diviseur * 4, (int)diviseur * 5, ray, spheres);
+//    std::thread t06(&Camera::GeneratePartImage, this, (int)diviseur * 5, (int)diviseur * 5 + reste, ray, spheres);
+//
+//    t01.join();
+//    cout << "Thread 1 terminé" << endl;
+//    t02.join();
+//    cout << "Thread 2 terminé" << endl;
+//    t03.join();
+//    cout << "Thread 3 terminé" << endl;
+//    t04.join();
+//    cout << "Thread 4 terminé" << endl;
+//    t05.join();
+//    cout << "Thread 5 terminé" << endl;
+//    t06.join();
+//    cout << "Thread 6 terminé" << endl;
+//}
+
+//void Camera::DrawBB()
+//{
+//    if (nullptr == m_scene)
+//    {
+//        exit(6); // EXIT CODE: 6 --> m_scene n'est pas set !
+//    }
+//
+//    const vector<Sphere> spheres = m_scene->GetSpheres();
+//    const vector<Box> boxes = m_scene->GetBoxes();
+//    const vector<Light> lights = m_scene->GetLights();
+//
+//    const Vector3 rayDirection = GetRayDirection();
+//    Ray ray = Ray(Vector3{0, 0, 0}, rayDirection);
+//
+//    vector<Sphere> spheresTree;
+//    for (const Sphere& sp : spheres)
+//    {
+//        if ("Wall" == sp.GetName())
 //        {
-//            pixelColor += GetColor(intersection, ray);
+//            continue;
 //        }
-//        pixelColor = pixelColor / 32;
+//
+//        spheresTree.push_back(sp);
+//    }
+//
+//    TreeBox* tb = TreeBox::GenerateTree(spheresTree);
+//
+//    //    if (tb->m_nodeLeft == nullptr)
+//    //    {
+//    //        cout << "left is null" << endl;
+//    //    }
+//    //    else
+//    //    {
+//    //        cout << "left IS NOT null" << endl;
+//    //    }
+//    //
+//    //    if (tb->m_nodeRight == nullptr)
+//    //    {
+//    //        cout << "right is null" << endl;
+//    //    }
+//    //    else
+//    //    {
+//    //        cout << "right IS NOT null" << endl;
+//    //    }
 //
 //
-//
-//        pixel.SetColor(pixelColor);
-//
-//
-//
-//        if (pixel.index % 1000000 == 0)
+//    const int sampling = 1;
+//    for (int i = 0; i < sampling; i++)
+//    {
+//        cout << "pass nb " << i << endl;
+//#pragma omp parallel for
+//        for (Pixel& pixel : m_pixels)
 //        {
-//            SaveImage();
+//            ray.SetOrigin(pixel.GetPosition());
+//            if (m_useFocal)
+//            {
+//                ray.SetDirection(GetRayDirection(pixel.GetPosition()));
+//            }
+//
+//            //                ray.SetDirection(Toolbox::GetRandomDirectionInAngle(ray.GetDirection(), 1));
+//
+//            if (pixel.index % 100000 == 0)
+//            {
+//                cout << "index : " << pixel.index << endl;
+//            }
+//
+//
+//            //                Intersection tbIntersect = tb->IntersectSphere(ray);
+//            Intersection tbIntersect = tb->IntersectSphere(ray);
+//            if (tbIntersect.intersect)
+//            {
+//                pixel.SetColor(GetColor(tbIntersect, ray, spheres));
+//                //                    pixel.SetColor(Color(0, 0, 1));
+//            }
+//            //                else
+//            //                {
+//            //                    pixel.SetColor(Color(0, 1, 0));
+//            //                }
+//
+//
+//
+//
+//
+//            if (pixel.index % 1000000 == 0)
+//            {
+//                SaveImage();
+//            }
 //        }
 //    }
-}
+//
+//    for(Pixel& pixel : m_pixels)
+//    {
+//        pixel.SetColor(pixel.GetColor() / sampling);
+//    }
+//
+//    //    m_name = "theImage01";
+//    SaveImage();
+//}
 
-void Camera::DrawSceneWithThread() {
-    
+void Camera::DrawImageWithThread(const EWhatToDraw& wtd) {
     if (nullptr == m_scene)
     {
-        exit(4); // m_scene n'est pas set !
+        exit(7); // EXIT CODE: 7 --> m_scene n'est pas set !
     }
+    
+    //    const vector<Sphere> spheres = m_scene->GetSpheres();
     
     vector<Sphere> spheres;
-    for (Sphere sp : m_scene->GetSpheres())
+    for (const Sphere& sp : m_scene->GetSpheres())
     {
-        if (sp.GetName() == "Wall")
-        {
-            spheres.push_back(sp);
-        }
-    }
-    
-    const vector<Light> lights = m_scene->GetLights();
-    
-    const Vector3 rayDirection = GetRayDirection();
-    Ray ray = Ray(Vector3{0, 0, 0}, rayDirection);
-    
-//    Color pixelColor = Color(100, 100, 100);
-    
-    const unsigned long diviseur = m_pixels.capacity() / 5;
-    const int reste = m_pixels.capacity() % 5;
-    
-    Pixel p1 = Pixel(Vector3(0), Color(0), 0);
-    Pixel p2 = p1;
-    Pixel p3 = p1;
-    Pixel p4 = p1;
-    Pixel p5 = p1;
-    Pixel pReste = p1;
-    
-    std::thread t01(&Camera::GeneratePartImage, this, 0, (int)diviseur, ray, spheres);
-    std::thread t02(&Camera::GeneratePartImage, this, (int)diviseur, (int)diviseur * 2, ray, spheres);
-    std::thread t03(&Camera::GeneratePartImage, this, (int)diviseur * 2, (int)diviseur * 3, ray, spheres);
-    std::thread t04(&Camera::GeneratePartImage, this, (int)diviseur * 3, (int)diviseur * 4, ray, spheres);
-    std::thread t05(&Camera::GeneratePartImage, this, (int)diviseur * 4, (int)diviseur * 5, ray, spheres);
-    std::thread t06(&Camera::GeneratePartImage, this, (int)diviseur * 5, (int)diviseur * 5 + reste, ray, spheres);
-    
-    t01.join();
-    cout << "Thread 1 terminé" << endl;
-    t02.join();
-    cout << "Thread 2 terminé" << endl;
-    t03.join();
-    cout << "Thread 3 terminé" << endl;
-    t04.join();
-    cout << "Thread 4 terminé" << endl;
-    t05.join();
-    cout << "Thread 5 terminé" << endl;
-    t06.join();
-    cout << "Thread 6 terminé" << endl;
-}
-
-void Camera::DrawBB()
-{
-        if (nullptr == m_scene)
-        {
-            exit(4); // m_scene n'est pas set !
-        }
-    
-        const vector<Sphere> spheres = m_scene->GetSpheres();
-    const vector<Box> boxes = m_scene->GetBoxes();
-        const vector<Light> lights = m_scene->GetLights();
-    
-        const Vector3 rayDirection = GetRayDirection();
-        Ray ray = Ray(Vector3{0, 0, 0}, rayDirection);
-    
-    vector<Sphere> spheresTree;
-    for (const Sphere& sp : spheres)
-    {
-        if ("Wall" == sp.GetName())
-        {
-            continue;
-        }
-        
-        spheresTree.push_back(sp);
-    }
-    
-    TreeBox* tb = TreeBox::GenerateTree(spheresTree);
-    
-//    if (tb->m_nodeLeft == nullptr)
-//    {
-//        cout << "left is null" << endl;
-//    }
-//    else
-//    {
-//        cout << "left IS NOT null" << endl;
-//    }
-//    
-//    if (tb->m_nodeRight == nullptr)
-//    {
-//        cout << "right is null" << endl;
-//    }
-//    else
-//    {
-//        cout << "right IS NOT null" << endl;
-//    }
-    
-    
-        const int sampling = 1;
-        for (int i = 0; i < sampling; i++)
-        {
-            cout << "pass nb " << i << endl;
-            #pragma omp parallel for
-            for (Pixel& pixel : m_pixels)
-            {
-                ray.SetOrigin(pixel.GetPosition());
-                if (m_useFocal)
+        switch (wtd) {
+            case EWhatToDraw::Walls:
+                if ("Wall" == sp.GetName())
                 {
-                    ray.SetDirection(GetRayDirection(pixel.GetPosition()));
+                    spheres.push_back(sp);
                 }
-    
-//                ray.SetDirection(Toolbox::GetRandomDirectionInAngle(ray.GetDirection(), 1));
-    
-                if (pixel.index % 100000 == 0)
+                break;
+            case EWhatToDraw::BoundingBox:
+            case EWhatToDraw::Spheres:
+                if ("Wall" != sp.GetName())
                 {
-                    cout << "index : " << pixel.index << endl;
+                    spheres.push_back(sp);
                 }
+                break;
                 
-                
-//                Intersection tbIntersect = tb->IntersectSphere(ray);
-                Intersection tbIntersect = tb->IntersectSphere(ray);
-                if (tbIntersect.intersect)
+            default:
+                if ("Wall" == sp.GetName())
                 {
-                    pixel.SetColor(GetColor(tbIntersect, ray, spheres));
-//                    pixel.SetColor(Color(0, 0, 1));
+                    spheres.push_back(sp);
                 }
-//                else
-//                {
-//                    pixel.SetColor(Color(0, 1, 0));
-//                }
-                
-                
-
-                
-    
-                if (pixel.index % 1000000 == 0)
-                {
-                    SaveImage();
-                }
-            }
+                break;
         }
-    
-        for(Pixel& pixel : m_pixels)
-        {
-            pixel.SetColor(pixel.GetColor() / sampling);
-        }
-    
-//    m_name = "theImage01";
-        SaveImage();
-}
-
-void Camera::DrawImageWithThread() {
-    
-    if (nullptr == m_scene)
-    {
-        exit(4); // m_scene n'est pas set !
-    }
-    
-    const vector<Sphere> spheres = m_scene->GetSpheres();
-//    const vector<Light> lights = m_scene->GetLights();
-    
-    vector<Sphere> spheresTree;
-    for (const Sphere& sp : spheres)
-    {
-        if ("Wall" != sp.GetName())
-        {
-            continue;
-        }
-
-        spheresTree.push_back(sp);
     }
     
     const Vector3 rayDirection = GetRayDirection();
     const Ray ray = Ray(Vector3{0, 0, 0}, rayDirection);
     
-//    Color pixelColor = Color(100, 100, 100);
+    //    Color pixelColor = Color(100, 100, 100);
     
     const unsigned long diviseur = m_pixels.capacity() / 5;
     const int reste = m_pixels.capacity() % 5;
     
-//    Pixel p1;
-//    Pixel p2;
-//    Pixel p3;
-//    Pixel p4;
-//    Pixel p5;
-//    Pixel pReste;
+    if (EWhatToDraw::BoundingBox == wtd)
+    {
+        GeneratePartImage(0, static_cast<int>(m_pixels.capacity()), ray, spheres, wtd);
+        return;
+    }
     
-    std::thread t01(&Camera::GeneratePartImage, this, 0, (int)diviseur, ray, spheresTree);
-    std::thread t02(&Camera::GeneratePartImage, this, (int)diviseur, (int)diviseur * 2, ray, spheresTree);
-    std::thread t03(&Camera::GeneratePartImage, this, (int)diviseur * 2, (int)diviseur * 3, ray, spheresTree);
-    std::thread t04(&Camera::GeneratePartImage, this, (int)diviseur * 3, (int)diviseur * 4, ray, spheresTree);
-    std::thread t05(&Camera::GeneratePartImage, this, (int)diviseur * 4, (int)diviseur * 5, ray, spheresTree);
-    std::thread t06(&Camera::GeneratePartImage, this, (int)diviseur * 5, (int)diviseur * 5 + reste, ray, spheresTree);
+    
+    std::thread t01(&Camera::GeneratePartImage, this, 0, static_cast<int>(diviseur), ray, spheres, wtd);
+    std::thread t02(&Camera::GeneratePartImage, this, static_cast<int>(diviseur), static_cast<int>(diviseur) * 2, ray, spheres, wtd);
+    std::thread t03(&Camera::GeneratePartImage, this, static_cast<int>(diviseur) * 2, static_cast<int>(diviseur) * 3, ray, spheres, wtd);
+    std::thread t04(&Camera::GeneratePartImage, this, static_cast<int>(diviseur) * 3, static_cast<int>(diviseur) * 4, ray, spheres, wtd);
+    std::thread t05(&Camera::GeneratePartImage, this, static_cast<int>(diviseur) * 4, static_cast<int>(diviseur) * 5, ray, spheres, wtd);
+    std::thread t06(&Camera::GeneratePartImage, this, static_cast<int>(diviseur) * 5, static_cast<int>(diviseur) * 5 + reste, ray, spheres, wtd);
     
     t01.join();
     cout << "Thread 1 terminé" << endl;
@@ -643,62 +545,164 @@ void Camera::DrawImageWithThread() {
     cout << "Thread 6 terminé" << endl;
 }
 
-void Camera::GeneratePartImage(const int departure, const int arrival, Ray ray, const vector<Sphere> spheres)
+//void Camera::GenerateImage(const Ray& ray, const vector<Sphere>& spheres)
+//{
+//    GeneratePartImage(<#const int departure#>, <#const int arrival#>, ray, spheres);
+//}
+
+void Camera::GeneratePartImage(const int departure, const int arrival, Ray ray, const vector<Sphere> spheres, const EWhatToDraw wtd)
 {
     const int sampling = 1;
-
+    
     if (sampling <= 0)
     {
-        // EXIT CODE: 5 --> Le sampling ne peut être inférieur à 1
-        exit(5);
+        // EXIT CODE: 8 --> Le sampling ne peut être inférieur à 1
+        exit(8);
     }
-
     
     Pixel p = Pixel(Vector3(0), Color(0), 0);
     Intersection intersection;
     Color finalColor = Color(0);
     Ray initialRay = ray;
     
-    
-    for (int i = departure; i < arrival; i++)
-    {
-        p = m_pixels[i];
-        finalColor = Color(0, 0, 0);
-
-        ray.SetOrigin(p.GetPosition());
-        if (m_useFocal)
+    switch (wtd) {
+        case EWhatToDraw::Walls:
         {
-            ray.SetDirection(GetRayDirection(p.GetPosition()));
-        }
-
-        if (p.index % 100000 == 0)
-//        if (p.index % 10000 == 0)
-        {
-            cout << "index : " << p.index << endl;
-        }
-        initialRay = ray;
-        intersection = GetNearestIntersection(ray, spheres);
-        
-        for (int _ = 0; _ < sampling; _++)
-        {
-            if (sampling > 1)
+            for (int i = departure; i < arrival; i++)
             {
-                ray.SetDirection(Toolbox::GetRandomDirectionInAngle(initialRay.GetDirection(), 1));
-                intersection = GetNearestIntersection(ray, spheres);
+                if (i % 1000000 == 0)
+                {
+                    cout << "indexDrawWalls : " << i << endl;
+                }
+                
+                p = m_pixels[i];
+                finalColor = Color(0);
+                
+                ray.SetOrigin(p.GetPosition());
+                if (m_useFocal)
+                {
+                    ray.SetDirection(GetRayDirection(p.GetPosition()));
+                }
+                
+                for (int _ = 0; _ < sampling; _++)
+                {
+                    initialRay = ray;
+                    intersection = GetNearestIntersection(ray, spheres);
+                    
+                    if (sampling > 1)
+                    {
+                        ray.SetDirection(Toolbox::GetRandomDirectionInAngle(initialRay.GetDirection(), 1));
+                        intersection = GetNearestIntersection(ray, spheres);
+                    }
+                    
+                    finalColor += GetColor(intersection, ray, vector<Sphere>());
+                }
+                finalColor = finalColor / sampling;
+                
+                m_pixels[i].SetColor(finalColor);
+                
+                if (p.index % 1000000 == 0)
+//                            if (p.index % 25000 == 0)
+                {
+                    SaveImage();
+                }
             }
+        }
+            break;
             
-            finalColor += GetColor(intersection, ray, spheres);
-        }
-        finalColor = finalColor / sampling;
-        
-        
-        m_pixels[i].SetColor(finalColor);
-
-        if (p.index % 1000000 == 0)
-//        if (p.index % 25000 == 0)
+        case EWhatToDraw::Spheres:
         {
-            SaveImage();
+            for (int i = departure; i < arrival; i++)
+            {
+                if (i % 100000 == 0)
+                {
+                    cout << "indexDrawSpheres : " << i << endl;
+                }
+                
+                p = m_pixels[i];
+                finalColor = Color(0);
+                
+                ray.SetOrigin(p.GetPosition());
+                if (m_useFocal)
+                {
+                    ray.SetDirection(GetRayDirection(p.GetPosition()));
+                }
+                
+                for (int _ = 0; _ < sampling; _++)
+                {
+                    initialRay = ray;
+                    intersection = GetNearestIntersection(ray, spheres);
+                    
+                    if (sampling > 1)
+                    {
+                        ray.SetDirection(Toolbox::GetRandomDirectionInAngle(initialRay.GetDirection(), 1));
+                        intersection = GetNearestIntersection(ray, spheres);
+                    }
+                    
+                    finalColor += GetColor(intersection, ray, spheres);
+                }
+                finalColor = finalColor / sampling;
+                
+                m_pixels[i].SetColor(finalColor);
+                
+                if (p.index % 1000000 == 0)
+                    //        if (p.index % 25000 == 0)
+                {
+                    SaveImage();
+                }
+            }
         }
+            break;
+            
+        case EWhatToDraw::BoundingBox:
+            TreeBox* tb = TreeBox::GenerateTree(spheres);
+            for (int i = departure; i < arrival; i++)
+            {
+                if (i % 1000000 == 0)
+                {
+                    cout << "indexDrawBBox : " << i << endl;
+                }
+                
+                p = m_pixels[i];
+                finalColor = Color(0);
+                
+                ray.SetOrigin(p.GetPosition());
+                if (m_useFocal)
+                {
+                    ray.SetDirection(GetRayDirection(p.GetPosition()));
+                }
+                
+                for (int _ = 0; _ < sampling; _++)
+                {
+//                    initialRay = ray;
+//                    intersection = GetNearestIntersection(ray, spheres);
+                    
+                    if (sampling > 1)
+                    {
+                        ray.SetDirection(Toolbox::GetRandomDirectionInAngle(initialRay.GetDirection(), 1));
+//                        intersection = GetNearestIntersection(ray, spheres);
+                    }
+                    
+                    bool tbIntersect = tb->IntersectBox(ray);
+                    if (tbIntersect)
+                    {
+//                        finalColor = Color(0,0, 1);
+                        m_pixels[i].SetColor(Color(0, 0, 1));
+//                        pixel.SetColor(GetColor(tbIntersect, ray, spheres));
+                        //                    pixel.SetColor(Color(0, 0, 1));
+                    }
+                }
+//                finalColor = finalColor / sampling;
+                
+//                m_pixels[i].SetColor(finalColor);
+                
+                if (p.index % 1000000 == 0)
+                    //        if (p.index % 25000 == 0)
+                {
+                    SaveImage();
+                }
+            }
+            break;
     }
 }
 
@@ -733,9 +737,9 @@ bool Camera::GetUseFocal() {
 
 Color Camera::GetColor(const Intersection& intersection, const Ray& ray, const vector<Sphere>& spheres) const {
     // Comment stopper de manière "propre" l'effet infini ?
-//    Color returnedColor = GetColor(intersection, ray, 1000);
+    //    Color returnedColor = GetColor(intersection, ray, 1000);
     Color returnedColor = GetColor(intersection, ray, 1000, spheres);
-
+    
     return returnedColor;
 }
 
@@ -757,11 +761,11 @@ Color Camera::GetColor(const Intersection& intersection, const Ray& ray, int rem
         }
         
         finalColor = Color(1, 1, 0);
-//        return finalColor;
+        //        return finalColor;
     }
-    else if (intersection.touchedSphere.GetMaterial().GetAlbedo() > 0)// Si ce n'est pas un miroir
+    else if (intersection.touchedSphere.GetMaterial().GetAlbedo() > 0)// Si ce n'est pas un miroir mais que ça réfléchit
     {
-        finalColor += GetLighting(intersection) * (1 -  intersection.touchedSphere.GetMaterial().GetAlbedo());
+        finalColor += GetLighting(intersection, spheres) * (1 -  intersection.touchedSphere.GetMaterial().GetAlbedo());
         
         if (remainingBounce >= 0)
         {
@@ -773,12 +777,12 @@ Color Camera::GetColor(const Intersection& intersection, const Ray& ray, int rem
             finalColor += (GetColor(reflectionIntersection, reflectionDirection, remainingBounce, spheres)) * (intersection.touchedSphere.GetMaterial().GetAlbedo());
         }
         
-//        finalColor = Color(1, 1, 0);
+        //        finalColor = Color(1, 1, 0);
         
     }
     else
     {
-        finalColor += GetLighting(intersection);
+        finalColor += GetLighting(intersection, spheres);
         return finalColor;
     }
     
@@ -816,9 +820,9 @@ void Camera::SetScene(Scene* scene) {
     m_scene = scene;
 }
 
-Color Camera::GetLighting(const Intersection& intersection, int remainingBounces) const
+Color Camera::GetLighting(const Intersection& intersection, const vector<Sphere>& spheres, int remainingBounces) const
 {
-//    int lightsVisible = 0;
+    //    int lightsVisible = 0;
     Color finalColor = Color(0);
     
     bool canSeeLight;
@@ -828,70 +832,70 @@ Color Camera::GetLighting(const Intersection& intersection, int remainingBounces
     
     if (remainingBounces > 0)
     {
-    for (const Light& light : m_scene->GetLights())
-    {
-//        cout << "-----------" << endl;
-
-        for (int i = 0; i < nbSurfacicLights; i++)
+        for (const Light& light : m_scene->GetLights())
         {
-            surfacicLight = Light(Toolbox::GetRandomPointOnSphere(Sphere(light.GetPosition(), 100)), light.GetPower() / nbSurfacicLights, light.GetMaterial());
+            //        cout << "-----------" << endl;
             
-//            surfacicLight.GetPosition().Print();
-            
-            canSeeLight = Toolbox::CanSeeLight(intersection.pointCoordonate, surfacicLight, m_scene->GetSpheres());
-            
-            if (canSeeLight)
+            for (int i = 0; i < nbSurfacicLights; i++)
             {
-                finalColor = finalColor +  GetDirectLighting(surfacicLight, intersection);
-//                lightsVisible += 1;
+                surfacicLight = Light(Toolbox::GetRandomPointOnSphere(Sphere(light.GetPosition(), 100)), light.GetPower() / nbSurfacicLights, light.GetMaterial());
+                
+                //            surfacicLight.GetPosition().Print();
+                
+                canSeeLight = Toolbox::CanSeeLight(intersection.pointCoordonate, surfacicLight, spheres);
+                
+                if (canSeeLight)
+                {
+                    finalColor = finalColor +  GetDirectLighting(surfacicLight, intersection);
+                    //                lightsVisible += 1;
+                }
+                //            else
+                //            {
+                ////            lightsVisible += 1; // TODO: supprimer quand on rajoute la lumière indirecte
+                //
+                //
+                //                finalColor = finalColor + (GetIndirectLighting(intersection, remainingBounces));
+                ////                lightsVisible += 1;
+                //            }
             }
-//            else
-//            {
-////            lightsVisible += 1; // TODO: supprimer quand on rajoute la lumière indirecte
-//            
-//
-//                finalColor = finalColor + (GetIndirectLighting(intersection, remainingBounces));
-////                lightsVisible += 1;
-//            }
         }
-    }
     }
     
     return finalColor;
-//    return finalColor / 2;
+    //    return finalColor / 2;
 }
 
 
 Color Camera::GetDirectLighting(const Light& light, const Intersection &intersection, const float distanceToAdd) const {
-            return Light::GetLighting(light, intersection, distanceToAdd);
+    return Light::GetLighting(light, intersection, distanceToAdd);
 }
 
 Color Camera::GetIndirectLighting(const Intersection &intersection, int remainingBounces, const vector<Sphere>& spheres) const {
     Color finalColor = Color(0);
     
-remainingBounces--;
+    remainingBounces--;
     
     const Vector3 randomDir = Toolbox::GetRandomDirectionOnHemisphere(intersection.touchedSphere.GetNormal(intersection.pointCoordonate)).Normalize();
     
-        const Ray ray = Ray(intersection.pointCoordonate + (randomDir * 1.5), randomDir);
+    const Ray ray = Ray(intersection.pointCoordonate + (randomDir * 1.5), randomDir);
     const Intersection inter = GetNearestIntersection(ray, spheres);
-
-//    while (finalColor == Color(0, 0, 0))
-//    {
-        finalColor = GetLighting(inter, remainingBounces);
-//    }
+    
+    //    while (finalColor == Color(0, 0, 0))
+    //    {
+    finalColor = GetLighting(inter, spheres, remainingBounces);
+    //    }
     
     
-//    if (finalColor == Color(0, 0, 0))
-//    {
-//        cout << "----------" << endl;
-//        cout << "normale : " << intersection.touchedSphere.GetNormal(intersection.pointCoordonate).ToString() << endl;
-//        cout << "randomDir : " << randomDir.ToString() << endl;
-//    }
+    //    if (finalColor == Color(0, 0, 0))
+    //    {
+    //        cout << "----------" << endl;
+    //        cout << "normale : " << intersection.touchedSphere.GetNormal(intersection.pointCoordonate).ToString() << endl;
+    //        cout << "randomDir : " << randomDir.ToString() << endl;
+    //    }
     
-//    const Intersection reflectionIntersection = GetNearestIntersection(reflectionDirection);
+    //    const Intersection reflectionIntersection = GetNearestIntersection(reflectionDirection);
     
     
-//    cout << "remainingbounces : " << remainingBounces << endl;
+    //    cout << "remainingbounces : " << remainingBounces << endl;
     return finalColor;
 }

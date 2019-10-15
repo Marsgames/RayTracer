@@ -29,6 +29,11 @@ private:
     
 public:
     TreeBox() = delete;
+    ~TreeBox()
+    {
+        delete m_nodeLeft;
+        delete m_nodeRight;
+    }
     
     TreeBox(const Box& box, const Sphere& sphere):
     m_box{box},
@@ -50,9 +55,13 @@ public:
     Box GetBox() const;
     bool GetIsLeaf() const;
     
-    static map<Sphere, Box> InitDictionary(const vector<Sphere>& spheres);
+    TreeBox* GetLeftNode() const;
+    TreeBox* GetRightNode() const;
+
+//    static map<Sphere, Box> InitDictionary(const vector<Sphere>& spheres);
     
-    static TreeBox* GenerateTree(const vector<Sphere>& spheres);
+    static TreeBox* GenerateTree(const vector<Sphere> spheres);
     
+    bool IntersectBox(const Ray& ray) const;
     Intersection IntersectSphere(const Ray& ray) const;
 };

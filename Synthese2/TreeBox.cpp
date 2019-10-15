@@ -28,37 +28,53 @@ bool TreeBox::GetIsLeaf() const
     return m_isLeaf;
 }
 
-map<Sphere, Box> TreeBox::InitDictionary(const vector<Sphere> &spheres) {
-    map<Sphere, Box> dictionary;
-    
-    // Pour chaque sphère on fait un box associée à cette sphere
-    for (const Sphere& sphere : spheres)
-    {
-        Vector3 pMin = Vector3(sphere.GetCenter().GetX() - sphere.GetRayon(), sphere.GetCenter().GetY() - sphere.GetRayon(), sphere.GetCenter().GetZ() - sphere.GetRayon());
-        Vector3 pMax = Vector3(sphere.GetCenter().GetX() + sphere.GetRayon(), sphere.GetCenter().GetY() + sphere.GetRayon(), sphere.GetCenter().GetZ() + sphere.GetRayon());
-        
-        const Box box = Box(pMin, pMax);
-        dictionary.insert(pair<Sphere, Box>(sphere, box));
-    }
-    
-    return dictionary;
+TreeBox* TreeBox::GetLeftNode() const
+{
+    return m_nodeLeft;
+}
+TreeBox* TreeBox::GetRightNode() const
+{
+    return m_nodeRight;
 }
 
-TreeBox* TreeBox::GenerateTree(const vector<Sphere>& spheres) {
-    map<Sphere, Box> dictionary = InitDictionary(spheres);
+//map<Sphere, Box> TreeBox::InitDictionary(const vector<Sphere> &spheres) {
+//    map<Sphere, Box> dictionary;
     
-    if (1 == spheres.size())
-    {
-        return new TreeBox(dictionary.at(spheres[0]), spheres[0]);
-    }
+//    // Pour chaque sphère on fait un box associée à cette sphere
+//    for (const Sphere& sphere : spheres)
+//    {
+//        cout << "InitDictionary sphere ++" << endl;
+//        Vector3 pMin = Vector3(sphere.GetCenter().GetX() - sphere.GetRayon(), sphere.GetCenter().GetY() - sphere.GetRayon(), sphere.GetCenter().GetZ() - sphere.GetRayon());
+//        Vector3 pMax = Vector3(sphere.GetCenter().GetX() + sphere.GetRayon(), sphere.GetCenter().GetY() + sphere.GetRayon(), sphere.GetCenter().GetZ() + sphere.GetRayon());
+//
+////        const Sphere sp = Sphere(sphere.GetCenter(), sphere.GetRayon(), sphere.GetMaterial());
+////        const Box box = Box(pMin, pMax);
+//        dictionary.insert(pair<Sphere, Box>(Sphere(sphere.GetCenter(), sphere.GetRayon(), sphere.GetMaterial()), Box(pMin, pMax)));
+//    }
+//
+//    cout << "nb spheres pour InitDictionnary : " << spheres.size() << endl;
+//    cout << "nb spheres dans dictionary pour InitDictionary : " << dictionary.size() << endl;
     
-    Vector3 pMin = Vector3(DBL_MAX, DBL_MAX, DBL_MAX);
-    Vector3 pMax = Vector3(-DBL_MAX, -DBL_MAX, -DBL_MAX);
+//    return dictionary;
+//}
+
+TreeBox* TreeBox::GenerateTree(const vector<Sphere> spheres) {
+//    map<Sphere, Box> dictionary = InitDictionary(spheres);
+    
+//    cout << "Je suis la boite principale" << endl;
+//    cout << "dicSize : " << dictionary.size() << endl;
+    Vector3 pMin = Vector3(DBL_MAX);
+    Vector3 pMax = Vector3(-DBL_MAX);
     
     //    Box box;
-    for (pair<Sphere, Box> pairBS : dictionary)
-    {
-        Box box = pairBS.second;
+//    for (pair<Sphere, Box> pairBS : dictionary)
+//    {
+        for (const Sphere& sp : spheres)
+        {
+            Box box = Box(Vector3(sp.GetCenter() - sp.GetRayon()), Vector3(sp.GetCenter() + sp.GetRayon()));
+        
+//        cout << "pminBoxDic : " << box.GetPMin().ToString() << endl;
+//        cout << "pmaxBoxDic : " << box.GetPMax().ToString() << endl;
         
         if (pMin.GetX() > box.GetPMin().GetX())
         {
@@ -86,6 +102,11 @@ TreeBox* TreeBox::GenerateTree(const vector<Sphere>& spheres) {
             pMax.SetZ(box.GetPMax().GetZ());
         }
     }
+    
+    if (1 == spheres.size())
+    {
+        return new TreeBox(Box(pMin, pMax), spheres[0]);
+    }
         
     vector<Sphere> list1stPart;
     for (unsigned long i = 0; i < spheres.size() / 2; i++)
@@ -100,9 +121,43 @@ TreeBox* TreeBox::GenerateTree(const vector<Sphere>& spheres) {
     }
     
     TreeBox* leftNode = GenerateTree(list1stPart);
-    TreeBox*  rightNode = GenerateTree(list2ndPart);
+    TreeBox* rightNode = GenerateTree(list2ndPart);
     
+//    cout << "pmin : " << pMin.ToString() << endl;
+//    cout << "pmax : " << pMax.ToString() << endl << "---------------" << endl;
     return new TreeBox(leftNode, rightNode, Box(pMin, pMax));
+}
+
+bool TreeBox::IntersectBox(const Ray& ray) const
+{
+    if (Box::IntersectBox(ray, m_box))
+    {
+        if (m_isLeaf)
+        {
+            return true;
+        }
+        
+        const bool interL = m_nodeLeft->IntersectBox(ray);
+        const bool interR = m_nodeRight->IntersectBox(ray);
+        
+        if (interL || interR)
+        {
+            return true;
+        }
+        return false;
+    }
+    
+    return false;
+//    if (Box::IntersectBox(ray, m_nodeLeft->GetBox()))
+//    {
+//        return true;
+//    }
+//    else if (Box::IntersectBox(ray, m_nodeRight->GetBox()))
+//    {
+//        return true;
+//    }
+//
+//    return false;
 }
 
 Intersection TreeBox::IntersectSphere(const Ray& ray) const {

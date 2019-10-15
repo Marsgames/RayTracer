@@ -60,7 +60,7 @@ bool Box::operator<(const Box& other) const
     // Pas bon car se base sur le centre de la sphère
     //    return (((bA.pMax.x - bA.pMin.x) + (bA.pMax.y - bA.pMin.y) + (bA.pMax.z - bA.pMin.z)) / 2) < (((bB.pMax.x - bB.pMin.x) + (bB.pMax.y - bB.pMin.y) + (bB.pMax.z - bB.pMin.z)) / 2);
     
-    return m_pMin < other.GetPMin();
+    return (m_pMin + m_pMax) * .5f < (other.GetPMin() + other.GetPMax()) * .5f;
 }
 
 bool Box::IntersectBox(const Ray &ray, const Box &box)

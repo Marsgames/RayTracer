@@ -89,16 +89,6 @@ Intersection Sphere::IntersectRaySphere(const Ray& ray, const Sphere& sphere) {
         myRes.nbIntersect++;
     }
     
-//    if (inter1 <= 0 && inter2 <= 0)
-//    {
-//        myRes.nbIntersect = 0;
-//    }
-//    else if (inter1 <= 0 && inter2 > 0)
-//    {
-//        myRes.nbIntersect = 1;
-//    }
-//    else if (inter1 > 0 && inter2 > 0)
-    
     if (inter1 > 0)
     {
         myRes.intersect = true;

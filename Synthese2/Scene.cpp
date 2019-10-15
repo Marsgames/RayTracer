@@ -57,31 +57,32 @@ void Scene::AddBoxes(const vector<Box> &boxes) {
     }
 }
 
-void Scene::DrawImages() {
-    for (Camera& camera : m_cameras)
-    {
-//        camera.DrawImage();
-        camera.DrawImageWithThread();
-    }
-}
+//void Scene::DrawImages() {
+//    for (Camera& camera : m_cameras)
+//    {
+////        camera.DrawImage();
+//        camera.DrawImageWithThread();
+//    }
+//}
 
 void Scene::DrawScene()
 {
     for (Camera& camera : m_cameras)
     {
-//        camera.DrawImage();
-        camera.DrawSceneWithThread();
+        camera.DrawImageWithThread(EWhatToDraw::Walls);
+        camera.DrawImageWithThread(EWhatToDraw::BoundingBox);
+//        camera.DrawImageWithThread(EWhatToDraw::Spheres);
     }
 }
 
-void Scene::DrawBB()
-{
-    for (Camera& camera : m_cameras)
-        {
-    //        camera.DrawImage();
-            camera.DrawBB();
-        }
-}
+//void Scene::DrawBB()
+//{
+//    for (Camera& camera : m_cameras)
+//        {
+//    //        camera.DrawImage();
+//            camera.DrawBB();
+//        }
+//}
 
 void Scene::SaveImages() {
     int index = 0;

@@ -24,6 +24,13 @@ enum EImageFormat
     PPM
 };
 
+enum EWhatToDraw
+{
+    Walls,
+    Spheres,
+    BoundingBox
+};
+
 struct Reflexion
 {
     Material material = Material(Color(0));
@@ -65,11 +72,12 @@ class Camera
     Intersection GetNearestIntersection(const Ray& ray, const vector<Sphere>& spheres) const;
 //    double GetRandomDouble(double min = -1, double max = 1) const;
     
-    Color GetLighting(const Intersection& intersection, int remainingBounces = 3) const;
+    Color GetLighting(const Intersection& intersection, const vector<Sphere>& spheres, int remainingBounces = 3) const;
     Color GetDirectLighting(const Light& ligght, const Intersection& intersection, const float distanceToAdd = 0) const;
     Color GetIndirectLighting(const Intersection &intersection, int remainingBounces, const vector<Sphere>& spheres) const;
     
-    void GeneratePartImage(const int departure, const int arrival, Ray ray, const vector<Sphere> sphere);
+//    void GenerateImage(const Ray& ray, const vector<Sphere>& spheres);
+    void GeneratePartImage(const int departure, const int arrival, Ray ray, const vector<Sphere> sphere, const EWhatToDraw wtd);
 
 public:
     Camera() = delete;
@@ -122,10 +130,10 @@ public:
     void SaveImage();
     void SetImageName(const string name);
     
-    void DrawBB();
-    void DrawSceneWithThread();
-    void DrawImage();
-    void DrawImageWithThread();
+//    void DrawBB();
+//    void DrawWallsWithThread();
+//    void DrawImage();
+    void DrawImageWithThread(const EWhatToDraw& wtd);
 
     void SetScene(Scene* scene);
     

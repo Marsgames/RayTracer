@@ -155,7 +155,8 @@ int Generate4KScene()
     //    myScene.AddLight(Light(Vector3(6500, -3000, 10000), 100000000));
     //    myScene.AddLight(Light(Vector3(5000, -5000, -5000), 10000000));
     
-    myScene.DrawImages();
+//    myScene.DrawImages();
+    myScene.DrawScene();
     
     myScene.SaveImages();
     
@@ -215,7 +216,8 @@ int Generate500Scene()
     myScene.AddSphere(frontWall);
     
     myScene.AddLight(Light(Vector3(0, 0, -100), 10000000, Material(Color(1, 1, 1))));
-    myScene.DrawImages();
+//    myScene.DrawImages();
+    myScene.DrawScene();
     
     myScene.SaveImages();
     
@@ -250,7 +252,7 @@ int GenerateBBoxScene()
     myScene.AddCamera(mainCamera);
     
             Sphere sp = Sphere(Vector3(0), 0);
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < 50; i++)
             {
                 sp = Sphere(Vector3(Toolbox::GenerateRandomNumber(-1500, 1500), Toolbox::GenerateRandomNumber(-1000, 1000), Toolbox::GenerateRandomNumber(100, 1000)), 50, Material::GetRandomMaterial(), std::to_string(i));
                 myScene.AddSphere(sp);
@@ -262,40 +264,40 @@ int GenerateBBoxScene()
     myScene.AddSphere(Sphere(Vector3(-1400, -1000, 500), 50, MaterialList::BlancMat, "TopLeft"));
     myScene.AddSphere(Sphere(Vector3(-1500, -900, 500), 50, MaterialList::BlancMat, "TopLeft"));
     myScene.AddSphere(Sphere(Vector3(-1400, -900, 500), 50, MaterialList::BlancMat, "TopLeft"));
-    
+
     myScene.AddSphere(Sphere(Vector3(1500, -1000, 500), 50, MaterialList::BlancMat, "TopRight"));
     myScene.AddSphere(Sphere(Vector3(1400, -1000, 500), 50, MaterialList::BlancMat, "TopRight"));
     myScene.AddSphere(Sphere(Vector3(1500, -900, 500), 50, MaterialList::BlancMat, "TopRight"));
     myScene.AddSphere(Sphere(Vector3(1400, -900, 500), 50, MaterialList::BlancMat, "TopRight"));
-    
+
     {
         myScene.AddSphere(Sphere(Vector3(-1450, -1000, 600), 50, MaterialList::BlancMat, "TopLeft"));
         myScene.AddSphere(Sphere(Vector3(-1350, -1000, 600), 50, MaterialList::BlancMat, "TopLeft"));
         myScene.AddSphere(Sphere(Vector3(-1450, -900, 600), 50, MaterialList::BlancMat, "TopLeft"));
         myScene.AddSphere(Sphere(Vector3(-1350, -900, 600), 50, MaterialList::BlancMat, "TopLeft"));
-        
+
         myScene.AddSphere(Sphere(Vector3(1450, -1000, 600), 50, MaterialList::BlancMat, "TopRight"));
         myScene.AddSphere(Sphere(Vector3(1350, -1000, 600), 50, MaterialList::BlancMat, "TopRight"));
         myScene.AddSphere(Sphere(Vector3(1450, -900, 600), 50, MaterialList::BlancMat, "TopRight"));
         myScene.AddSphere(Sphere(Vector3(1350, -900, 600), 50, MaterialList::BlancMat, "TopRight"));
     }
-    
+
     myScene.AddSphere(Sphere(Vector3(-1500, 1000, 500), 50, MaterialList::BlancMat, "BotLeft"));
     myScene.AddSphere(Sphere(Vector3(-1400, 1000, 500), 50, MaterialList::BlancMat, "BotLeft"));
     myScene.AddSphere(Sphere(Vector3(-1500, 900, 500), 50, MaterialList::BlancMat, "BotLeft"));
     myScene.AddSphere(Sphere(Vector3(-1400, 900, 500), 50, MaterialList::BlancMat, "BotLeft"));
-    
+
     myScene.AddSphere(Sphere(Vector3(1500, 1000, 500), 50, MaterialList::BlancMat, "botRight"));
     myScene.AddSphere(Sphere(Vector3(1400, 1000, 500), 50, MaterialList::BlancMat, "botRight"));
     myScene.AddSphere(Sphere(Vector3(1500, 900, 500), 50, MaterialList::BlancMat, "BotRight"));
     myScene.AddSphere(Sphere(Vector3(1400, 900, 500), 50, MaterialList::BlancMat, "BotRight"));
-    
+
     {
         myScene.AddSphere(Sphere(Vector3(-1450, 1000, 600), 50, MaterialList::BlancMat, "BotLeft"));
         myScene.AddSphere(Sphere(Vector3(-1350, 1000, 600), 50, MaterialList::BlancMat, "BotLeft"));
         myScene.AddSphere(Sphere(Vector3(-1450, 900, 600), 50, MaterialList::BlancMat, "BotLeft"));
         myScene.AddSphere(Sphere(Vector3(-1350, 900, 600), 50, MaterialList::BlancMat, "BotLeft"));
-        
+
         myScene.AddSphere(Sphere(Vector3(1450, 1000, 600), 50, MaterialList::BlancMat, "botRight"));
         myScene.AddSphere(Sphere(Vector3(1350, 1000, 600), 50, MaterialList::BlancMat, "botRight"));
         myScene.AddSphere(Sphere(Vector3(1450, 900, 600), 50, MaterialList::BlancMat, "BotRight"));
@@ -322,8 +324,8 @@ int GenerateBBoxScene()
     myScene.AddLight(Light(Vector3(0, 0, 0), 1000000, Material(Color(1, 1, 1))));
     
     
-//    myScene.DrawScene();
-    myScene.DrawBB();
+    myScene.DrawScene();
+//    myScene.DrawBB();
     
     myScene.SaveImages();
     
