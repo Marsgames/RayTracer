@@ -517,13 +517,6 @@ void Camera::DrawImageWithThread(const EWhatToDraw& wtd) {
     const unsigned long diviseur = m_pixels.capacity() / 5;
     const int reste = m_pixels.capacity() % 5;
     
-    if (EWhatToDraw::BoundingBox == wtd)
-    {
-        GeneratePartImage(0, static_cast<int>(m_pixels.capacity()), ray, spheres, wtd);
-        return;
-    }
-    
-    
     std::thread t01(&Camera::GeneratePartImage, this, 0, static_cast<int>(diviseur), ray, spheres, wtd);
     std::thread t02(&Camera::GeneratePartImage, this, static_cast<int>(diviseur), static_cast<int>(diviseur) * 2, ray, spheres, wtd);
     std::thread t03(&Camera::GeneratePartImage, this, static_cast<int>(diviseur) * 2, static_cast<int>(diviseur) * 3, ray, spheres, wtd);
@@ -544,11 +537,6 @@ void Camera::DrawImageWithThread(const EWhatToDraw& wtd) {
     t06.join();
     cout << "Thread 6 terminé" << endl;
 }
-
-//void Camera::GenerateImage(const Ray& ray, const vector<Sphere>& spheres)
-//{
-//    GeneratePartImage(<#const int departure#>, <#const int arrival#>, ray, spheres);
-//}
 
 void Camera::GeneratePartImage(const int departure, const int arrival, Ray ray, const vector<Sphere> spheres, const EWhatToDraw wtd)
 {
@@ -602,6 +590,7 @@ void Camera::GeneratePartImage(const int departure, const int arrival, Ray ray, 
                 m_pixels[i].SetColor(finalColor);
                 
                 if (p.index % 1000000 == 0)
+//                    if (p.index % 100000 == 0)
 //                            if (p.index % 25000 == 0)
                 {
                     SaveImage();
@@ -646,12 +635,14 @@ void Camera::GeneratePartImage(const int departure, const int arrival, Ray ray, 
                 m_pixels[i].SetColor(finalColor);
                 
                 if (p.index % 1000000 == 0)
+//                    if (p.index % 100000 == 0)
                     //        if (p.index % 25000 == 0)
                 {
                     SaveImage();
                 }
             }
         }
+            SaveImage();
             break;
             
         case EWhatToDraw::BoundingBox:
@@ -664,7 +655,7 @@ void Camera::GeneratePartImage(const int departure, const int arrival, Ray ray, 
                 }
                 
                 p = m_pixels[i];
-                finalColor = Color(0);
+//                finalColor = Color(0);
                 
                 ray.SetOrigin(p.GetPosition());
                 if (m_useFocal)
@@ -683,13 +674,17 @@ void Camera::GeneratePartImage(const int departure, const int arrival, Ray ray, 
 //                        intersection = GetNearestIntersection(ray, spheres);
                     }
                     
-                    bool tbIntersect = tb->IntersectBox(ray);
-                    if (tbIntersect)
+                    BoxIntersection tbIntersect = tb->IntersectBox(ray);
+                    if (tbIntersect.intersect)
                     {
-//                        finalColor = Color(0,0, 1);
-                        m_pixels[i].SetColor(Color(0, 0, 1));
-//                        pixel.SetColor(GetColor(tbIntersect, ray, spheres));
-                        //                    pixel.SetColor(Color(0, 0, 1));
+                        intersection = Sphere::IntersectRaySphere(ray, tbIntersect.sphereContained);
+                        
+                        if (intersection.intersect)
+                        {
+                            m_pixels[i].SetColor(GetColor(intersection, ray, m_scene->GetSpheres()));
+                        }
+//                        m_pixels[i].SetColor(Color(0, 0, 0));
+//                        m_pixels[i].SetColor(GetColor(tbin->IntersectSphere(ray), ray, spheres));
                     }
                 }
 //                finalColor = finalColor / sampling;
@@ -702,6 +697,7 @@ void Camera::GeneratePartImage(const int departure, const int arrival, Ray ray, 
                     SaveImage();
                 }
             }
+            SaveImage();
             break;
     }
 }

@@ -18,6 +18,18 @@ enum EBoxType
     SphereType, BoundingBoxType, SuperBBoxType
 };
 
+struct BoxIntersection
+{
+    bool intersect;
+    Sphere sphereContained;
+    
+    BoxIntersection() = delete ;
+    BoxIntersection(const bool intersect, const Sphere& sphere):
+    intersect{intersect},
+    sphereContained{sphere}
+    {};
+};
+
 class Box {
 protected:
     Vector3 m_pMin, m_pMax;
@@ -44,5 +56,5 @@ public:
     
     bool operator<(const Box& other) const;
     
-    static bool IntersectBox(const Ray& ray, const Box& box);
+    static double IntersectBox(const Ray& ray, const Box& box);
 };

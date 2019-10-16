@@ -128,26 +128,40 @@ TreeBox* TreeBox::GenerateTree(const vector<Sphere> spheres) {
     return new TreeBox(leftNode, rightNode, Box(pMin, pMax));
 }
 
-bool TreeBox::IntersectBox(const Ray& ray) const
+BoxIntersection TreeBox::IntersectBox(const Ray& ray) const
 {
-    if (Box::IntersectBox(ray, m_box))
+    double intersectionDist = Box::IntersectBox(ray, m_box);
+    if (intersectionDist > -1)
     {
         if (m_isLeaf)
         {
-            return true;
+            return BoxIntersection(true, m_sphere);
+//            return true;
         }
         
-        const bool interL = m_nodeLeft->IntersectBox(ray);
-        const bool interR = m_nodeRight->IntersectBox(ray);
+        const BoxIntersection interL = m_nodeLeft->IntersectBox(ray);
+        const BoxIntersection interR = m_nodeRight->IntersectBox(ray);
         
-        if (interL || interR)
+        if (interL.intersect && interR.intersect)
         {
-            return true;
+            const double lDist = Box::IntersectBox(ray, m_nodeLeft->m_box);
+            const double rDist = Box::IntersectBox(ray, m_nodeRight->m_box);
+            
+            if (lDist < rDist)
+            {
+                return interL;
+            }
+            return interR;
         }
-        return false;
+        else if (interL.intersect)
+        {
+            return interL;
+        }
+        
+        return interR;
     }
     
-    return false;
+    return BoxIntersection(false, Sphere(Vector3(0), 0));
 //    if (Box::IntersectBox(ray, m_nodeLeft->GetBox()))
 //    {
 //        return true;
@@ -161,33 +175,33 @@ bool TreeBox::IntersectBox(const Ray& ray) const
 }
 
 Intersection TreeBox::IntersectSphere(const Ray& ray) const {
-    if (m_isLeaf)
-    {
+//    if (m_isLeaf)
+//    {
         return Sphere::IntersectRaySphere(ray, m_sphere);
-    }
-    
-    Intersection interLeft = m_nodeLeft->IntersectSphere(ray);
-    Intersection interRight = m_nodeRight->IntersectSphere(ray);
-    
-    if (interLeft.intersect && interRight.intersect)
-    {
-        if (m_nodeLeft->m_box.GetPMin() < m_nodeRight->m_box.GetPMin())
-        {
-            return interLeft;
-        }
-        else
-        {
-            return  interRight;
-        }
-    }
-    else if (interLeft.intersect)
-    {
-        return interLeft;
-    }
-    else
-    {
-        return interRight;
-    }
+//    }
+//
+//    Intersection interLeft = m_nodeLeft->IntersectSphere(ray);
+//    Intersection interRight = m_nodeRight->IntersectSphere(ray);
+//
+//    if (interLeft.intersect && interRight.intersect)
+//    {
+//        if (m_nodeLeft->m_box.GetPMin() < m_nodeRight->m_box.GetPMin())
+//        {
+//            return interLeft;
+//        }
+//        else
+//        {
+//            return  interRight;
+//        }
+//    }
+//    else if (interLeft.intersect)
+//    {
+//        return interLeft;
+//    }
+//    else
+//    {
+//        return interRight;
+//    }
 }
 
 

@@ -76,7 +76,6 @@ class Camera
     Color GetDirectLighting(const Light& ligght, const Intersection& intersection, const float distanceToAdd = 0) const;
     Color GetIndirectLighting(const Intersection &intersection, int remainingBounces, const vector<Sphere>& spheres) const;
     
-//    void GenerateImage(const Ray& ray, const vector<Sphere>& spheres);
     void GeneratePartImage(const int departure, const int arrival, Ray ray, const vector<Sphere> sphere, const EWhatToDraw wtd);
 
 public:

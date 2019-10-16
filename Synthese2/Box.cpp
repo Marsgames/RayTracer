@@ -63,7 +63,7 @@ bool Box::operator<(const Box& other) const
     return (m_pMin + m_pMax) * .5f < (other.GetPMin() + other.GetPMax()) * .5f;
 }
 
-bool Box::IntersectBox(const Ray &ray, const Box &box)
+double Box::IntersectBox(const Ray &ray, const Box &box)
 {
 //    Box box = tb.GetBox();
     
@@ -99,10 +99,10 @@ bool Box::IntersectBox(const Ray &ray, const Box &box)
     
     if (tmaxZ >= tminZ)
     {
-        return true;
+        return tmaxZ;
     }
     else
     {
-        return false;
+        return -1;
     }
 }

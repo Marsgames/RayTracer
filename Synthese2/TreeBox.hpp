@@ -62,6 +62,6 @@ public:
     
     static TreeBox* GenerateTree(const vector<Sphere> spheres);
     
-    bool IntersectBox(const Ray& ray) const;
+    BoxIntersection IntersectBox(const Ray& ray) const;
     Intersection IntersectSphere(const Ray& ray) const;
 };
