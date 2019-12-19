@@ -20,6 +20,8 @@
 		AE91571F229F1CA9003C8179 /* Color.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AE91571D229F1CA9003C8179 /* Color.cpp */; };
 		AE915722229F3110003C8179 /* Sphere.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AE915720229F3110003C8179 /* Sphere.cpp */; };
 		AE915725229F361B003C8179 /* Ray.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AE915723229F361B003C8179 /* Ray.cpp */; };
+		AECEFB81234CB05A00FDC0DF /* TreeBox.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AECEFB7F234CB05A00FDC0DF /* TreeBox.cpp */; };
+		AEDBFE6C234C7B91003BCF68 /* Box.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AEDBFE6A234C7B91003BCF68 /* Box.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -66,6 +68,10 @@
 		AE915724229F361B003C8179 /* Ray.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Ray.hpp; sourceTree = "<group>"; };
 		AEA8E6352158FF1100E89BCC /* main.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = main.hpp; sourceTree = "<group>"; };
 		AEA8E63621590E1900E89BCC /* bitmap_image.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = bitmap_image.hpp; sourceTree = "<group>"; };
+		AECEFB7F234CB05A00FDC0DF /* TreeBox.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = TreeBox.cpp; sourceTree = "<group>"; };
+		AECEFB80234CB05A00FDC0DF /* TreeBox.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = TreeBox.hpp; sourceTree = "<group>"; };
+		AEDBFE6A234C7B91003BCF68 /* Box.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Box.cpp; sourceTree = "<group>"; };
+		AEDBFE6B234C7B91003BCF68 /* Box.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Box.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -125,6 +131,10 @@
 				AE1625F622A485C800D0A45C /* Material.hpp */,
 				AE25731B2331051F00E322A3 /* Toolbox.cpp */,
 				AE25731C2331051F00E322A3 /* Toolbox.hpp */,
+				AEDBFE6A234C7B91003BCF68 /* Box.cpp */,
+				AEDBFE6B234C7B91003BCF68 /* Box.hpp */,
+				AECEFB7F234CB05A00FDC0DF /* TreeBox.cpp */,
+				AECEFB80234CB05A00FDC0DF /* TreeBox.hpp */,
 			);
 			path = Synthese2;
 			sourceTree = "<group>";
@@ -224,6 +234,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				AE7E8541229FE6C900BB1CEB /* Light.cpp in Sources */,
+				AECEFB81234CB05A00FDC0DF /* TreeBox.cpp in Sources */,
 				AE7E853E229FDE9500BB1CEB /* Scene.cpp in Sources */,
 				AE915719229F1B64003C8179 /* Pixel.cpp in Sources */,
 				AE915716229F0E03003C8179 /* Camera.cpp in Sources */,
@@ -232,6 +243,7 @@
 				AE91571C229F1BB9003C8179 /* Vector3.cpp in Sources */,
 				AE915725229F361B003C8179 /* Ray.cpp in Sources */,
 				AE915722229F3110003C8179 /* Sphere.cpp in Sources */,
+				AEDBFE6C234C7B91003BCF68 /* Box.cpp in Sources */,
 				AE1625F722A485C800D0A45C /* Material.cpp in Sources */,
 				AE376F5F2158B2C700044A00 /* main.cpp in Sources */,
 			);
@@ -354,11 +366,43 @@
 		AE376F632158B2C700044A00 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_WARN_ASSIGN_ENUM = YES;
+				CLANG_WARN_ATOMIC_IMPLICIT_SEQ_CST = YES;
+				CLANG_WARN_CXX0X_EXTENSIONS = YES;
+				CLANG_WARN_FLOAT_CONVERSION = YES;
+				CLANG_WARN_IMPLICIT_SIGN_CONVERSION = NO;
+				CLANG_WARN_OBJC_EXPLICIT_OWNERSHIP_TYPE = YES;
+				CLANG_WARN_OBJC_IMPLICIT_ATOMIC_PROPERTIES = YES;
+				CLANG_WARN_OBJC_INTERFACE_IVARS = YES;
+				CLANG_WARN_OBJC_MISSING_PROPERTY_SYNTHESIS = YES;
+				CLANG_WARN_OBJC_REPEATED_USE_OF_WEAK = YES;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_SEMICOLON_BEFORE_METHOD_BODY = YES;
+				CLANG_WARN_SUSPICIOUS_IMPLICIT_CONVERSION = YES;
+				CLANG_WARN__EXIT_TIME_DESTRUCTORS = NO;
 				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 7RA755DD97;
+				GCC_TREAT_IMPLICIT_FUNCTION_DECLARATIONS_AS_ERRORS = YES;
+				GCC_TREAT_INCOMPATIBLE_POINTER_TYPE_WARNINGS_AS_ERRORS = YES;
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				GCC_VERSION = "";
+				GCC_WARN_ABOUT_MISSING_FIELD_INITIALIZERS = YES;
+				GCC_WARN_ABOUT_MISSING_NEWLINE = YES;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_FOUR_CHARACTER_CONSTANTS = YES;
+				GCC_WARN_HIDDEN_VIRTUAL_FUNCTIONS = YES;
+				GCC_WARN_INHIBIT_ALL_WARNINGS = NO;
+				GCC_WARN_INITIALIZER_NOT_FULLY_BRACKETED = YES;
+				GCC_WARN_NON_VIRTUAL_DESTRUCTOR = NO;
+				GCC_WARN_PEDANTIC = NO;
+				GCC_WARN_SHADOW = YES;
+				GCC_WARN_SIGN_COMPARE = YES;
+				GCC_WARN_STRICT_SELECTOR_MATCH = YES;
+				GCC_WARN_UNKNOWN_PRAGMAS = YES;
+				GCC_WARN_UNUSED_LABEL = YES;
+				GCC_WARN_UNUSED_PARAMETER = YES;
 				HEADER_SEARCH_PATHS = (
 					/Users/Raph/Documents/Gamagora/Synthese/Synthese2/googletest/googletest/include,
 					/Users/Raph/Documents/Gamagora/Synthese/Synthese2/Synthese2,
@@ -375,11 +419,43 @@
 		AE376F642158B2C700044A00 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_WARN_ASSIGN_ENUM = YES;
+				CLANG_WARN_ATOMIC_IMPLICIT_SEQ_CST = YES;
+				CLANG_WARN_CXX0X_EXTENSIONS = YES;
+				CLANG_WARN_FLOAT_CONVERSION = YES;
+				CLANG_WARN_IMPLICIT_SIGN_CONVERSION = NO;
+				CLANG_WARN_OBJC_EXPLICIT_OWNERSHIP_TYPE = YES;
+				CLANG_WARN_OBJC_IMPLICIT_ATOMIC_PROPERTIES = YES;
+				CLANG_WARN_OBJC_INTERFACE_IVARS = YES;
+				CLANG_WARN_OBJC_MISSING_PROPERTY_SYNTHESIS = YES;
+				CLANG_WARN_OBJC_REPEATED_USE_OF_WEAK = YES;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_SEMICOLON_BEFORE_METHOD_BODY = YES;
+				CLANG_WARN_SUSPICIOUS_IMPLICIT_CONVERSION = YES;
+				CLANG_WARN__EXIT_TIME_DESTRUCTORS = NO;
 				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 7RA755DD97;
+				GCC_TREAT_IMPLICIT_FUNCTION_DECLARATIONS_AS_ERRORS = YES;
+				GCC_TREAT_INCOMPATIBLE_POINTER_TYPE_WARNINGS_AS_ERRORS = YES;
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				GCC_VERSION = "";
+				GCC_WARN_ABOUT_MISSING_FIELD_INITIALIZERS = YES;
+				GCC_WARN_ABOUT_MISSING_NEWLINE = YES;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_FOUR_CHARACTER_CONSTANTS = YES;
+				GCC_WARN_HIDDEN_VIRTUAL_FUNCTIONS = YES;
+				GCC_WARN_INHIBIT_ALL_WARNINGS = NO;
+				GCC_WARN_INITIALIZER_NOT_FULLY_BRACKETED = YES;
+				GCC_WARN_NON_VIRTUAL_DESTRUCTOR = NO;
+				GCC_WARN_PEDANTIC = NO;
+				GCC_WARN_SHADOW = YES;
+				GCC_WARN_SIGN_COMPARE = YES;
+				GCC_WARN_STRICT_SELECTOR_MATCH = YES;
+				GCC_WARN_UNKNOWN_PRAGMAS = YES;
+				GCC_WARN_UNUSED_LABEL = YES;
+				GCC_WARN_UNUSED_PARAMETER = YES;
 				HEADER_SEARCH_PATHS = (
 					/Users/Raph/Documents/Gamagora/Synthese/Synthese2/googletest/googletest/include,
 					/Users/Raph/Documents/Gamagora/Synthese/Synthese2/Synthese2,

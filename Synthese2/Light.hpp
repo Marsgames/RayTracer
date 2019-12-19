@@ -29,17 +29,19 @@ class Light {
     
     
 public:
+    Light() = delete;
+    
     Light(const Vector3& position, const double power):
     m_position{position},
     m_power{power},
-    m_material{MaterialList::BlancMat}
-//    m_color{Color{255, 255, 255}}
+    m_material{MaterialList::BlancMat},
+    m_color{Color{1, 1, 1}}
     {};
     
     Light(const Vector3& position, const double power, const Material material):
     m_position{position},
     m_power{power},
-//    m_color{color}
+    m_color{Color(1)},
     m_material{material}
     {};
     

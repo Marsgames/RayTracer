@@ -33,7 +33,7 @@ Material Light::GetMaterial() const {
 
 Color Light::GetLighting(const Light& light, const Intersection& intersection, const float distanceToAdd)
 {
-    Color newColor;
+    Color newColor = Color(0);
         
         const double distance = Vector3::GetDistance(light.GetPosition(), intersection.pointCoordonate) + distanceToAdd;
         const double puissance = light.GetPower() * (1 / (distance * distance));
@@ -41,7 +41,7 @@ Color Light::GetLighting(const Light& light, const Intersection& intersection, c
     const Color lightColor = light.GetMaterial().GetSelfIlluminColor() * puissance;
     
     const Vector3 normale = intersection.touchedSphere.GetNormal(intersection.pointCoordonate);
-    const float angle = acos((Vector3::Dot(normale, Vector3::GetDirection(light.GetPosition(), intersection.pointCoordonate))));
+    const double angle = acos((Vector3::Dot(normale, Vector3::GetDirection(light.GetPosition(), intersection.pointCoordonate))));
     
     
     

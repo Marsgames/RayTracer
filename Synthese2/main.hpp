@@ -9,3 +9,7 @@
 #pragma once
 
 int RunTests();
+
+int Generate4KScene();
+int Generate500Scene();
+int GenerateBBoxScene();

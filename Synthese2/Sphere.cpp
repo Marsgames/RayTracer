@@ -61,7 +61,7 @@ Material Sphere::GetMaterial() const
 }
 
 // Repris de l'ancien code
-Intersection Sphere::IntersectRaySphere(Ray ray, Sphere sphere) {
+Intersection Sphere::IntersectRaySphere(const Ray& ray, const Sphere& sphere) {
     Intersection myRes;// = Intersection(false, -1, Vector3(0, 0, 0));
     
     const double B = 2 * (Vector3::Dot(ray.GetOrigin(), ray.GetDirection()) - Vector3::Dot(sphere.GetCenter(), ray.GetDirection()));
@@ -89,16 +89,6 @@ Intersection Sphere::IntersectRaySphere(Ray ray, Sphere sphere) {
         myRes.nbIntersect++;
     }
     
-//    if (inter1 <= 0 && inter2 <= 0)
-//    {
-//        myRes.nbIntersect = 0;
-//    }
-//    else if (inter1 <= 0 && inter2 > 0)
-//    {
-//        myRes.nbIntersect = 1;
-//    }
-//    else if (inter1 > 0 && inter2 > 0)
-    
     if (inter1 > 0)
     {
         myRes.intersect = true;
@@ -115,7 +105,7 @@ Intersection Sphere::IntersectRaySphere(Ray ray, Sphere sphere) {
     return myRes;
 }
 
-void Sphere::SetCenter(Vector3 position) {
+void Sphere::SetCenter(const Vector3& position) {
     m_center = position;
 }
 
@@ -123,12 +113,17 @@ void Sphere::SetCenter(int x, int y, int z) {
     m_center = Vector3(x, y, z);
 }
 
+bool Sphere::operator<(const Sphere& other) const
+{
+    return m_rayon < other.m_rayon;
+}
+
 string Sphere::GetName() const {
     return m_name;
 }
 
 // Faire des tests unitaires la dessus
-Vector3 Sphere::GetNormal(Vector3 point) const {
+Vector3 Sphere::GetNormal(const Vector3& point) const {
     return Vector3::GetDirection(m_center, point);
     }
 

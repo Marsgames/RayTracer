@@ -41,7 +41,7 @@ Color Pixel::GetColor() const {
     return m_color.GetB();
  }
 
-void Pixel::SetColor(Color color) {
+void Pixel::SetColor(const Color& color) {
     m_color = color;
 }
 

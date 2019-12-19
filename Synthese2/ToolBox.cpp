@@ -45,8 +45,8 @@ Vector3 Toolbox::GetRandomDirectionOnHemisphere(const Vector3& normal) {
     const double random1 = GenerateRandomNumber();
     double random2 = GenerateRandomNumber();
 
-    const float x = cos(2 * M_PI * random1) * (sqrt(1 - (random2 * random2)));
-    const float y = sin(2 * M_PI * random1) * (sqrt(1 - (random2 * random2)));
+    const double x = cos(2 * M_PI * random1) * (sqrt(1 - (random2 * random2)));
+    const double y = sin(2 * M_PI * random1) * (sqrt(1 - (random2 * random2)));
 
     if (normal.GetZ() < 0)
     {
@@ -61,16 +61,16 @@ Vector3 Toolbox::GetRandomDirectionOnHemisphere(const Vector3& normal) {
 
 Vector3 Toolbox::GetRandomDirectionInAngle(const Vector3& normal, const float angleMax)
 {
-    float theAngle = ((angleMax * M_PI) / 180) / 2;
+    const double theAngle = ((angleMax * M_PI) / 180) / 2;
 
     const double random1 = GenerateRandomNumber();
     double random2 = GenerateRandomNumber();
 
-    const float racine = 1 - random2 * (1 - cos(theAngle));
+    const double racine = 1 - random2 * (1 - cos(theAngle));
 
-    const float x = cos(2 * M_PI * random1) * (sqrt(1 - (racine * racine)));
-    const float y = sin(2 * M_PI * random1) * (sqrt(1 - (racine * racine)));
-    const float z = 1 - random2 * (1 - cos(theAngle));
+    const double x = cos(2 * M_PI * random1) * (sqrt(1 - (racine * racine)));
+    const double y = sin(2 * M_PI * random1) * (sqrt(1 - (racine * racine)));
+    const double z = 1 - random2 * (1 - cos(theAngle));
 
     const Vector3 axeX = Vector3::CrossProduct(Vector3(GenerateRandomNumber(-1, 1), GenerateRandomNumber(-1, 1), GenerateRandomNumber(-1, 1)), normal);
     const Vector3 axeY = Vector3::CrossProduct(axeX, normal);

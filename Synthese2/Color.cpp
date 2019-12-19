@@ -80,7 +80,7 @@ EColor Color::GetColorName() const {
     return m_colorName;
 }
 
-Color Color::GetColor(EColor colorName) {
+Color Color::GetColor(const EColor& colorName) {
     switch (colorName) {
         case Black:
             return Color{0, 0, 0};

@@ -34,18 +34,19 @@ class Material {
     
 //    Color m_color;
 //    EMaterials m_material;
-    double m_albedo;
+    double m_albedo = 0;
 //    string m_name;
     
 public:
     Material() = delete;
+//    Material(){};
     
-    Material(Color diffuseColor) :
+    Material(const Color& diffuseColor) :
     m_diffuseColor{diffuseColor},
     m_selfIlluminColor{diffuseColor}
     {};
     
-    Material(Color diffuseColor, const Color& selfIlluminColor) :
+    Material(const Color& diffuseColor, const Color& selfIlluminColor) :
     m_diffuseColor{diffuseColor},
     m_selfIlluminColor{selfIlluminColor}
     {};
@@ -59,6 +60,7 @@ public:
     Material(const string name, const Color& diffuseColor, const double albedo) :
     m_name{name},
     m_diffuseColor{diffuseColor},
+    m_selfIlluminColor{Color(0)},
     m_albedo{albedo}
     {};
     
@@ -73,6 +75,7 @@ public:
     double GetAlbedo() const;
     void SetAlbedo(const double value);
 //    EMaterials GetMaterialType() const;
+    static Material GetRandomMaterial();
 };
 
 struct MaterialList

@@ -15,7 +15,7 @@
 
 using std::default_random_engine;
 
-class Toolbox {
+class Toolbox { 
     static const int K_SEED = 0;
     static default_random_engine K_GENERATOR;
     
