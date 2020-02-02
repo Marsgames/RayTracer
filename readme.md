@@ -1,4 +1,4 @@
-# Synthese2
+# RayTracer
 
 Programme développé en C++
 
@@ -14,6 +14,7 @@ Programme développé en C++
 
 **Étape n°X :** Ajout d'un système de boites englobantes permettant de réduire le temps de calcul quand il y a un grand nombre d'objets dans la scène
 
+<br/>
 
 ## Authors
 
